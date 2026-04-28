@@ -1,0 +1,43 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(curl -s -i \"http://127.0.0.1:8580/element_collection/storage/playlists/%7B98220FF7-B4A5-42CE-B5B6-82FA8D72F74E%7D/elements/ref/\")",
+      "Bash(curl -s -X PUT \"http://127.0.0.1:8580/activation/storage/playlists/%7B98220FF7-B4A5-42CE-B5B6-82FA8D72F74E%7D\" -H \"Content-Type: application/vnd.vizrt.playlistactivation+xml\" -d '<?xml version=\"1.0\" encoding=\"UTF-8\"?><playlistactivation xmlns:viz=\"http://www.vizrt.com/atom\"><viz:active_on_profile>http://127.0.0.1:8580/profiles/default</viz:active_on_profile></playlistactivation>')",
+      "Bash(curl -s -i -X OPTIONS \"http://127.0.0.1:8580/activation/storage/playlists/%7B98220FF7-B4A5-42CE-B5B6-82FA8D72F74E%7D\")",
+      "Bash(curl -s -i \"http://127.0.0.1:8580/activation/storage/playlists/%7B98220FF7-B4A5-42CE-B5B6-82FA8D72F74E%7D/elements/\")",
+      "Bash(curl -s \"http://127.0.0.1:8580/profiles/default\")",
+      "Bash(curl -s \"http://127.0.0.1:8580/profiles/default/state\")",
+      "Bash(curl -s \"http://127.0.0.1:8580/profiles/\")",
+      "Bash(curl -s \"http://localhost:3000/api/mse/playlists\")",
+      "Bash(curl -s \"http://localhost:3000/api/mse/playlists/98220FF7-B4A5-42CE-B5B6-82FA8D72F74E/elements\")",
+      "Bash(curl -s \"http://localhost:3000/api/mse/profiles\")",
+      "Bash(curl -s \"http://localhost:3000/api/mse/profiles/default/state\")",
+      "Bash(curl -s -X POST \"http://localhost:3000/api/mse/profiles/default/read\")",
+      "Bash(curl -s -X POST \"http://localhost:3000/api/mse/profiles/default/read\" -H \"Content-Type: application/json\" -d '{\"elementEditUrl\":\"http://127.0.0.1:8580/element_collection/storage/playlists/%7B98220FF7-B4A5-42CE-B5B6-82FA8D72F74E%7D/elements/ref\"}')",
+      "Bash(curl -s \"http://127.0.0.1:8580/models/element-schedule\")",
+      "Bash(curl -s \"http://127.0.0.1:8580/models/\")",
+      "Bash(curl -s -X POST \"http://127.0.0.1:8580/profiles/default/read\" -H \"Content-Type: application/vnd.vizrt.element-schedule+xml\" -d '<es:element-schedule xmlns:es=\"http://www.vizrt.com/element-schedule\"><es:element><atom:link xmlns:atom=\"http://www.w3.org/2005/Atom\" href=\"http://127.0.0.1:8580/element_collection/storage/playlists/%7B98220FF7-B4A5-42CE-B5B6-82FA8D72F74E%7D/elements/ref\" rel=\"self\"/></es:element></es:element-schedule>')",
+      "Bash(curl -s -X POST \"http://127.0.0.1:8580/profiles/default/read\" -H \"Content-Type: application/vnd.vizrt.element-schedule+xml\" -d '<element-schedule xmlns=\"http://www.vizrt.com/element-schedule\"><element><link xmlns=\"http://www.w3.org/2005/Atom\" href=\"http://127.0.0.1:8580/element_collection/storage/playlists/%7B98220FF7-B4A5-42CE-B5B6-82FA8D72F74E%7D/elements/ref\" rel=\"self\"/></element></element-schedule>')",
+      "Bash(curl -s -X POST \"http://127.0.0.1:8580/profiles/default/read\" -H \"Content-Type: application/atom+xml;type=entry\" -d '<entry xmlns=\"http://www.w3.org/2005/Atom\"><link href=\"http://127.0.0.1:8580/element_collection/storage/playlists/%7B98220FF7-B4A5-42CE-B5B6-82FA8D72F74E%7D/elements/ref\" rel=\"self\" type=\"application/atom+xml;type=entry\"/></entry>')",
+      "Bash(curl -s \"http://127.0.0.1:8580/\")",
+      "Bash(curl -s \"http://127.0.0.1:8580/service_document\")",
+      "Bash(curl -s \"http://127.0.0.1:8580/element_schedules/\")",
+      "Bash(curl -s \"http://127.0.0.1:8580/actions/\")",
+      "Bash(curl -s -i -X POST \"http://127.0.0.1:8580/element_schedules/\" -H \"Content-Type: application/vnd.vizrt.element-schedule+xml\" -d '<?xml version=\"1.0\"?><element-schedule xmlns=\"http://www.vizrt.com/element_schedule\"></element-schedule>')",
+      "Bash(curl -s -X POST \"http://127.0.0.1:8580/profiles/default/read\" -H \"Content-Type: application/vnd.vizrt.element-schedule+xml\" -d '<?xml version=\"1.0\"?><es:element-schedule xmlns:es=\"http://www.vizrt.com/element_schedule\"><es:element><atom:link xmlns:atom=\"http://www.w3.org/2005/Atom\" href=\"http://127.0.0.1:8580/element_collection/storage/playlists/%7B98220FF7-B4A5-42CE-B5B6-82FA8D72F74E%7D/elements/ref\" rel=\"self\"/></es:element></es:element-schedule>')",
+      "Bash(curl -s \"http://127.0.0.1:8580/profiles/default/state_op\")",
+      "Bash(curl -s -i -X OPTIONS \"http://127.0.0.1:8580/profiles/default/state_op\")",
+      "Bash(curl -s \"http://127.0.0.1:8580/webapps/\")",
+      "Bash(curl -s \"http://127.0.0.1:8580/default-templates/\")",
+      "Bash(curl -s -H \"Accept: application/atom+xml\" http://localhost:8580/directory/playlists/)",
+      "Bash(curl -s -H \"Accept: application/atom+xml\" \"http://localhost:8580/element_collection/storage/playlists/%7B98220FF7-B4A5-42CE-B5B6-82FA8D72F74E%7D/\")",
+      "Bash(curl -s \"http://localhost:8580/element/storage/playlists/%7B98220FF7-B4A5-42CE-B5B6-82FA8D72F74E%7D/elements/SimpleSendText\")",
+      "Bash(curl -sv \"http://localhost:8580/element/storage/playlists/%7B98220FF7-B4A5-42CE-B5B6-82FA8D72F74E%7D/elements/SimpleSendText\")",
+      "Bash(curl -sv -H \"Accept: application/vnd.vizrt.payload+xml\" \"http://localhost:8580/element/storage/playlists/%7B98220FF7-B4A5-42CE-B5B6-82FA8D72F74E%7D/elements/SimpleSendText\")",
+      "Bash(curl -sv \"http://localhost:8580/element/storage/playlists/%7B98220FF7-B4A5-42CE-B5B6-82FA8D72F74E%7D/elements/\")",
+      "Bash(curl -sv -X PUT -H 'Content-Type: application/xml' -d '<?xml version=\"1.0\" encoding=\"UTF-8\"?><element name=\"TestHubScene\"><entry name=\"viz\"><entry name=\"location\">$object</entry><entry name=\"front\"><entry name=\"scene\">&lt;0FA31D4C-388D-EF43-B389355F7258D845&gt;</entry></entry><entry name=\"load\">scene</entry><entry name=\"viz_layer\">MIDDLE</entry></entry></element>' http://localhost:8580/element/storage/playlists/%7B98220FF7-B4A5-42CE-B5B6-82FA8D72F74E%7D/elements/TestHubScene)",
+      "Bash(curl -sv -X POST -H 'Content-Type: application/atom+xml;type=entry' -d '<?xml version=\"1.0\" encoding=\"UTF-8\"?><entry xmlns=\"http://www.w3.org/2005/Atom\"><title>TestHubScene</title><content type=\"application/xml\"><element name=\"TestHubScene\"><entry name=\"viz\"><entry name=\"location\">$object</entry><entry name=\"front\"><entry name=\"scene\">&lt;0FA31D4C-388D-EF43-B389355F7258D845&gt;</entry></entry><entry name=\"load\">scene</entry><entry name=\"viz_layer\">MIDDLE</entry></entry></element></content></entry>' http://localhost:8580/element_collection/storage/playlists/%7B98220FF7-B4A5-42CE-B5B6-82FA8D72F74E%7D/)",
+      "Bash(curl -s -X POST -H 'Content-Type: application/atom+xml;type=entry' -d '<?xml version=\"1.0\" encoding=\"UTF-8\"?><entry xmlns=\"http://www.w3.org/2005/Atom\"><title>TestHubScene</title><content type=\"application/xml\"><element name=\"TestHubScene\"><entry name=\"viz\"><entry name=\"location\">$object</entry><entry name=\"front\"><entry name=\"scene\">&lt;0FA31D4C-388D-EF43-B389355F7258D845&gt;</entry></entry><entry name=\"load\">scene</entry><entry name=\"viz_layer\">MIDDLE</entry></entry></element></content></entry>' http://localhost:8580/element_collection/storage/playlists/%7B98220FF7-B4A5-42CE-B5B6-82FA8D72F74E%7D/)"
+    ]
+  }
+}

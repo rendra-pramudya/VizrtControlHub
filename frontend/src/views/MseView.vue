@@ -1,0 +1,302 @@
+<template>
+  <div class="mse-root">
+
+    <!-- Toolbar -->
+    <div class="toolbar">
+      <div class="toolbar-left">
+        <select class="playlist-select" v-model="selectedPlaylistId" @change="onPlaylistChange">
+          <option value="">— Select Playlist —</option>
+          <option v-for="pl in store.playlists" :key="pl.storageId" :value="pl.storageId">{{ pl.name }}</option>
+        </select>
+      </div>
+
+      <div class="toolbar-actions">
+        <button class="tb-btn" :disabled="triggering" @click="onTrigger('stop')" title="Stop">
+          <span class="tb-icon">■</span> Stop
+        </button>
+        <button class="tb-btn" :disabled="triggering" @click="onTrigger('cleanup')" title="Pause">
+          <span class="tb-icon">⏸</span> Pause
+        </button>
+        <div class="tb-divider"></div>
+        <button class="tb-btn tb-cue" :disabled="!hasSelected || triggering" @click="onTrigger('cue')" title="Cue">
+          <span class="tb-icon">⬛</span> Cue
+        </button>
+        <button class="tb-btn tb-take" :disabled="!hasSelected || triggering" @click="onTrigger('take')" title="Take">
+          <span class="tb-icon">▶</span> Take
+        </button>
+        <button class="tb-btn" :disabled="triggering" @click="onTrigger('continue')" title="Continue">
+          <span class="tb-icon">⏩</span> Continue
+        </button>
+        <button class="tb-btn" :disabled="triggering" @click="onTrigger('out')" title="Take out">
+          <span class="tb-icon">⏹</span> Take out
+        </button>
+        <div class="tb-divider"></div>
+        <button class="tb-btn" :disabled="triggering" @click="onTrigger('initialize')" title="Init playlist">
+          <span class="tb-icon">⚙</span> Init playlist
+        </button>
+        <button class="tb-btn" :disabled="!hasSelected || triggering" @click="onTrigger('prepare')" title="Init selected">
+          <span class="tb-icon">⚙</span> Init selected
+        </button>
+        <button class="tb-btn" :disabled="triggering" @click="onTrigger('cleanup')" title="CleanUp">
+          <span class="tb-icon">🗑</span> CleanUp
+        </button>
+      </div>
+
+      <div class="toolbar-right">
+        <select class="profile-select" v-model="store.selectedProfile">
+          <option v-for="p in store.profiles" :key="p.id" :value="p.id">&lt;{{ p.id }}&gt;</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Table -->
+    <div class="table-wrap">
+      <table class="playlist-table">
+        <thead>
+          <tr>
+            <th class="col-ind"></th>
+            <th class="col-desc">Description</th>
+            <th class="col-tpl">Template Id</th>
+            <th class="col-layer">Layer</th>
+            <th class="col-ch">Channel</th>
+            <th class="col-concept">Concept</th>
+            <th class="col-variant">Variant</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-if="loadingElements">
+            <td colspan="7" class="td-msg">Loading...</td>
+          </tr>
+          <tr v-else-if="!selectedPlaylistId">
+            <td colspan="7" class="td-msg">Select a playlist above.</td>
+          </tr>
+          <tr v-else-if="!store.elements.length">
+            <td colspan="7" class="td-msg">No elements in this playlist.</td>
+          </tr>
+          <tr
+            v-for="el in store.elements"
+            :key="el.id"
+            :class="{
+              'row-selected': selectedElement?.id === el.id,
+              'row-active': activatedElement?.id === el.id,
+            }"
+            @click="selectedElement = el"
+            @dblclick="onTrigger('take')"
+          >
+            <td class="col-ind">
+              <span v-if="activatedElement?.id === el.id" class="arrow-on">▶</span>
+            </td>
+            <td class="col-desc">
+              <span class="el-icon">🖼</span> {{ el.name }}
+            </td>
+            <td class="col-tpl">{{ el.templateId ?? '—' }}</td>
+            <td class="col-layer">—</td>
+            <td class="col-ch">[PROGRAM]</td>
+            <td class="col-concept">{{ el.concept ? `[${el.concept}]` : '—' }}</td>
+            <td class="col-variant">{{ el.variant ? `[${el.variant}]` : '—' }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Feedback bar -->
+    <div v-if="triggerMsg" class="feedback-bar" :class="triggerMsgOk ? 'ok' : 'err'">
+      {{ triggerMsg }}
+    </div>
+
+    <!-- Status bar -->
+    <div class="status-bar">
+      <span class="status-section">
+        <span class="dot live"></span>
+        <span v-if="!channelLayers.length" class="no-state">No channel state</span>
+        <span v-for="(state, layer) in channelLayers" :key="layer" class="layer-chip" :class="stateClass(state)">
+          {{ layer }}: {{ state }}
+        </span>
+      </span>
+      <span class="status-divider" v-if="channelLayers.length && store.liveEvents.length">|</span>
+      <span class="events-section">
+        <span v-for="(ev, i) in store.liveEvents.slice(0, 5)" :key="i" class="ev-chip">
+          {{ ev.timestamp?.slice(11,19) }} <b>{{ ev.action }}</b>
+        </span>
+      </span>
+    </div>
+
+  </div>
+</template>
+
+<script setup>
+import { ref, computed, onMounted, onActivated, onDeactivated } from "vue";
+import { storeToRefs } from "pinia";
+import { useMseStore } from "../stores/useMseStore";
+
+const store = useMseStore();
+const { selectedProfile } = storeToRefs(store);
+
+const selectedPlaylistId = ref("");
+const selectedElement = ref(null);
+const activatedElement = ref(null);
+const loadingElements = ref(false);
+const triggering = ref(false);
+const triggerMsg = ref("");
+const triggerMsgOk = ref(true);
+
+const hasSelected = computed(() => !!selectedElement.value);
+
+const channelLayers = computed(() => {
+  const ch = store.channelState[0];
+  return ch?.layers ?? {};
+});
+
+function stateClass(state) {
+  if (state === "IN") return "s-in";
+  if (state === "O" || state === "OUT") return "s-out";
+  if (state === "LOWER") return "s-lower";
+  return "s-other";
+}
+
+onMounted(async () => {
+  await Promise.all([
+    store.fetchPlaylists().catch(() => {}),
+    store.fetchProfiles().catch(() => {}),
+  ]);
+  // Restore selection if store already has one (e.g. returning to tab)
+  if (store.selectedPlaylist && !selectedPlaylistId.value) {
+    selectedPlaylistId.value = store.selectedPlaylist.storageId;
+  }
+  store.connectLive();
+  store.startStatePolling(3000);
+});
+
+onActivated(() => {
+  store.connectLive();
+  store.startStatePolling(3000);
+});
+
+onDeactivated(() => store.disconnectLive());
+
+async function onPlaylistChange() {
+  selectedElement.value = null;
+  activatedElement.value = null;
+  if (!selectedPlaylistId.value) { return; }
+  loadingElements.value = true;
+  await store.selectPlaylist(selectedPlaylistId.value).catch(() => {});
+  loadingElements.value = false;
+}
+
+async function onTrigger(action) {
+  triggering.value = true;
+  triggerMsg.value = "";
+  try {
+    const elementEditUrl = selectedElement.value?.editUrl ?? null;
+    const result = await store.triggerAction(action, elementEditUrl);
+    triggerMsg.value = result.message || `${action} OK`;
+    triggerMsgOk.value = result.success !== false;
+    if (action === "take" && selectedElement.value) {
+      activatedElement.value = selectedElement.value;
+    }
+    await store.fetchProfileState();
+  } catch (e) {
+    triggerMsg.value = e.message;
+    triggerMsgOk.value = false;
+  } finally {
+    triggering.value = false;
+    setTimeout(() => (triggerMsg.value = ""), 3000);
+  }
+}
+</script>
+
+<style scoped>
+.mse-root { display: flex; flex-direction: column; height: calc(100vh - 60px); background: #0d0d1a; }
+
+/* Toolbar */
+.toolbar {
+  display: flex; align-items: center; gap: 0.5rem;
+  background: #1a1a2e; border-bottom: 1px solid #2a2a3e;
+  padding: 0.35rem 0.75rem; flex-shrink: 0;
+}
+.toolbar-left { flex-shrink: 0; }
+.toolbar-actions { display: flex; align-items: center; gap: 2px; flex: 1; flex-wrap: nowrap; overflow-x: auto; }
+.toolbar-right { flex-shrink: 0; margin-left: auto; }
+
+.playlist-select, .profile-select {
+  background: #111122; color: #ccc; border: 1px solid #333;
+  padding: 0.25rem 0.5rem; border-radius: 3px; font-size: 0.82rem;
+}
+.playlist-select { min-width: 180px; }
+.profile-select { min-width: 100px; }
+
+.tb-btn {
+  display: flex; align-items: center; gap: 0.25rem;
+  background: #222235; color: #ccc; border: 1px solid #333;
+  padding: 0.25rem 0.55rem; border-radius: 3px;
+  font-size: 0.75rem; cursor: pointer; white-space: nowrap;
+  transition: background 0.1s;
+}
+.tb-btn:hover:not(:disabled) { background: #2c2c45; border-color: #555; }
+.tb-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.tb-btn.tb-take { background: #1e3a1e; border-color: #2e6a2e; color: #7eca7e; font-weight: bold; }
+.tb-btn.tb-take:hover:not(:disabled) { background: #245924; }
+.tb-btn.tb-cue { background: #1e2e4a; border-color: #2a4a8a; }
+.tb-icon { font-size: 0.7rem; }
+.tb-divider { width: 1px; height: 22px; background: #333; margin: 0 3px; flex-shrink: 0; }
+
+/* Feedback */
+.feedback-bar { padding: 0.2rem 0.75rem; font-size: 0.8rem; flex-shrink: 0; }
+.feedback-bar.ok { background: #0e2b0e; color: #4caf50; border-bottom: 1px solid #1a4a1a; }
+.feedback-bar.err { background: #2b0e0e; color: #f44336; border-bottom: 1px solid #4a1a1a; }
+
+/* Table */
+.table-wrap { flex: 1; overflow-y: auto; }
+.playlist-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+.playlist-table thead { position: sticky; top: 0; z-index: 1; }
+.playlist-table th {
+  background: #1a1a2e; color: #888; font-weight: normal;
+  font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.04em;
+  padding: 0.35rem 0.6rem; text-align: left;
+  border-bottom: 1px solid #2a2a3e; border-right: 1px solid #1e1e30;
+  white-space: nowrap;
+}
+.playlist-table td {
+  padding: 0.3rem 0.6rem; border-bottom: 1px solid #161626;
+  border-right: 1px solid #161626; color: #ccc; vertical-align: middle;
+}
+.playlist-table tr:hover td { background: #181828; }
+.playlist-table tr.row-selected td { background: #1e3055; }
+.playlist-table tr.row-active td { background: #1a2e1a; }
+.playlist-table tr.row-selected.row-active td { background: #1e3055; }
+
+.col-ind { width: 24px; text-align: center; padding: 0 0.25rem; }
+.col-tpl { width: 110px; color: #7ec8e3; }
+.col-layer { width: 110px; }
+.col-ch { width: 100px; }
+.col-concept { width: 120px; }
+.col-variant { width: 100px; }
+
+.arrow-on { color: #4caf50; font-size: 0.7rem; }
+.el-icon { font-size: 0.7rem; margin-right: 0.25rem; opacity: 0.5; }
+.td-msg { text-align: center; color: #555; font-style: italic; padding: 1rem; }
+
+/* Status bar */
+.status-bar {
+  display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;
+  background: #0e0e1a; border-top: 1px solid #1e1e30;
+  padding: 0.25rem 0.75rem; flex-shrink: 0; min-height: 28px;
+}
+.dot.live {
+  width: 6px; height: 6px; border-radius: 50%; background: #4caf50;
+  display: inline-block; flex-shrink: 0;
+  animation: pulse 1.5s infinite;
+}
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+.status-section { display: flex; align-items: center; gap: 0.4rem; }
+.layer-chip { font-size: 0.72rem; font-family: monospace; padding: 0.1rem 0.35rem; border-radius: 3px; background: #1a1a2e; }
+.s-in    { color: #4caf50; background: #0d2a0d; }
+.s-out   { color: #555; }
+.s-lower { color: #ff9800; background: #2a1a00; }
+.s-other { color: #7ec8e3; }
+.no-state { font-size: 0.72rem; color: #444; }
+.status-divider { color: #333; font-size: 0.8rem; }
+.events-section { display: flex; gap: 0.75rem; overflow: hidden; }
+.ev-chip { font-size: 0.72rem; font-family: monospace; color: #555; white-space: nowrap; }
+.ev-chip b { color: #7ec8e3; }
+</style>
