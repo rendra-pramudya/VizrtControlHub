@@ -1,0 +1,37 @@
+<html>
+<head><title>Json</title>
+<link rel="stylesheet" href="Script.css" type="text/css" />
+</head>
+<body>
+<a href="ScriptRef.html">Script Reference</a>
+<h2>Json</h2>
+<h3>Description</h3>
+A object which holds json data.
+<h3>Properties</h3>
+<table border=1 cellpadding=3 cellspacing=0>
+<tr><td><b>Size</b> As <a href="DataTypeInteger.html">Integer</a> <i>[read-only]</i></td><td>Returns the size of the current object</td></tr>
+</table>
+<h3>Member Procedures</h3>
+<table border=1 cellpadding=3 cellspacing=0>
+<tr><td>Function <b>At</b>(index As <a href="DataTypeInteger.html">Integer</a>) As <a href="DataTypeJson.html">Json</a></td><td>Get Array entry at given index</td></tr>
+<tr><td>Function <b>Dump</b>() As <a href="DataTypeString.html">String</a></td><td>Serialize json object to string</td></tr>
+<tr><td>Function <b>GetBoolean</b>(key As <a href="DataTypeString.html">String</a>) As <a href="DataTypeBoolean.html">Boolean</a></td><td>Get boolean value for key</td></tr>
+<tr><td>Function <b>GetDouble</b>(key As <a href="DataTypeString.html">String</a>) As <a href="DataTypeDouble.html">Double</a></td><td>Get double value for key</td></tr>
+<tr><td>Function <b>GetInteger</b>(key As <a href="DataTypeString.html">String</a>) As <a href="DataTypeInteger.html">Integer</a></td><td>Get integer value for key</td></tr>
+<tr><td>Function <b>GetString</b>(key As <a href="DataTypeString.html">String</a>) As <a href="DataTypeString.html">String</a></td><td>Get string value for key</td></tr>
+<tr><td>Function <b>IsArray</b>() As <a href="DataTypeBoolean.html">Boolean</a></td><td>Check if current object is a array</td></tr>
+<tr><td>Function <b>IsBoolean</b>() As <a href="DataTypeBoolean.html">Boolean</a></td><td>Check if current object is a boolean</td></tr>
+<tr><td>Function <b>IsDouble</b>() As <a href="DataTypeBoolean.html">Boolean</a></td><td>Check if current object is a double</td></tr>
+<tr><td>Function <b>IsInteger</b>() As <a href="DataTypeBoolean.html">Boolean</a></td><td>Check if current object is a integer</td></tr>
+<tr><td>Function <b>IsObject</b>() As <a href="DataTypeBoolean.html">Boolean</a></td><td>Check if current object is a object</td></tr>
+<tr><td>Function <b>IsString</b>() As <a href="DataTypeBoolean.html">Boolean</a></td><td>Check if current object is a string</td></tr>
+<tr><td>Function <b>Load</b>(jsonData As <a href="DataTypeString.html">String</a>) As <a href="DataTypeBoolean.html">Boolean</a></td><td>Load a json string</td></tr>
+<tr><td>Function <b>LoadFile</b>(filename As <a href="DataTypeString.html">String</a>) As <a href="DataTypeBoolean.html">Boolean</a></td><td>Load a json file</td></tr>
+<tr><td>Function <b>ToBoolean</b>() As <a href="DataTypeString.html">String</a></td><td>Get bool value of current object</td></tr>
+<tr><td>Function <b>ToDouble</b>() As <a href="DataTypeDouble.html">Double</a></td><td>Get double value of current object</td></tr>
+<tr><td>Function <b>ToInteger</b>() As <a href="DataTypeInteger.html">Integer</a></td><td>Get integer value of current object</td></tr>
+<tr><td>Function <b>ToString</b>() As <a href="DataTypeString.html">String</a></td><td>Get string value of current object</td></tr>
+<tr><td>Function <b>WriteFile</b>(filename As <a href="DataTypeString.html">String</a>) As <a href="DataTypeBoolean.html">Boolean</a></td><td>Serialize json object to a file</td></tr>
+</table>
+</body>
+</html>

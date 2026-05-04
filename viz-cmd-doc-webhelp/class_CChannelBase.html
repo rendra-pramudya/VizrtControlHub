@@ -1,0 +1,564 @@
+<html>
+
+<head>
+    <link rel='stylesheet' type='text/css' href='resources/css/docutils_basic.css'/>
+    <link rel='stylesheet' type='text/css' href='resources/css/vizDocGenPy.css'/>
+    <title>CChannelBase</title>
+</head>
+
+<body>
+    <div class='navbar'>
+    <table class='empty'><tr>
+        <th><img src='resources/img/vizrt-logo.svg' height='50px'/></th>
+        <td><b>Viz 5.3.1.60000 - Commands</b><br>
+            <a href='class_CMain.html#Properties'>Top locations</a>
+            <span style="display:inline-block; width: 10px;"></span>
+            <a href='index.html'>Class index</a>
+        </td></tr>
+    </table>
+</div>
+    <div class='content'>
+        <div class='sidebar'>
+            <a href='class_CChannelBase.html#Commands'>Commands</a><br>
+            <a href='class_CChannelBase.html#Properties'>Properties</a>
+        </div>
+        <h1>CChannelBase</h1>
+                    <p>Inherits: <a href='class_CControlBase.html'>CControlBase</a></p>
+                                            <p>Derived classes:
+                                <a href='class_CChannelAction.html'>CChannelAction</a>
+                            ,
+                                                    <a href='class_CChannelColorRGB.html'>CChannelColorRGB</a>
+                            ,
+                                                    <a href='class_CChannelColorRGBA.html'>CChannelColorRGBA</a>
+                            ,
+                                                    <a href='class_CChannelEvent.html'>CChannelEvent</a>
+                            ,
+                                                    <a href='class_CChannelInt.html'>CChannelInt</a>
+                            ,
+                                                    <a href='class_CChannelPos.html'>CChannelPos</a>
+                            ,
+                                                    <a href='class_CChannelRot.html'>CChannelRot</a>
+                            ,
+                                                    <a href='class_CVChannelAudioClip.html'>CVChannelAudioClip</a>
+                            ,
+                                                    <a href='class_CVChannelTarga3200Clip.html'>CVChannelTarga3200Clip</a>
+                            </p>
+                            
+                            <div class='anchor'>
+                <a name='Commands'> </a>
+                <h2>Commands</h2>
+            </div>
+            <table>
+                <tr>
+                    <th>Command</th>
+                    <th>Arguments</th>
+                    <th>Info</th>
+                </tr>
+                        <tr>
+                    <th>ADD</th>
+                    <td>
+                                                                        <i>Timecode</i>
+                                                                    &nbsp;Timecode
+                                                                                            
+                                                                </td>
+                    <td>
+                                            adds a new keyframe at the specified time
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>ADD_KEYFRAME</th>
+                    <td>
+                                                                        <i>String</i>
+                                                                    &nbsp;String = 
+                                                                                            
+                                                                </td>
+                    <td>
+                                            adds a new keyframe at the current time
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>ADD_KEYFRAME_AT_TIME</th>
+                    <td>
+                                                                        <i>String</i>
+                                                                    &nbsp;String = 
+                                                                                            <br>
+                                                    <i>Timecode</i>
+                                                                    &nbsp;Timecode
+                                                                                            
+                                                                </td>
+                    <td>
+                                            adds a new keyframe at the specified time
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>ADD_VALUE</th>
+                    <td>
+                                                                        <i>ArgList</i>
+                                                                    &nbsp;ArgList = NULL
+                                                                                            <br>
+                                                    <i>Timecode</i>
+                                                                    &nbsp;Timecode
+                                                                                            
+                                                                </td>
+                    <td>
+                                            adds a new keyframe at the specified time with the passed value
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>DELETE</th>
+                    <td>
+                                            –
+                                        </td>
+                    <td>
+                                            deletes all keyframes
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>GET_SPLINE_INFO</th>
+                    <td>
+                                            –
+                                        </td>
+                    <td>
+                                            –
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>NEXT</th>
+                    <td>
+                                                                        <i>PObject</i>
+                                                                    &nbsp;PObject
+                                                                                            
+                                                                </td>
+                    <td>
+                                            returns id of next keyframe
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>PREVIOUS</th>
+                    <td>
+                                                                        <i>PObject</i>
+                                                                    &nbsp;PObject
+                                                                                            
+                                                                </td>
+                    <td>
+                                            returns id of previous keyframe
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>SUB_CHANNELS_POSSIBLE</th>
+                    <td>
+                                            –
+                                        </td>
+                    <td>
+                                            Returns 1 if sub channels can be created
+                                        </td>
+                </tr>
+                    </table>
+                        <div class='anchor'>
+            <a name='Properties'> </a>
+            <h2>Properties</h2>
+        </div>
+        <table>
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    DATA
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_CChannelBase_DATA.html'>GET</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    <a href='./class_CDirectorTree.html'>DIRECTOR</a>
+                                                            </th>
+                            <td>
+                                                                                    </td>
+                            <td>
+                                                            returns the director this channel belongs to
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    INTERPOLATION_MODE
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_CChannelBase_INTERPOLATION_MODE.html'>SET</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                                                                                    
+                    
+                        <tr>
+                            <th>
+                                                                    KEY*#...
+                                                            </th>
+                            <td>
+                                                                                    </td>
+                            <td>
+                                                            get keyframe by id
+                                                        </td>
+                        </tr>
+
+                    
+                                                            
+                    
+                        <tr>
+                            <th>
+                                                                    KEY*$...
+                                                            </th>
+                            <td>
+                                                                                    </td>
+                            <td>
+                                                            get keyframe by name
+                                                        </td>
+                        </tr>
+
+                    
+                                                            
+                    
+                        <tr>
+                            <th>
+                                                                    KEY*...
+                                                            </th>
+                            <td>
+                                                                                    </td>
+                            <td>
+                                                            get keyframe by name
+                                                        </td>
+                        </tr>
+
+                    
+                                                    
+                    
+                            
+                
+                    
+                                                                                    
+                    
+                        <tr>
+                            <th>
+                                                                    KEYN*%1...
+                                                            </th>
+                            <td>
+                                                                                    </td>
+                            <td>
+                                                            get keyframe by index
+                                                        </td>
+                        </tr>
+
+                    
+                                                    
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    LOOP
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_CChannelBase_LOOP.html'>GET</a><br>
+                             
+                                <a href='./prop_CChannelBase_LOOP.html'>SET</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    LOOP_COUNTER
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_CChannelBase_LOOP_COUNTER.html'>GET</a><br>
+                             
+                                <a href='./prop_CChannelBase_LOOP_COUNTER.html'>SET</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    LOOP_TYPE
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_CChannelBase_LOOP_TYPE.html'>GET</a><br>
+                             
+                                <a href='./prop_CChannelBase_LOOP_TYPE.html'>SET</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    NAME
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_CChannelBase_NAME.html'>GET</a><br>
+                             
+                                <a href='./prop_CChannelBase_NAME.html'>SET</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    POST_LOOP
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_CChannelBase_POST_LOOP.html'>GET</a><br>
+                             
+                                <a href='./prop_CChannelBase_POST_LOOP.html'>SET</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    POST_LOOP_COUNTER
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_CChannelBase_POST_LOOP_COUNTER.html'>GET</a><br>
+                             
+                                <a href='./prop_CChannelBase_POST_LOOP_COUNTER.html'>SET</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    POST_LOOP_INFINITE
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_CChannelBase_POST_LOOP_INFINITE.html'>GET</a><br>
+                             
+                                <a href='./prop_CChannelBase_POST_LOOP_INFINITE.html'>SET</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    POST_SWING
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_CChannelBase_POST_SWING.html'>GET</a><br>
+                             
+                                <a href='./prop_CChannelBase_POST_SWING.html'>SET</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    PRE_LOOP
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_CChannelBase_PRE_LOOP.html'>GET</a><br>
+                             
+                                <a href='./prop_CChannelBase_PRE_LOOP.html'>SET</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    PRE_LOOP_COUNTER
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_CChannelBase_PRE_LOOP_COUNTER.html'>GET</a><br>
+                             
+                                <a href='./prop_CChannelBase_PRE_LOOP_COUNTER.html'>SET</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    PRE_LOOP_INFINITE
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_CChannelBase_PRE_LOOP_INFINITE.html'>GET</a><br>
+                             
+                                <a href='./prop_CChannelBase_PRE_LOOP_INFINITE.html'>SET</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    PRE_SWING
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_CChannelBase_PRE_SWING.html'>GET</a><br>
+                             
+                                <a href='./prop_CChannelBase_PRE_SWING.html'>SET</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    <a href='./class_CStage.html'>STAGE</a>
+                                                            </th>
+                            <td>
+                                                                                    </td>
+                            <td>
+                                                            returns the stage
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    SUB_CHANNELS
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_CChannelBase_SUB_CHANNELS.html'>CREATE</a><br>
+                             
+                                <a href='./prop_CChannelBase_SUB_CHANNELS.html'>DELETE</a><br>
+                             
+                                <a href='./prop_CChannelBase_SUB_CHANNELS.html'>GET</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    SWING
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_CChannelBase_SWING.html'>GET</a><br>
+                             
+                                <a href='./prop_CChannelBase_SWING.html'>SET</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                    </table>
+    </div>
+</body>
+
+</html>

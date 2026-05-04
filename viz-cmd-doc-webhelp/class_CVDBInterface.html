@@ -1,0 +1,450 @@
+<html>
+
+<head>
+    <link rel='stylesheet' type='text/css' href='resources/css/docutils_basic.css'/>
+    <link rel='stylesheet' type='text/css' href='resources/css/vizDocGenPy.css'/>
+    <title>CVDBInterface</title>
+</head>
+
+<body>
+    <div class='navbar'>
+    <table class='empty'><tr>
+        <th><img src='resources/img/vizrt-logo.svg' height='50px'/></th>
+        <td><b>Viz 5.3.1.60000 - Commands</b><br>
+            <a href='class_CMain.html#Properties'>Top locations</a>
+            <span style="display:inline-block; width: 10px;"></span>
+            <a href='index.html'>Class index</a>
+        </td></tr>
+    </table>
+</div>
+    <div class='content'>
+        <div class='sidebar'>
+            <a href='class_CVDBInterface.html#Commands'>Commands</a><br>
+            <a href='class_CVDBInterface.html#Properties'>Properties</a>
+        </div>
+        <h1>CVDBInterface</h1>
+                    <p>Inherits: <a href='class_CEVObject.html'>CEVObject</a></p>
+                        
+                            <div class='anchor'>
+                <a name='Commands'> </a>
+                <h2>Commands</h2>
+            </div>
+            <table>
+                <tr>
+                    <th>Command</th>
+                    <th>Arguments</th>
+                    <th>Info</th>
+                </tr>
+                        <tr>
+                    <th>CONNECT</th>
+                    <td>
+                                                                        <i>String</i>
+                                                                    &nbsp;nameserver = NULL
+                                                                                            <br>
+                                                    <i>UInt</i>
+                                                                    &nbsp;port = 0
+                                                                                            <br>
+                                                    <i>String</i>
+                                                                    &nbsp;server = NULL
+                                                                                            <br>
+                                                    <i>String</i>
+                                                                    &nbsp;user = Guest
+                                                                                            
+                                                                </td>
+                    <td>
+                                            connect to a viz-database-server
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>DIFF_FILES</th>
+                    <td>
+                                                                        <i>String</i>
+                                                                    &nbsp;uuid1
+                                                                                            <br>
+                                                    <i>String</i>
+                                                                    &nbsp;uuid2
+                                                                                            
+                                                                </td>
+                    <td>
+                                            diff two files
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>DISCONNECT</th>
+                    <td>
+                                            –
+                                        </td>
+                    <td>
+                                            disconnect from viz-database-server
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>GET_DATA_CHECKSUM</th>
+                    <td>
+                                                                        <i>String</i>
+                                                                    &nbsp;uuid
+                                                                                            
+                                                                </td>
+                    <td>
+                                            return checksum of Data fileunit
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>ISLOCKED</th>
+                    <td>
+                                                                        <i>String</i>
+                                                                    &nbsp;uuid
+                                                                                            
+                                                                </td>
+                    <td>
+                                            is a database-file locked
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>LOCK</th>
+                    <td>
+                                                                        <i>String</i>
+                                                                    &nbsp;uuid
+                                                                                            
+                                                                </td>
+                    <td>
+                                            lock a database-file
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>RECONNECT</th>
+                    <td>
+                                                                        <i>Enum</i>
+                                                                    &nbsp;Enum = TRY_CURRENT_FIRST
+                                                                <br>
+                                    &nbsp;&nbsp;TRY_CURRENT_FIRST (0)
+                                <br>
+                                    &nbsp;&nbsp;TRY_FAILOVER_FIRST (1)
+                                                            
+                                                                </td>
+                    <td>
+                                            reestablish the conntection to a viz-database
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>RESET_ACCESS_COUNTER</th>
+                    <td>
+                                            –
+                                        </td>
+                    <td>
+                                            Returns current session access counter and resets it
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>STATUS</th>
+                    <td>
+                                            –
+                                        </td>
+                    <td>
+                                            return current status
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>SYNC_CONNECTION</th>
+                    <td>
+                                                                        <i>String</i>
+                                                                    &nbsp;nameserver = NULL
+                                                                                            <br>
+                                                    <i>UInt</i>
+                                                                    &nbsp;port = 0
+                                                                                            <br>
+                                                    <i>String</i>
+                                                                    &nbsp;server = NULL
+                                                                                            
+                                                                </td>
+                    <td>
+                                            reestablish a connection to the specified server
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>UNLOCK</th>
+                    <td>
+                                                                        <i>String</i>
+                                                                    &nbsp;uuid
+                                                                                            
+                                                                </td>
+                    <td>
+                                            unlock a database-file
+                                        </td>
+                </tr>
+                    </table>
+                        <div class='anchor'>
+            <a name='Properties'> </a>
+            <h2>Properties</h2>
+        </div>
+        <table>
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    ACTIVE_SESSION
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_CVDBInterface_ACTIVE_SESSION.html'>GET</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    EXPIRATION_DATE
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_CVDBInterface_EXPIRATION_DATE.html'>SET_DAYS</a><br>
+                             
+                                <a href='./prop_CVDBInterface_EXPIRATION_DATE.html'>SET_MINUTES</a>
+                                                                                    </td>
+                            <td>
+                                                            Sets expiration date for a database object, the effective expiration date for the object deppends on the backend GH configuration
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    FOLDER_INFO
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_CVDBInterface_FOLDER_INFO.html'>GET</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    GLOBAL_TIMEOUT
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_CVDBInterface_GLOBAL_TIMEOUT.html'>GET</a><br>
+                             
+                                <a href='./prop_CVDBInterface_GLOBAL_TIMEOUT.html'>SET</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    GROUP
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_CVDBInterface_GROUP.html'>GET</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    NAME
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_CVDBInterface_NAME.html'>GET</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    OPENSERVER_TIMEOUT
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_CVDBInterface_OPENSERVER_TIMEOUT.html'>GET</a><br>
+                             
+                                <a href='./prop_CVDBInterface_OPENSERVER_TIMEOUT.html'>SET</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    PATH
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_CVDBInterface_PATH.html'>GET</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    RESTAGENT
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_CVDBInterface_RESTAGENT.html'>GET</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    ROOT
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_CVDBInterface_ROOT.html'>GET</a><br>
+                             
+                                <a href='./prop_CVDBInterface_ROOT.html'>SET</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    TRANSACTION_COUNTER
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_CVDBInterface_TRANSACTION_COUNTER.html'>GET</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    TREE_NODE
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_CVDBInterface_TREE_NODE.html'>GET</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    TYPE
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_CVDBInterface_TYPE.html'>GET</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    USER
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_CVDBInterface_USER.html'>GET</a><br>
+                             
+                                <a href='./prop_CVDBInterface_USER.html'>PWD</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    UUID
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_CVDBInterface_UUID.html'>GET</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                    </table>
+    </div>
+</body>
+
+</html>

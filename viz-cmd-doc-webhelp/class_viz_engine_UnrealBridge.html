@@ -1,0 +1,928 @@
+<html>
+
+<head>
+    <link rel='stylesheet' type='text/css' href='resources/css/docutils_basic.css'/>
+    <link rel='stylesheet' type='text/css' href='resources/css/vizDocGenPy.css'/>
+    <title>viz::engine::UnrealBridge</title>
+</head>
+
+<body>
+    <div class='navbar'>
+    <table class='empty'><tr>
+        <th><img src='resources/img/vizrt-logo.svg' height='50px'/></th>
+        <td><b>Viz 5.3.1.60000 - Commands</b><br>
+            <a href='class_CMain.html#Properties'>Top locations</a>
+            <span style="display:inline-block; width: 10px;"></span>
+            <a href='index.html'>Class index</a>
+        </td></tr>
+    </table>
+</div>
+    <div class='content'>
+        <div class='sidebar'>
+            <a href='class_viz_engine_UnrealBridge.html#Commands'>Commands</a><br>
+            <a href='class_viz_engine_UnrealBridge.html#Properties'>Properties</a>
+        </div>
+        <h1>viz::engine::UnrealBridge</h1>
+                    <p>Inherits: <a href='class_OBJECTBASE.html'>OBJECTBASE</a></p>
+                        
+                            <div class='anchor'>
+                <a name='Commands'> </a>
+                <h2>Commands</h2>
+            </div>
+            <table>
+                <tr>
+                    <th>Command</th>
+                    <th>Arguments</th>
+                    <th>Info</th>
+                </tr>
+                        <tr>
+                    <th>ANIMATION</th>
+                    <td>
+                                                                        <i>String</i>
+                                                                    &nbsp;String
+                                                                                            <br>
+                                                    <i>String</i>
+                                                                    &nbsp;String
+                                                                                            
+                                                                </td>
+                    <td>
+                                            Animation Control via START, STOP and PAUSE commands.
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>ASSETDETAILS</th>
+                    <td>
+                                                                        <i>String</i>
+                                                                    &nbsp;String
+                                                                                            
+                                                                </td>
+                    <td>
+                                            –
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>ASSETS</th>
+                    <td>
+                                                                        <i>String</i>
+                                                                    &nbsp;String
+                                                                                            
+                                                                </td>
+                    <td>
+                                            –
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>COMMAND</th>
+                    <td>
+                                                                        <i>String</i>
+                                                                    &nbsp;String
+                                                                                            
+                                                                </td>
+                    <td>
+                                            Send Unreal Engine commands via Viz Communication Channel
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>GETCLASS</th>
+                    <td>
+                                                                        <i>String</i>
+                                                                    &nbsp;String
+                                                                                            
+                                                                </td>
+                    <td>
+                                            –
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>GETCONTROLANIMATIONS</th>
+                    <td>
+                                                                        <i>String</i>
+                                                                    &nbsp;String
+                                                                                            
+                                                                </td>
+                    <td>
+                                            –
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>GETCONTROLIMAGES</th>
+                    <td>
+                                                                        <i>String</i>
+                                                                    &nbsp;String
+                                                                                            
+                                                                </td>
+                    <td>
+                                            –
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>GETCONTROLMATERIALS</th>
+                    <td>
+                                                                        <i>String</i>
+                                                                    &nbsp;String
+                                                                                            
+                                                                </td>
+                    <td>
+                                            –
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>GETCONTROLPARAMETERS</th>
+                    <td>
+                                                                        <i>String</i>
+                                                                    &nbsp;String
+                                                                                            
+                                                                </td>
+                    <td>
+                                            –
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>GETCONTROLTEXTS</th>
+                    <td>
+                                                                        <i>String</i>
+                                                                    &nbsp;String
+                                                                                            
+                                                                </td>
+                    <td>
+                                            –
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>GETTRANSFORM</th>
+                    <td>
+                                                                        <i>String</i>
+                                                                    &nbsp;String
+                                                                                            
+                                                                </td>
+                    <td>
+                                            –
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>GET_CLASS</th>
+                    <td>
+                                                                        <i>String</i>
+                                                                    &nbsp;object_name
+                                                                                            
+                                                                </td>
+                    <td>
+                                            Returns the class of the object.
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>GET_CONTROL_ANIMATION</th>
+                    <td>
+                                                                        <i>String</i>
+                                                                    &nbsp;String
+                                                                                            
+                                                                </td>
+                    <td>
+                                            Shows the details of the ControlAnimation on Unreal specified by the given name.
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>GET_CONTROL_IMAGE</th>
+                    <td>
+                                                                        <i>String</i>
+                                                                    &nbsp;String
+                                                                                            
+                                                                </td>
+                    <td>
+                                            Shows the details of the ControlImage on Unreal specified by the given name.
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>GET_CONTROL_MATERIAL</th>
+                    <td>
+                                                                        <i>String</i>
+                                                                    &nbsp;String
+                                                                                            
+                                                                </td>
+                    <td>
+                                            Shows the details of the ControlMaterial on Unreal specified by the given name.
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>GET_CONTROL_PARAMETERS</th>
+                    <td>
+                                                                        <i>String</i>
+                                                                    &nbsp;String
+                                                                                            
+                                                                </td>
+                    <td>
+                                            Shows the details of the ControlParameter on Unreal specified by the given name.
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>GET_CONTROL_TEXT</th>
+                    <td>
+                                                                        <i>String</i>
+                                                                    &nbsp;String
+                                                                                            
+                                                                </td>
+                    <td>
+                                            Shows the details of the ControlText on Unreal specified by the given name.
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>GET_DETAILS</th>
+                    <td>
+                                                                        <i>String</i>
+                                                                    &nbsp;asset_name
+                                                                                            
+                                                                </td>
+                    <td>
+                                            Returns the details of the chosen asset.
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>GET_PRINT_OFFSET</th>
+                    <td>
+                                            –
+                                        </td>
+                    <td>
+                                            Gets print to screen offset
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>GET_SYNC_CONNECTION_STRING</th>
+                    <td>
+                                            –
+                                        </td>
+                    <td>
+                                            Returns the GH connection string to use for GH Sync.
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>GET_TRANSFORM</th>
+                    <td>
+                                                                        <i>String</i>
+                                                                    &nbsp;String
+                                                                                            <br>
+                                                    <i>String</i>
+                                                                    &nbsp;object_name, type
+                                                                                            
+                                                                </td>
+                    <td>
+                                            Returns the transform of the chosen object depending on the type (POSITION, ROTATION OR SCALE).
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>HIDE</th>
+                    <td>
+                                            –
+                                        </td>
+                    <td>
+                                            –
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>LISTCONTROLANIMATIONS</th>
+                    <td>
+                                                                        <i>String</i>
+                                                                    &nbsp;String
+                                                                                            
+                                                                </td>
+                    <td>
+                                            –
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>LISTCONTROLIMAGES</th>
+                    <td>
+                                                                        <i>String</i>
+                                                                    &nbsp;String
+                                                                                            
+                                                                </td>
+                    <td>
+                                            –
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>LISTCONTROLMATERIALS</th>
+                    <td>
+                                                                        <i>String</i>
+                                                                    &nbsp;String
+                                                                                            
+                                                                </td>
+                    <td>
+                                            –
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>LISTCONTROLPARAMETERS</th>
+                    <td>
+                                                                        <i>String</i>
+                                                                    &nbsp;String
+                                                                                            
+                                                                </td>
+                    <td>
+                                            –
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>LISTCONTROLTEXTS</th>
+                    <td>
+                                                                        <i>String</i>
+                                                                    &nbsp;String
+                                                                                            
+                                                                </td>
+                    <td>
+                                            –
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>LIST_ASSETS</th>
+                    <td>
+                                            –
+                                        </td>
+                    <td>
+                                            Returns the assets present on the Unreal project Content folder.
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>LIST_CONTROL_ANIMATIONS</th>
+                    <td>
+                                            –
+                                        </td>
+                    <td>
+                                            Returns the ControlAnimations present in the Unreal world.
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>LIST_CONTROL_IMAGES</th>
+                    <td>
+                                            –
+                                        </td>
+                    <td>
+                                            Returns the ControlImages present in the Unreal world.
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>LIST_CONTROL_MATERIALS</th>
+                    <td>
+                                            –
+                                        </td>
+                    <td>
+                                            Returns the ControlMaterials present in the Unreal world.
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>LIST_CONTROL_PARAMETERS</th>
+                    <td>
+                                            –
+                                        </td>
+                    <td>
+                                            Returns the ControlParameters present in the Unreal world.
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>LIST_CONTROL_TEXTS</th>
+                    <td>
+                                            –
+                                        </td>
+                    <td>
+                                            Returns the ControlTexts present in the Unreal world.
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>LIST_OBJECTS</th>
+                    <td>
+                                            –
+                                        </td>
+                    <td>
+                                            Returns the objects present in the Unreal world.
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>LIST_PROPERTIES</th>
+                    <td>
+                                                                        <i>String</i>
+                                                                    &nbsp;object_name
+                                                                                            
+                                                                </td>
+                    <td>
+                                            Returns the properties of the chosen object.
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>LOAD_CONTROL_OBJECTS</th>
+                    <td>
+                                            –
+                                        </td>
+                    <td>
+                                            Requests and creates a local copy of the ControlObjects present in the Unreal world.
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>MSG</th>
+                    <td>
+                                                                        <i>String</i>
+                                                                    &nbsp;String
+                                                                                            
+                                                                </td>
+                    <td>
+                                            Used to send info messages
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>OBJECTS</th>
+                    <td>
+                                                                        <i>String</i>
+                                                                    &nbsp;String
+                                                                                            
+                                                                </td>
+                    <td>
+                                            –
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>PKDEFAULTS</th>
+                    <td>
+                                            –
+                                        </td>
+                    <td>
+                                            Set the default values for the Unreal Precision Keyer implementation.
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>PKSYNC</th>
+                    <td>
+                                            –
+                                        </td>
+                    <td>
+                                            Synchronizes the Vizrt Precision Keyer values with the Unreal Precision Keyer ones.
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>PORT</th>
+                    <td>
+                                                                        <i>String</i>
+                                                                    &nbsp;String
+                                                                                            
+                                                                </td>
+                    <td>
+                                            –
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>PRECISION_KEYER_UPDATE</th>
+                    <td>
+                                                                        <i>String</i>
+                                                                    &nbsp;String
+                                                                                            
+                                                                </td>
+                    <td>
+                                            –
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>PROPERTIES</th>
+                    <td>
+                                                                        <i>String</i>
+                                                                    &nbsp;String
+                                                                                            
+                                                                </td>
+                    <td>
+                                            –
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>REMOTE</th>
+                    <td>
+                                                                        <i>String</i>
+                                                                    &nbsp;String
+                                                                                            
+                                                                </td>
+                    <td>
+                                            Debug command to send anything to the Unreal side. Syntax varies.
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>REQUEST</th>
+                    <td>
+                                                                        <i>String</i>
+                                                                    &nbsp;String
+                                                                                            
+                                                                </td>
+                    <td>
+                                            –
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>SEND</th>
+                    <td>
+                                                                        <i>String</i>
+                                                                    &nbsp;String
+                                                                                            
+                                                                </td>
+                    <td>
+                                            –
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>SETCONTROLIMAGEPROPERTY</th>
+                    <td>
+                                                                        <i>String</i>
+                                                                    &nbsp;String
+                                                                                            
+                                                                </td>
+                    <td>
+                                            –
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>SETCONTROLMATERIALPROPERTY</th>
+                    <td>
+                                                                        <i>String</i>
+                                                                    &nbsp;String
+                                                                                            
+                                                                </td>
+                    <td>
+                                            –
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>SETCONTROLPARAMETERPROPERTY</th>
+                    <td>
+                                                                        <i>String</i>
+                                                                    &nbsp;String
+                                                                                            
+                                                                </td>
+                    <td>
+                                            –
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>SETCONTROLTEXTPROPERTY</th>
+                    <td>
+                                                                        <i>String</i>
+                                                                    &nbsp;String
+                                                                                            
+                                                                </td>
+                    <td>
+                                            –
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>SETPROPERTY</th>
+                    <td>
+                                                                        <i>String</i>
+                                                                    &nbsp;String
+                                                                                            
+                                                                </td>
+                    <td>
+                                            –
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>SETTRANSFORM</th>
+                    <td>
+                                                                        <i>String</i>
+                                                                    &nbsp;String
+                                                                                            
+                                                                </td>
+                    <td>
+                                            –
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>SET_AUX_MODE</th>
+                    <td>
+                                                                        <i>String</i>
+                                                                    &nbsp;String
+                                                                                            
+                                                                </td>
+                    <td>
+                                            Enable texture sharing with Unreal on a given Media Asset.
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>SET_CAMERA_ID</th>
+                    <td>
+                                                                        <i>Int</i>
+                                                                    &nbsp;Int
+                                                                                            
+                                                                </td>
+                    <td>
+                                            –
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>SET_CONTROL_ANIMATION_PROPERTY</th>
+                    <td>
+                                                                        <i>String</i>
+                                                                    &nbsp;String
+                                                                                            <br>
+                                                    <i>String</i>
+                                                                    &nbsp;String
+                                                                                            <br>
+                                                    <i>String</i>
+                                                                    &nbsp;String
+                                                                                            
+                                                                </td>
+                    <td>
+                                            Sets a ControlAnimation property in the Unreal world.
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>SET_CONTROL_IMAGE_PROPERTY</th>
+                    <td>
+                                                                        <i>String</i>
+                                                                    &nbsp;String
+                                                                                            <br>
+                                                    <i>String</i>
+                                                                    &nbsp;String
+                                                                                            <br>
+                                                    <i>String</i>
+                                                                    &nbsp;String
+                                                                                            
+                                                                </td>
+                    <td>
+                                            Sets a ControlImage property (texture, vector or float) in the Unreal world.
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>SET_CONTROL_MATERIAL_PROPERTY</th>
+                    <td>
+                                                                        <i>String</i>
+                                                                    &nbsp;String
+                                                                                            <br>
+                                                    <i>String</i>
+                                                                    &nbsp;String
+                                                                                            <br>
+                                                    <i>String</i>
+                                                                    &nbsp;String
+                                                                                            <br>
+                                                    <i>String</i>
+                                                                    &nbsp;String
+                                                                                            
+                                                                </td>
+                    <td>
+                                            Sets a ControlMaterial property (texture, vector or float) in the Unreal world.
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>SET_CONTROL_PARAMETER_PROPERTY</th>
+                    <td>
+                                                                        <i>String</i>
+                                                                    &nbsp;String
+                                                                                            <br>
+                                                    <i>String</i>
+                                                                    &nbsp;String
+                                                                                            
+                                                                </td>
+                    <td>
+                                            Sets a ControlParameter property in the Unreal world.
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>SET_CONTROL_TEXT_PROPERTY</th>
+                    <td>
+                                                                        <i>String</i>
+                                                                    &nbsp;String
+                                                                                            <br>
+                                                    <i>String</i>
+                                                                    &nbsp;String
+                                                                                            <br>
+                                                    <i>String</i>
+                                                                    &nbsp;String
+                                                                                            
+                                                                </td>
+                    <td>
+                                            Sets a ControlText property in the Unreal world.
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>SET_PRINT_OFFSET</th>
+                    <td>
+                                                                        <i>String</i>
+                                                                    &nbsp;String
+                                                                                            <br>
+                                                    <i>String</i>
+                                                                    &nbsp;String
+                                                                                            
+                                                                </td>
+                    <td>
+                                            Sets print to screen offset
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>SET_PROP</th>
+                    <td>
+                                                                        <i>String</i>
+                                                                    &nbsp;String
+                                                                                            <br>
+                                                    <i>String</i>
+                                                                    &nbsp;String
+                                                                                            <br>
+                                                    <i>String</i>
+                                                                    &nbsp;object_name, property_name, property_value
+                                                                                            
+                                                                </td>
+                    <td>
+                                            Sets the property of the chosen object with the correct asset.
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>SET_TRANSFORM</th>
+                    <td>
+                                                                        <i>String</i>
+                                                                    &nbsp;String
+                                                                                            <br>
+                                                    <i>String</i>
+                                                                    &nbsp;String
+                                                                                            <br>
+                                                    <i>String</i>
+                                                                    &nbsp;object_name, type, value
+                                                                                            
+                                                                </td>
+                    <td>
+                                            Sets the transform of the chosen object depending on the type (POSITION, ROTATION OR SCALE) with the given value.
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>SHOW</th>
+                    <td>
+                                            –
+                                        </td>
+                    <td>
+                                            –
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>START_UE</th>
+                    <td>
+                                            –
+                                        </td>
+                    <td>
+                                            Starts Unreal engine
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>SYNC</th>
+                    <td>
+                                            –
+                                        </td>
+                    <td>
+                                            Synchronizes the Vizrt configurations with the Unreal ones.
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>SYNC_RESPONSE</th>
+                    <td>
+                                                                        <i>String</i>
+                                                                    &nbsp;String
+                                                                                            
+                                                                </td>
+                    <td>
+                                            –
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>TOGGLE_FC</th>
+                    <td>
+                                            –
+                                        </td>
+                    <td>
+                                            Toggles FrameCounter printing
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>TOGGLE_FPS</th>
+                    <td>
+                                            –
+                                        </td>
+                    <td>
+                                            Toggles FPS printing
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>UDP_CHANGED</th>
+                    <td>
+                                                                        <i>String</i>
+                                                                    &nbsp;String
+                                                                                            
+                                                                </td>
+                    <td>
+                                            –
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>UECONSOLE</th>
+                    <td>
+                                                                        <i>String</i>
+                                                                    &nbsp;String
+                                                                                            
+                                                                </td>
+                    <td>
+                                            –
+                                        </td>
+                </tr>
+                    </table>
+                        <div class='anchor'>
+            <a name='Properties'> </a>
+            <h2>Properties</h2>
+        </div>
+        <table>
+                            
+                
+                    
+                                                                                    
+                    
+                        <tr>
+                            <th>
+                                                                    CONTROL_IMAGE*$...
+                                                            </th>
+                            <td>
+                                                                                    </td>
+                            <td>
+                                                            Accesses a ControlImage by its name
+                                                        </td>
+                        </tr>
+
+                    
+                                                    
+                    
+                            
+                
+                    
+                                                                                    
+                    
+                        <tr>
+                            <th>
+                                                                    CONTROL_MATERIAL*$...
+                                                            </th>
+                            <td>
+                                                                                    </td>
+                            <td>
+                                                            Accesses a ControlMaterial by its name
+                                                        </td>
+                        </tr>
+
+                    
+                                                    
+                    
+                            
+                
+                    
+                                                                                    
+                    
+                        <tr>
+                            <th>
+                                                                    CONTROL_PARAMETER*$...
+                                                            </th>
+                            <td>
+                                                                                    </td>
+                            <td>
+                                                            Accesses a ControlParameter by its name
+                                                        </td>
+                        </tr>
+
+                    
+                                                    
+                    
+                            
+                
+                    
+                                                                                    
+                    
+                        <tr>
+                            <th>
+                                                                    CONTROL_TEXT*$...
+                                                            </th>
+                            <td>
+                                                                                    </td>
+                            <td>
+                                                            Accesses a ControlText by its name
+                                                        </td>
+                        </tr>
+
+                    
+                                                    
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    GAMEMODE
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_viz_engine_UnrealBridge_GAMEMODE.html'>BEGIN</a><br>
+                             
+                                <a href='./prop_viz_engine_UnrealBridge_GAMEMODE.html'>END</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                    </table>
+    </div>
+</body>
+
+</html>

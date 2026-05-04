@@ -1,0 +1,235 @@
+<html>
+
+<head>
+    <link rel='stylesheet' type='text/css' href='resources/css/docutils_basic.css'/>
+    <link rel='stylesheet' type='text/css' href='resources/css/vizDocGenPy.css'/>
+    <title>CVVizCommunication</title>
+</head>
+
+<body>
+    <div class='navbar'>
+    <table class='empty'><tr>
+        <th><img src='resources/img/vizrt-logo.svg' height='50px'/></th>
+        <td><b>Viz 5.3.1.60000 - Commands</b><br>
+            <a href='class_CMain.html#Properties'>Top locations</a>
+            <span style="display:inline-block; width: 10px;"></span>
+            <a href='index.html'>Class index</a>
+        </td></tr>
+    </table>
+</div>
+    <div class='content'>
+        <div class='sidebar'>
+            <a href='class_CVVizCommunication.html#Commands'>Commands</a><br>
+            <a href='class_CVVizCommunication.html#Properties'>Properties</a>
+        </div>
+        <h1>CVVizCommunication</h1>
+                    <p>Inherits: <a href='class_OBJECTBASE.html'>OBJECTBASE</a></p>
+                        
+                            <div class='anchor'>
+                <a name='Commands'> </a>
+                <h2>Commands</h2>
+            </div>
+            <table>
+                <tr>
+                    <th>Command</th>
+                    <th>Arguments</th>
+                    <th>Info</th>
+                </tr>
+                        <tr>
+                    <th>DUMP_SMM</th>
+                    <td>
+                                            –
+                                        </td>
+                    <td>
+                                            Dump memory map
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>DUMP_SMM_TOFILE</th>
+                    <td>
+                                                                        <i>String</i>
+                                                                    &nbsp;String
+                                                                                            
+                                                                </td>
+                    <td>
+                                            Dump memory map to file
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>RESTART_SMM_SERVICE</th>
+                    <td>
+                                                                        <i>Enum</i>
+                                                                    &nbsp;Enum
+                                                                <br>
+                                    &nbsp;&nbsp;TCP (0)
+                                <br>
+                                    &nbsp;&nbsp;UDP (1)
+                                <br>
+                                    &nbsp;&nbsp;MULTICAST (2)
+                                                            
+                                                                </td>
+                    <td>
+                                            Closes the open socket (if any) and restarts the listener. Possible arguments: TCP, UDP, MULTICAST
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>SYNCHRONIZE_SMMTCP</th>
+                    <td>
+                                                                        <i>Int</i>
+                                                                    &nbsp;Int
+                                                                                            <br>
+                                                    <i>String</i>
+                                                                    &nbsp;String
+                                                                                            
+                                                                </td>
+                    <td>
+                                            Synchronized shared memory to a specific engine and port via smm tcp
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>SYNCHRONIZE_TO</th>
+                    <td>
+                                                                        <i>Int</i>
+                                                                    &nbsp;Int
+                                                                                            <br>
+                                                    <i>String</i>
+                                                                    &nbsp;String
+                                                                                            
+                                                                </td>
+                    <td>
+                                            Synchronized shared memory to a specific engine and port
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>SYNCHRONIZE_UDP</th>
+                    <td>
+                                                                        <i>Int</i>
+                                                                    &nbsp;Int
+                                                                                            <br>
+                                                    <i>String</i>
+                                                                    &nbsp;String
+                                                                                            
+                                                                </td>
+                    <td>
+                                            Synchronized shared memory to a specific engine and port via udp
+                                        </td>
+                </tr>
+                    </table>
+                        <div class='anchor'>
+            <a name='Properties'> </a>
+            <h2>Properties</h2>
+        </div>
+        <table>
+                            
+                
+                    
+                                                                                    
+                    
+                        <tr>
+                            <th>
+                                                                    CLUSTER_SYNC*VERBOSE_MODE
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_CVVizCommunication_VERBOSE_MODE.html'>GET</a><br>
+                             
+                                <a href='./prop_CVVizCommunication_VERBOSE_MODE.html'>SET</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                                                    
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    GPI_INFO
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_CVVizCommunication_GPI_INFO.html'>GET</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    GPI_PIN_COMMAND
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_CVVizCommunication_GPI_PIN_COMMAND.html'>CLEAR</a><br>
+                             
+                                <a href='./prop_CVVizCommunication_GPI_PIN_COMMAND.html'>SET</a><br>
+                             
+                                <a href='./prop_CVVizCommunication_GPI_PIN_COMMAND.html'>TEST</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    GPO_BIT
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_CVVizCommunication_GPO_BIT.html'>SET</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    <a href='./class_CVSharedMemoryMap.html'>MAP</a>
+                                                            </th>
+                            <td>
+                                                                                    </td>
+                            <td>
+                                                            Accesses the distributed shared memory map (used by scripts and plugins).
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    <a href='./class_RestHandler.html'>WEBSERVICE</a>
+                                                            </th>
+                            <td>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                    </table>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,68 @@
+<html>
+<head><title>Text</title>
+<link rel="stylesheet" href="Script.css" type="text/css" />
+</head>
+<body>
+<a href="ScriptRef.html">Script Reference</a>
+<h2>Text</h2>
+<h3>Base type</h3>
+<a href="DataTypeBase.html">Base</a>
+<h3>Description</h3>
+A geometry's text object.
+<h3>Properties</h3>
+<table border=1 cellpadding=3 cellspacing=0>
+<tr><td><b>Eventpool</b> As <a href="DataTypeEventpool.html">Eventpool</a> <i>[read-only]</i></td><td>(<i>Inherited from <a href="DataTypeBase.html">Base</a>)</i> Gets system eventpool.</td></tr>
+<tr><td><b>Length</b> As <a href="DataTypeInteger.html">Integer</a> <i>[read-only]</i></td><td>Gets the length of the string.<br><br>Checking the length of a doublebyte string:<br>You have to make sure to use the correct function for calculating double byte strings. Normal Doublebyte Fonts (Asian/Cyrillic) are calculated wrong if you use the string.length() function.<br>Solution: To get the prober length, you have to convert it using Utf8ToAnsi()</td></tr>
+<tr><td><b>Scene</b> As <a href="DataTypeScene.html">Scene</a> <i>[read-only]</i></td><td>(<i>Inherited from <a href="DataTypeBase.html">Base</a>)</i> Gets the current scene.</td></tr>
+<tr><td><b>Stage</b> As <a href="DataTypeStage.html">Stage</a> <i>[read-only]</i></td><td>(<i>Inherited from <a href="DataTypeBase.html">Base</a>)</i> Gets the current stage.</td></tr>
+<tr><td><b>System</b> As <a href="DataTypeSystem.html">System</a> <i>[read-only]</i></td><td>(<i>Inherited from <a href="DataTypeBase.html">Base</a>)</i> Gets system wide data.</td></tr>
+<tr><td><b>UTF8Text</b> As <a href="DataTypeString.html">String</a></td><td>The UTF8-encoding text string. (It does not work with a classic text)</td></tr>
+<tr><td><b>Valid</b> As <a href="DataTypeBoolean.html">Boolean</a> <i>[read-only]</i></td><td>(<i>Inherited from <a href="DataTypeBase.html">Base</a>)</i> Returns true if the object is valid.</td></tr>
+<tr><td><b>VizCommunication</b> As <a href="DataTypeVizCommunication.html">VizCommunication</a> <i>[read-only]</i></td><td>(<i>Inherited from <a href="DataTypeBase.html">Base</a>)</i> Gets the VizCommunication object.</td></tr>
+<tr><td><b>VizEventName</b> As <a href="DataTypeString.html">String</a> <i>[read-only]</i></td><td>(<i>Inherited from <a href="DataTypeBase.html">Base</a>)</i> The object event name which could be used in <i>registerAsListener</i> and the corresponding callback (the viz object event name could change)</td></tr>
+<tr><td><b>VizId</b> As <a href="DataTypeInteger.html">Integer</a></td><td>(<i>Inherited from <a href="DataTypeBase.html">Base</a>)</i> Gets or sets the internal id of this object.</td></tr>
+</table>
+<h3>Member Procedures</h3>
+<table border=1 cellpadding=3 cellspacing=0>
+<tr><td>Sub <b>AnsiToUtf8</b>()</td><td>Converts an ANSI encoded string (using the system code-page) to UTF-8.</td></tr>
+<tr><td>Sub <b>Append</b>(str As <a href="DataTypeString.html">String</a>)</td><td>Appends 'str' to the string</td></tr>
+<tr><td>Function <b>EndsWith</b>(str As <a href="DataTypeString.html">String</a>) As <a href="DataTypeBoolean.html">Boolean</a></td><td>Returns true if the string ends with 'str'</td></tr>
+<tr><td>Sub <b>Erase</b>(pos As <a href="DataTypeInteger.html">Integer</a>, len As <a href="DataTypeInteger.html">Integer</a>)</td><td>Erases a range of 'len' characters starting at 'pos'</td></tr>
+<tr><td>Sub <b>EraseChar</b>(pos As <a href="DataTypeInteger.html">Integer</a>)</td><td>Erases the string, starting at 'pos'</td></tr>
+<tr><td>Function <b>Find</b>(substring As <a href="DataTypeString.html">String</a>) As <a href="DataTypeInteger.html">Integer</a></td><td>Searches for a substring</td></tr>
+<tr><td>Function <b>FindChannelOfObject</b>(channelName As <a href="DataTypeString.html">String</a>) As <a href="DataTypeChannel.html">Channel</a></td><td><i>(Inherited from <a href="DataTypeBase.html">Base</a>)</i> Finds an animation channel acting on this object. If this function is called on a type that cannot be animated (such as <i>Director</i>), it returns <i>null</i>. <br>You can limit the search to a particular director by using the syntax "directorName$channelName" for the <i>channelName</i> argument. Nested directors may be specified like this: "directorName1$directorName2$channelName".</td></tr>
+<tr><td>Function <b>FindFirstNotOf</b>(chars As <a href="DataTypeString.html">String</a>) As <a href="DataTypeInteger.html">Integer</a></td><td>Searches for the first character that is not equal to any character within 'chars'</td></tr>
+<tr><td>Function <b>FindFirstOf</b>(chars As <a href="DataTypeString.html">String</a>) As <a href="DataTypeInteger.html">Integer</a></td><td>Searches for the first character that is equal to any character within 'chars'</td></tr>
+<tr><td>Function <b>FindKeyframeOfObject</b>(keyframeName As <a href="DataTypeString.html">String</a>) As <a href="DataTypeKeyframe.html">Keyframe</a></td><td><i>(Inherited from <a href="DataTypeBase.html">Base</a>)</i> Finds a keyframe acting on the object. If this function is called on a type that cannot be animated (such as <i>Director</i>), it returns <i>null</i>. <br>You can limit the search to a particular director by using the syntax "directorName$keyframeName" for the <i>keyframeName</i> argument. Nested directors may be specified like this: "directorName1$directorName2$keyframeName".</td></tr>
+<tr><td>Function <b>FindLastNotOf</b>(chars As <a href="DataTypeString.html">String</a>) As <a href="DataTypeInteger.html">Integer</a></td><td>Searches for the last character that is not equal to any character within 'chars'</td></tr>
+<tr><td>Function <b>FindLastOf</b>(chars As <a href="DataTypeString.html">String</a>) As <a href="DataTypeInteger.html">Integer</a></td><td>Searches for the last character that is equal to any character within 'chars'</td></tr>
+<tr><td>Function <b>FindOrCreateChannelOfObject</b>(channelName As <a href="DataTypeString.html">String</a>) As <a href="DataTypeChannel.html">Channel</a></td><td><i>(Inherited from <a href="DataTypeBase.html">Base</a>)</i> This function works like FindChannelOfObject except that if no animation channel with the specifed name exists, a new one is created.</td></tr>
+<tr><td>Function <b>GetChannelsOfObject</b>(<em>[out] </em>v As <a href="DataTypeArray.html">Array</a>[<a href="DataTypeChannel.html">Channel</a>]) As <a href="DataTypeInteger.html">Integer</a></td><td><i>(Inherited from <a href="DataTypeBase.html">Base</a>)</i> Fills the array <i>v</i> with the animation channels acting on this object, returning the number of channels. If this function is called on a type that cannot be animated (such as <i>Director</i>), <i>v</i> will be empty.</td></tr>
+<tr><td>Function <b>GetChar</b>(pos As <a href="DataTypeInteger.html">Integer</a>) As <a href="DataTypeString.html">String</a></td><td>Returns the character at 'pos'</td></tr>
+<tr><td>Function <b>GetSubstring</b>(pos As <a href="DataTypeInteger.html">Integer</a>, len As <a href="DataTypeInteger.html">Integer</a>) As <a href="DataTypeString.html">String</a></td><td>Returns a substring</td></tr>
+<tr><td>Sub <b>Insert</b>(pos As <a href="DataTypeInteger.html">Integer</a>, str As <a href="DataTypeString.html">String</a>)</td><td>Inserts 'str' before position 'pos'</td></tr>
+<tr><td>Function <b>IsAnimated</b>() As <a href="DataTypeBoolean.html">Boolean</a></td><td><i>(Inherited from <a href="DataTypeBase.html">Base</a>)</i> Returns true if there are animation channels for this object. If this function is called on a type that cannot be animated (such as <i>Director</i>), it always returns <i>false</i>.</td></tr>
+<tr><td>Sub <b>Join</b>(strings As <a href="DataTypeArray.html">Array</a>[<a href="DataTypeString.html">String</a>], joiner As <a href="DataTypeString.html">String</a>)</td><td>Concatenates individual strings</td></tr>
+<tr><td>Function <b>Left</b>(len As <a href="DataTypeInteger.html">Integer</a>) As <a href="DataTypeString.html">String</a></td><td>Extracts 'len' characters from the left end of the string</td></tr>
+<tr><td>Sub <b>MakeLower</b>()</td><td>Converts the string to an lower-case string</td></tr>
+<tr><td>Sub <b>MakeUpper</b>()</td><td>Converts the string to an upper-case string</td></tr>
+<tr><td>Function <b>Match</b>(regex As <a href="DataTypeString.html">String</a>) As <a href="DataTypeBoolean.html">Boolean</a></td><td>Returns true if the regular expression 'regex' is found int the string</td></tr>
+<tr><td>Sub <b>PadLeft</b>(totalWidth As <a href="DataTypeInteger.html">Integer</a>, paddingChar As <a href="DataTypeString.html">String</a>)</td><td>Right-aligns the characters of the string</td></tr>
+<tr><td>Sub <b>PadRight</b>(totalWidth As <a href="DataTypeInteger.html">Integer</a>, paddingChar As <a href="DataTypeString.html">String</a>)</td><td>Left-aligns the characters of the string</td></tr>
+<tr><td>Sub <b>Prepend</b>(str As <a href="DataTypeString.html">String</a>)</td><td>Inserts 'str' at the beginning of the string</td></tr>
+<tr><td>Sub <b>Replace</b>(pos As <a href="DataTypeInteger.html">Integer</a>, len As <a href="DataTypeInteger.html">Integer</a>, str As <a href="DataTypeString.html">String</a>)</td><td>Replaces the substring specified by 'pos' and 'len' with 'str'</td></tr>
+<tr><td>Sub <b>ReplaceChar</b>(pos As <a href="DataTypeInteger.html">Integer</a>, str As <a href="DataTypeString.html">String</a>)</td><td>Replaces the character at 'pos' with 'str'</td></tr>
+<tr><td>Function <b>RFind</b>(substring As <a href="DataTypeString.html">String</a>) As <a href="DataTypeInteger.html">Integer</a></td><td>Searches backward for a substring</td></tr>
+<tr><td>Function <b>Right</b>(len As <a href="DataTypeInteger.html">Integer</a>) As <a href="DataTypeString.html">String</a></td><td>Extracts 'len' characters from the right end of the string</td></tr>
+<tr><td>Sub <b>SetChanged</b>()</td><td><i>(Inherited from <a href="DataTypeBase.html">Base</a>)</i> Mark this object as changed.</td></tr>
+<tr><td>Sub <b>Split</b>(separators As <a href="DataTypeString.html">String</a>, <em>[out] </em>result As <a href="DataTypeArray.html">Array</a>[<a href="DataTypeString.html">String</a>])</td><td>Splits a string into substrings; if 'separators' is empty, whitespace sequences act as separators. Example:<br><br>dim a as string = "Monday Thuesday Wednesday"<br>dim b as array[string] <br>a.split(" ",b) <br><br>b will be ["Monday","Thuesday","Wednesday"]</td></tr>
+<tr><td>Function <b>StartsWith</b>(str As <a href="DataTypeString.html">String</a>) As <a href="DataTypeBoolean.html">Boolean</a></td><td>Returns true if the string starts with 'str'</td></tr>
+<tr><td>Function <b>Substitute</b>(regex As <a href="DataTypeString.html">String</a>, subst As <a href="DataTypeString.html">String</a>, global As <a href="DataTypeBoolean.html">Boolean</a>) As <a href="DataTypeInteger.html">Integer</a></td><td>Replaces 'regex' with 'subst'. If 'global' is true, all occurences of 'regex' are replaced. Otherwise, only the first occurrece is replaced.</td></tr>
+<tr><td>Sub <b>TclSplit</b>(<em>[out] </em>result As <a href="DataTypeArray.html">Array</a>[<a href="DataTypeString.html">String</a>])</td><td>Splits a string TCL-style-wise, using whitespace as separators (TCL-style means: Braced and double-quoted strings are never split even if they contain whitespace).</td></tr>
+<tr><td>Sub <b>Trim</b>()</td><td>Removes whitspace characters from both ends of the string</td></tr>
+<tr><td>Sub <b>URLDecode</b>()</td><td>Decodes a URL as string.</td></tr>
+<tr><td>Sub <b>URLEncode</b>()</td><td>Encodes a string as URL.</td></tr>
+<tr><td>Sub <b>Utf8ToAnsi</b>()</td><td>Converts a UTF-8 encoded string to ANSI (using the system code-page).</td></tr>
+</table>
+</body>
+</html>

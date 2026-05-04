@@ -1,0 +1,2701 @@
+<html>
+
+<head>
+    <link rel='stylesheet' type='text/css' href='resources/css/docutils_basic.css'/>
+    <link rel='stylesheet' type='text/css' href='resources/css/vizDocGenPy.css'/>
+    <title>CMain</title>
+</head>
+
+<body>
+    <div class='navbar'>
+    <table class='empty'><tr>
+        <th><img src='resources/img/vizrt-logo.svg' height='50px'/></th>
+        <td><b>Viz 5.3.1.60000 - Commands</b><br>
+            <a href='class_CMain.html#Properties'>Top locations</a>
+            <span style="display:inline-block; width: 10px;"></span>
+            <a href='index.html'>Class index</a>
+        </td></tr>
+    </table>
+</div>
+    <div class='content'>
+        <div class='sidebar'>
+            <a href='class_CMain.html#Commands'>Commands</a><br>
+            <a href='class_CMain.html#Properties'>Properties</a>
+        </div>
+        <h1>CMain</h1>
+                    <p>Inherits: <a href='class_OBJECTBASE.html'>OBJECTBASE</a></p>
+                        
+                            <div class='anchor'>
+                <a name='Commands'> </a>
+                <h2>Commands</h2>
+            </div>
+            <table>
+                <tr>
+                    <th>Command</th>
+                    <th>Arguments</th>
+                    <th>Info</th>
+                </tr>
+                        <tr>
+                    <th>ABOUT</th>
+                    <td>
+                                            –
+                                        </td>
+                    <td>
+                                            –
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>ALLOCATE</th>
+                    <td>
+                                                                        <i>Int</i>
+                                                                    &nbsp;size_in_mb = 0
+                                                                                            
+                                                                </td>
+                    <td>
+                                            allocates memory to test memory issues
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>CLOG</th>
+                    <td>
+                                                                        <i>String</i>
+                                                                    &nbsp;String = DEFAULT_PATH
+                                                                                            
+                                                                </td>
+                    <td>
+                                            –
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>CONVERT_ANSI_TO_UTF8</th>
+                    <td>
+                                                                        <i>ArgList</i>
+                                                                    &nbsp;ArgList
+                                                                                            
+                                                                </td>
+                    <td>
+                                            –
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>CONVERT_UTF8_TO_ANSI</th>
+                    <td>
+                                                                        <i>ArgList</i>
+                                                                    &nbsp;ArgList
+                                                                                            
+                                                                </td>
+                    <td>
+                                            –
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>DELETE</th>
+                    <td>
+                                                                        <i>Int</i>
+                                                                    &nbsp;delete_references = 0
+                                                                                            <br>
+                                                    <i>String</i>
+                                                                    &nbsp;location
+                                                                                            
+                                                                </td>
+                    <td>
+                                            Delete an object or a folder
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>EXIT</th>
+                    <td>
+                                            –
+                                        </td>
+                    <td>
+                                            –
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>EXPORT_OBJECT_XML</th>
+                    <td>
+                                                                        <i>Int</i>
+                                                                    &nbsp;analyze token balance = 0
+                                                                                            <br>
+                                                    <i>String</i>
+                                                                    &nbsp;destination path
+                                                                                            <br>
+                                                    <i>String</i>
+                                                                    &nbsp;location
+                                                                                            
+                                                                </td>
+                    <td>
+                                            Export DB object content as XML file
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>FORCE_DELETE</th>
+                    <td>
+                                                                        <i>Int</i>
+                                                                    &nbsp;delete_references = 0
+                                                                                            <br>
+                                                    <i>String</i>
+                                                                    &nbsp;location
+                                                                                            
+                                                                </td>
+                    <td>
+                                            Delete a folder even if it is not empty
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>GET_CHANNEL_NUMBER</th>
+                    <td>
+                                            –
+                                        </td>
+                    <td>
+                                            –
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>GET_HANDLECOUNT</th>
+                    <td>
+                                            –
+                                        </td>
+                    <td>
+                                            –
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>GET_ICON_PNG</th>
+                    <td>
+                                                                        <i>Int</i>
+                                                                    &nbsp;Int = 0
+                                                                                            <br>
+                                                    <i>Int</i>
+                                                                    &nbsp;Int = 0
+                                                                                            <br>
+                                                    <i>String</i>
+                                                                    &nbsp;String = NULL
+                                                                                            
+                                                                </td>
+                    <td>
+                                            –
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>GET_IMPORTABLE_FILES</th>
+                    <td>
+                                                                        <i>Enum</i>
+                                                                    &nbsp;Enum = ALL
+                                                                <br>
+                                    &nbsp;&nbsp;ALL (0)
+                                <br>
+                                    &nbsp;&nbsp;IMAGE (1)
+                                <br>
+                                    &nbsp;&nbsp;GEOM (2)
+                                <br>
+                                    &nbsp;&nbsp;FONT (3)
+                                <br>
+                                    &nbsp;&nbsp;ARCHIVE (4)
+                                <br>
+                                    &nbsp;&nbsp;SCENE (5)
+                                <br>
+                                    &nbsp;&nbsp;AUDIO_CLIP (6)
+                                <br>
+                                    &nbsp;&nbsp;NONE (7)
+                                <br>
+                                    &nbsp;&nbsp;VIZ2X_STYLE (8)
+                                <br>
+                                    &nbsp;&nbsp;SUBSTANCE (9)
+                                                            <br>
+                                                    <i>String</i>
+                                                                    &nbsp;filename
+                                                                                            
+                                                                </td>
+                    <td>
+                                            –
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>GET_MOCKED_PLUGIN</th>
+                    <td>
+                                                                        <i>String</i>
+                                                                    &nbsp;String
+                                                                                            
+                                                                </td>
+                    <td>
+                                            returns information of specified mocked plugin
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>GET_MOCKED_PLUGINS</th>
+                    <td>
+                                            –
+                                        </td>
+                    <td>
+                                            returns information of all available mocked plugins
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>GET_TICKCOUNT</th>
+                    <td>
+                                            –
+                                        </td>
+                    <td>
+                                            –
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>ICONIFY</th>
+                    <td>
+                                            –
+                                        </td>
+                    <td>
+                                            –
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>IS_IMPORTABLE</th>
+                    <td>
+                                                                        <i>String</i>
+                                                                    &nbsp;filename
+                                                                                            
+                                                                </td>
+                    <td>
+                                            returns importable files in 2.x format
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>IS_ON_AIR</th>
+                    <td>
+                                            –
+                                        </td>
+                    <td>
+                                            Checks whether viz is on-air mode.
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>IS_RENDERER_READY</th>
+                    <td>
+                                            –
+                                        </td>
+                    <td>
+                                            Returns true if render editor exists and has a valid window
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>MAPS</th>
+                    <td>
+                                                                        <i>ArgList</i>
+                                                                    &nbsp;ArgList = NULL
+                                                                                            <br>
+                                                    <i>String</i>
+                                                                    &nbsp;String = NULL
+                                                                                            
+                                                                </td>
+                    <td>
+                                            –
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>ON_AIR</th>
+                    <td>
+                                                                        <i>Bool</i>
+                                                                    &nbsp;Bool
+                                                                                            
+                                                                </td>
+                    <td>
+                                            –
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>PERFORMANCE_TEST</th>
+                    <td>
+                                                                        <i>Int</i>
+                                                                    &nbsp;number_of_iterations
+                                                                                            
+                                                                </td>
+                    <td>
+                                            –
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>REPLY</th>
+                    <td>
+                                                                        <i>ArgList</i>
+                                                                    &nbsp;ArgList
+                                                                                            
+                                                                </td>
+                    <td>
+                                            –
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>RESTART</th>
+                    <td>
+                                                                        <i>ArgList</i>
+                                                                    &nbsp;command_arguments = NULL
+                                                                                            
+                                                                </td>
+                    <td>
+                                            exits Viz Engine and restarts in specified mode:
+No argument - start with current cmd line,
+CFG - configuration mode,
+ENG - engine without GUI,
+ENG_GUI - engine with GUI, ART - artist mode.
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>SEND_ANSWER</th>
+                    <td>
+                                                                        <i>Enum</i>
+                                                                    &nbsp;Enum = ALL
+                                                                <br>
+                                    &nbsp;&nbsp;NONE (0)
+                                <br>
+                                    &nbsp;&nbsp;ANSWER (2)
+                                <br>
+                                    &nbsp;&nbsp;ERROR (4)
+                                <br>
+                                    &nbsp;&nbsp;INFO (8)
+                                <br>
+                                    &nbsp;&nbsp;MESSAGE (16)
+                                <br>
+                                    &nbsp;&nbsp;COMMAND (32)
+                                <br>
+                                    &nbsp;&nbsp;ICON (64)
+                                <br>
+                                    &nbsp;&nbsp;ALL (126)
+                                                            
+                                                                </td>
+                    <td>
+                                            –
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>SEND_GUI_COMMAND</th>
+                    <td>
+                                                                        <i>ArgList</i>
+                                                                    &nbsp;ArgList
+                                                                                            
+                                                                </td>
+                    <td>
+                                            sends a command to the VizGui
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>SEND_GUI_COMMAND_PLAIN</th>
+                    <td>
+                                                                        <i>ArgList</i>
+                                                                    &nbsp;ArgList
+                                                                                            <br>
+                                                    <i>Float</i>
+                                                                    &nbsp;Float
+                                                                                            
+                                                                </td>
+                    <td>
+                                            sends a command as it is to the VizGui
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>SHOW_COMMANDS</th>
+                    <td>
+                                                                        <i>Bool</i>
+                                                                    &nbsp;Bool
+                                                                                            
+                                                                </td>
+                    <td>
+                                            –
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>START_GUI</th>
+                    <td>
+                                            –
+                                        </td>
+                    <td>
+                                            start VizGui for current Viz Engine
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>SWITCH_EDIT</th>
+                    <td>
+                                                                        <i>Enum</i>
+                                                                    &nbsp;Enum = SHOW
+                                                                <br>
+                                    &nbsp;&nbsp;HIDDEN (0)
+                                <br>
+                                    &nbsp;&nbsp;SHOW (1)
+                                                            
+                                                                </td>
+                    <td>
+                                            switch to edit mode
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>SWITCH_EXTERNAL</th>
+                    <td>
+                                                                        <i>Enum</i>
+                                                                    &nbsp;Enum = SHOW
+                                                                <br>
+                                    &nbsp;&nbsp;HIDDEN (0)
+                                <br>
+                                    &nbsp;&nbsp;SHOW (1)
+                                                            <br>
+                                                    <i>Bool</i>
+                                                                    &nbsp;backup = TRUE
+                                                                                            
+                                                                </td>
+                    <td>
+                                            switch to external control mode
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>SWITCH_POST</th>
+                    <td>
+                                            –
+                                        </td>
+                    <td>
+                                            switch to post mode
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>TCP_CONNECT</th>
+                    <td>
+                                            –
+                                        </td>
+                    <td>
+                                            –
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>VERSION</th>
+                    <td>
+                                            –
+                                        </td>
+                    <td>
+                                            –
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>WAIT_ON_BGL</th>
+                    <td>
+                                            –
+                                        </td>
+                    <td>
+                                            Waits on backgroundloading for one Scene
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>peak_get_icon</th>
+                    <td>
+                                                                        <i>ArgList</i>
+                                                                    &nbsp;ArgList
+                                                                                            
+                                                                </td>
+                    <td>
+                                            –
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>zipped</th>
+                    <td>
+                                                                        <i>ArgList</i>
+                                                                    &nbsp;ArgList = NULL
+                                                                                            
+                                                                </td>
+                    <td>
+                                            prefix to any command, causes the answer to be sent compressed using the ZIP algorithm!
+                                        </td>
+                </tr>
+                    </table>
+                        <div class='anchor'>
+            <a name='Properties'> </a>
+            <h2>Properties</h2>
+        </div>
+        <table>
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    &lt;uuid&gt;
+                                                            </th>
+                            <td>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    ALL_TABLE
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_CMain_ALL_TABLE.html'>EXIST</a><br>
+                             
+                                <a href='./prop_CMain_ALL_TABLE.html'>GET_SIZE</a><br>
+                             
+                                <a href='./prop_CMain_ALL_TABLE.html'>REORGANIZE</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    ANIMATION_EDITOR
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_CMain_ANIMATION_EDITOR.html'>GET</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    <a href='./class_CVArchive.html'>ARCHIVE</a>
+                                                            </th>
+                            <td>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    <a href='./class_AudioProcessor.html'>AUDIO</a>
+                                                            </th>
+                            <td>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    <a href='./class_CVAudioClipPool.html'>AUDIO_CLIP</a>
+                                                            </th>
+                            <td>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    AUTOKEYWORD
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_CMain_AUTOKEYWORD.html'>CLEAR</a><br>
+                             
+                                <a href='./prop_CMain_AUTOKEYWORD.html'>GET</a><br>
+                             
+                                <a href='./prop_CMain_AUTOKEYWORD.html'>SET</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    <a href='./class_SCENE.html'>BACK_SCENE</a>
+                                                            </th>
+                            <td>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    <a href='./class_CVbaseFontPool.html'>BASE_FONT</a>
+                                                            </th>
+                            <td>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    BATCH
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_CMain_BATCH.html'>START</a><br>
+                             
+                                <a href='./prop_CMain_BATCH.html'>STOP</a>
+                                                                                    </td>
+                            <td>
+                                                            Provides functionality to batch commands
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    BGL_COMPATIBILITY
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_CMain_BGL_COMPATIBILITY.html'>GET</a><br>
+                             
+                                <a href='./prop_CMain_BGL_COMPATIBILITY.html'>GET_EX</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    <a href='./class_CPluginManager.html'>BUILT_IN</a>
+                                                            </th>
+                            <td>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    <a href='./class_CVcharStylePool.html'>CHAR_STYLE</a>
+                                                            </th>
+                            <td>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                                                                                    
+                    
+                        <tr>
+                            <th>
+                                                                    CLIP_TRANSFER_PROGRESS*ACTIVE
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_CMain_ACTIVE.html'>SET</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                                                    
+                    
+                            
+                
+                    
+                                                                                    
+                    
+                        <tr>
+                            <th>
+                                                                    CLOCK*DATA
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_CMain_DATA.html'>GET</a><br>
+                             
+                                <a href='./prop_CMain_DATA.html'>SET</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                                                    
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    CLOCK%1
+                                                            </th>
+                            <td>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    CLR
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_CMain_CLR.html'>LOAD</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    <a href='./class_CCommandRecorder.html'>CMD_RECORD</a>
+                                                            </th>
+                            <td>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    <a href='./class_CCfgData.html'>CONFIGURATION</a>
+                                                            </th>
+                            <td>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    CONSOLE
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_CMain_CONSOLE.html'>CLEAR</a><br>
+                             
+                                <a href='./prop_CMain_CONSOLE.html'>FLUSH</a><br>
+                             
+                                <a href='./prop_CMain_CONSOLE.html'>REDIRECT</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    <a href='./class_ContainerPool.html'>CONTAINER</a>
+                                                            </th>
+                            <td>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    CURRENT_SUPERCHANNEL_ID
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_CMain_CURRENT_SUPERCHANNEL_ID.html'>GET</a>
+                                                                                    </td>
+                            <td>
+                                                            current superchannel id
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    <a href='./class_CVDBInterface.html'>DATABASE</a>
+                                                            </th>
+                            <td>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    <a href='./class_CDebugControl.html'>DEBUG_CONTROL</a>
+                                                            </th>
+                            <td>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    <a href='./class_CVRenderToDiskManager.html'>DEVICE</a>
+                                                            </th>
+                            <td>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                                                                                    
+                    
+                        <tr>
+                            <th>
+                                                                    DIRECTORY*EXECUTABLE
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_CMain_EXECUTABLE.html'>GET</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                                                    
+                    
+                            
+                
+                    
+                                                                                    
+                    
+                        <tr>
+                            <th>
+                                                                    DISPLAY*%1...
+                                                            </th>
+                            <td>
+                                                                                    </td>
+                            <td>
+                                                            get display by index
+                                                        </td>
+                        </tr>
+
+                    
+                                                            
+                    
+                        <tr>
+                            <th>
+                                                                    DISPLAY*SCANOUT_INTENSITY
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_CMain_SCANOUT_INTENSITY.html'>RESET</a><br>
+                             
+                                <a href='./prop_CMain_SCANOUT_INTENSITY.html'>SET</a>
+                                                                                    </td>
+                            <td>
+                                                            set scanout intensity for all displays
+                                                        </td>
+                        </tr>
+
+                    
+                                                    
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    <a href='./class_CEditorPool.html'>EDITOR</a>
+                                                            </th>
+                            <td>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    <a href='./class_EventPool.html'>EVENT_POOL</a>
+                                                            </th>
+                            <td>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    <a href='./class_ExtensionPluginManager.html'>EXTENSION</a>
+                                                            </th>
+                            <td>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    <a href='./class_CommandFeedBack.html'>FEEDBACK</a>
+                                                            </th>
+                            <td>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    <a href='./class_CVCommandFeedBackUnicast.html'>FEEDBACKUNICAST</a>
+                                                            </th>
+                            <td>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    FILENAME_FROM_UUID
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_CMain_FILENAME_FROM_UUID.html'>GET</a>
+                                                                                    </td>
+                            <td>
+                                                            get database path without opening the file
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    <a href='./class_CFontPool.html'>FONT</a>
+                                                            </th>
+                            <td>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    <a href='./class_Pool.html'>FONT_FACE</a>
+                                                            </th>
+                            <td>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    <a href='./class_Pool.html'>FONT_FILE</a>
+                                                            </th>
+                            <td>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    <a href='./class_OBJECTBASE.html'>FONT_LIBRARY</a>
+                                                            </th>
+                            <td>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    <a href='./class_SCENE.html'>FRONT_SCENE</a>
+                                                            </th>
+                            <td>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    <a href='./class_CFunctionManager.html'>FUNCTION</a>
+                                                            </th>
+                            <td>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    <a href='./class_Geompool.html'>GEOM</a>
+                                                            </th>
+                            <td>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    <a href='./class_CGlobal.html'>GLOBAL</a>
+                                                            </th>
+                            <td>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                                                                                    
+                    
+                        <tr>
+                            <th>
+                                                                    GUI*PID
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_CMain_PID.html'>SET</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                                                    
+                    
+                            
+                
+                    
+                                                                                    
+                    
+                        <tr>
+                            <th>
+                                                                    HARDWARE*GRAPHICS
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_CMain_GRAPHICS.html'>GET</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                                                            
+                    
+                                                                                    
+                    
+                        <tr>
+                            <th>
+                                                                    HARDWARE*MATROXIP*TELEMETRY
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_CMain_TELEMETRY.html'>CONNECTOR</a><br>
+                             
+                                <a href='./prop_CMain_TELEMETRY.html'>PTP</a><br>
+                             
+                                <a href='./prop_CMain_TELEMETRY.html'>SFP</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                                                    
+                    
+                                                            
+                    
+                        <tr>
+                            <th>
+                                                                    HARDWARE*NUMBER_CLIPIN_CHANNELS
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_CMain_NUMBER_CLIPIN_CHANNELS.html'>GET</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                                                            
+                    
+                        <tr>
+                            <th>
+                                                                    HARDWARE*NUMBER_CLIPOUT_CHANNELS
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_CMain_NUMBER_CLIPOUT_CHANNELS.html'>GET</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                                                            
+                    
+                        <tr>
+                            <th>
+                                                                    HARDWARE*NUMBER_GFX_CHANNELS
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_CMain_NUMBER_GFX_CHANNELS.html'>GET</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                                                            
+                    
+                        <tr>
+                            <th>
+                                                                    HARDWARE*NUMBER_GPUS
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_CMain_NUMBER_GPUS.html'>GET</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                                                            
+                    
+                        <tr>
+                            <th>
+                                                                    HARDWARE*NUMBER_IMAGE_CHANNELS
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_CMain_NUMBER_IMAGE_CHANNELS.html'>GET</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                                                            
+                    
+                        <tr>
+                            <th>
+                                                                    HARDWARE*NUMBER_LIVEIN_CHANNELS
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_CMain_NUMBER_LIVEIN_CHANNELS.html'>GET</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                                                            
+                    
+                        <tr>
+                            <th>
+                                                                    HARDWARE*NUMBER_STREAMIN_CHANNELS
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_CMain_NUMBER_STREAMIN_CHANNELS.html'>GET</a>
+                                                                                    </td>
+                            <td>
+                                                            Deprecated.
+                                                        </td>
+                        </tr>
+
+                    
+                                                            
+                    
+                        <tr>
+                            <th>
+                                                                    HARDWARE*NUMBER_SUPER_CHANNELS
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_CMain_NUMBER_SUPER_CHANNELS.html'>GET</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                                                            
+                    
+                        <tr>
+                            <th>
+                                                                    HARDWARE*NUMBER_VIDEOIN_CHANNELS
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_CMain_NUMBER_VIDEOIN_CHANNELS.html'>GET</a>
+                                                                                    </td>
+                            <td>
+                                                            Deprecated.
+                                                        </td>
+                        </tr>
+
+                    
+                                                            
+                    
+                        <tr>
+                            <th>
+                                                                    HARDWARE*NUMBER_VIDEO_INPUTS
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_CMain_NUMBER_VIDEO_INPUTS.html'>GET</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                                                            
+                    
+                        <tr>
+                            <th>
+                                                                    HARDWARE*NVIDIA_DRIVER_STATUS
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_CMain_NVIDIA_DRIVER_STATUS.html'>GET</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                                                            
+                    
+                        <tr>
+                            <th>
+                                                                    HARDWARE*SUPPORTED_CLIP_INPUT_SYSTEMS
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_CMain_SUPPORTED_CLIP_INPUT_SYSTEMS.html'>GET</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                                                            
+                    
+                        <tr>
+                            <th>
+                                                                    HARDWARE*SUPPORTED_INPUT_TYPES
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_CMain_SUPPORTED_INPUT_TYPES.html'>GET</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                                                            
+                    
+                        <tr>
+                            <th>
+                                                                    HARDWARE*SYSTEM
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_CMain_SYSTEM.html'>GET</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                                                            
+                    
+                        <tr>
+                            <th>
+                                                                    HARDWARE*VIDEO_OUTPUT
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_CMain_VIDEO_OUTPUT.html'>GET</a><br>
+                             
+                                <a href='./prop_CMain_VIDEO_OUTPUT.html'>GET_EX</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                                                    
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    <a href='./class_Imagepool.html'>IMAGE</a>
+                                                            </th>
+                            <td>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    <a href='./class_ImportPool.html'>IMPORTER</a>
+                                                            </th>
+                            <td>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    IS_UAC_ENABLED
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_CMain_IS_UAC_ENABLED.html'>GET</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    <a href='./class_Old_License.html'>KEY</a>
+                                                            </th>
+                            <td>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    <a href='./class_New_License.html'>KEY2</a>
+                                                            </th>
+                            <td>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    LOCATION
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_CMain_LOCATION.html'>CONVERT</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    <a href='./class_CVLog.html'>LOG</a>
+                                                            </th>
+                            <td>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    <a href='./class_CMagicStuff.html'>MAGIC</a>
+                                                            </th>
+                            <td>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    <a href='./class_CMain.html'>MAIN</a>
+                                                            </th>
+                            <td>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    <a href='./class_SCENE.html'>MAIN_SCENE</a>
+                                                            </th>
+                            <td>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    <a href='./class_Materialpool.html'>MATERIAL</a>
+                                                            </th>
+                            <td>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    <a href='./class_MaterialAdvancedpool.html'>MATERIAL_ADVANCED</a>
+                                                            </th>
+                            <td>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    <a href='./class_Pool.html'>MATERIAL_DEFINITION</a>
+                                                            </th>
+                            <td>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    <a href='./class_CVHeap.html'>MEMORY</a>
+                                                            </th>
+                            <td>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    <a href='./class_CModifierManager.html'>MODIFIER</a>
+                                                            </th>
+                            <td>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    MUX
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_CMain_MUX.html'>GET_LAYER_FROM_MAIN_SESSION</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    <a href='./class_Tricaster.html'>NDI</a>
+                                                            </th>
+                            <td>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    ONAIR
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_CMain_ONAIR.html'>GET_INFO</a><br>
+                             
+                                <a href='./prop_CMain_ONAIR.html'>GET_ONAIR</a><br>
+                             
+                                <a href='./prop_CMain_ONAIR.html'>GET_PEER_INFO</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    PLATFORM
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_CMain_PLATFORM.html'>GET</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    <a href='./class_CVPlayList.html'>PLAY</a>
+                                                            </th>
+                            <td>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    <a href='./class_CPluginManager.html'>PLUGIN_MANAGER</a>
+                                                            </th>
+                            <td>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    POOLS
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_CMain_POOLS.html'>CACHE_CLEANUP</a><br>
+                             
+                                <a href='./prop_CMain_POOLS.html'>CLEANUP</a><br>
+                             
+                                <a href='./prop_CMain_POOLS.html'>CLEAR_SCENE_EDITORS</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    <a href='./class_Editor.html'>POSTRENDERER</a>
+                                                            </th>
+                            <td>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                                                                                    
+                    
+                        <tr>
+                            <th>
+                                                                    PROCESS*MEMORY
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_CMain_MEMORY.html'>GET</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                                                    
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    <a href='./class_RENDER_EDITOR.html'>REND</a>
+                                                            </th>
+                            <td>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    <a href='./class_RENDER_EDITOR.html'>RENDERER</a>
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_CMain_RENDERER.html'>GET</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    <a href='./class_OBJECTBASE.html'>RENDERER_SHADER_PLUGIN</a>
+                                                            </th>
+                            <td>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    <a href='./class_Pool.html'>RENDERER_SHADER_RUNTIME</a>
+                                                            </th>
+                            <td>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    <a href='./class_CVRenderToDiskManager.html'>RENDER_TO_DISK</a>
+                                                            </th>
+                            <td>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    SCANOUT_INTENSITY
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_CMain_SCANOUT_INTENSITY.html'>RESET</a><br>
+                             
+                                <a href='./prop_CMain_SCANOUT_INTENSITY.html'>SET</a>
+                                                                                    </td>
+                            <td>
+                                                            deprecated
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    <a href='./class_Scenepool.html'>SCENE</a>
+                                                            </th>
+                            <td>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    <a href='./class_SCENE_EDITOR.html'>SCENE_EDITOR</a>
+                                                            </th>
+                            <td>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    <a href='./class_SCENE_EDITOR.html'>SCENE_EDITOR_MAIN</a>
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_CMain_SCENE_EDITOR_MAIN.html'>GET</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    <a href='./class_RENDERER_BASE.html'>SCENE_RENDERER</a>
+                                                            </th>
+                            <td>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    SEQUENCE
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_CMain_SEQUENCE.html'>GET</a>
+                                                                                    </td>
+                            <td>
+                                                            Get a list of supported sequences for a given renderengine version
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    <a href='./class_CShaderManager.html'>SHADER</a>
+                                                            </th>
+                            <td>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                                                                                    
+                    
+                        <tr>
+                            <th>
+                                                                    SHADERS_LIBRARY*FRAGMENT
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_CMain_FRAGMENT.html'>GET</a><br>
+                             
+                                <a href='./prop_CMain_FRAGMENT.html'>LIST</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                                                            
+                    
+                        <tr>
+                            <th>
+                                                                    SHADERS_LIBRARY*TRANSITION
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_CMain_TRANSITION.html'>GET</a><br>
+                             
+                                <a href='./prop_CMain_TRANSITION.html'>LIST</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                                                            
+                    
+                        <tr>
+                            <th>
+                                                                    SHADERS_LIBRARY*VERTEX
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_CMain_VERTEX.html'>GET</a><br>
+                             
+                                <a href='./prop_CMain_VERTEX.html'>LIST</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                                                    
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    <a href='./class_CVStageEvents.html'>STAGE_EVENTS</a>
+                                                            </th>
+                            <td>
+                                                                                    </td>
+                            <td>
+                                                            Access to the stage events.
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    STARTUP_MODE
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_CMain_STARTUP_MODE.html'>GET</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    <a href='./class_CVSubstancePool.html'>SUBSTANCE</a>
+                                                            </th>
+                            <td>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    <a href='./class_CSuggestion.html'>SUGGESTION</a>
+                                                            </th>
+                            <td>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                                                                                    
+                    
+                                                                                    
+                    
+                        <tr>
+                            <th>
+                                                                    SYSTEM*CHANNEL*%1
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_CMain_%1.html'>GET</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                                                    
+                    
+                                                            
+                    
+                        <tr>
+                            <th>
+                                                                    SYSTEM*FLICKER_FILTER_SUPPORTED
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_CMain_FLICKER_FILTER_SUPPORTED.html'>GET</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                                                            
+                    
+                        <tr>
+                            <th>
+                                                                    SYSTEM*HARDWARE_TYPE
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_CMain_HARDWARE_TYPE.html'>GET</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                                                            
+                    
+                        <tr>
+                            <th>
+                                                                    SYSTEM*MEMORY
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_CMain_MEMORY.html'>GET</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                                                            
+                    
+                        <tr>
+                            <th>
+                                                                    SYSTEM*MEMORY_ADVANCED
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_CMain_MEMORY_ADVANCED.html'>GET</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                                                    
+                    
+                            
+                
+                    
+                                                                                    
+                    
+                        <tr>
+                            <th>
+                                                                    SYSTEM_GLOBALS*EDITOR_SIZE
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_CMain_EDITOR_SIZE.html'>GET</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                                                            
+                    
+                        <tr>
+                            <th>
+                                                                    SYSTEM_GLOBALS*OUTPUT_POS
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_CMain_OUTPUT_POS.html'>GET</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                                                            
+                    
+                        <tr>
+                            <th>
+                                                                    SYSTEM_GLOBALS*OUTPUT_SIZE
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_CMain_OUTPUT_SIZE.html'>GET</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                                                            
+                    
+                        <tr>
+                            <th>
+                                                                    SYSTEM_GLOBALS*SHOW_MOUSE_CURSOR
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_CMain_SHOW_MOUSE_CURSOR.html'>GET</a><br>
+                             
+                                <a href='./prop_CMain_SHOW_MOUSE_CURSOR.html'>SET</a>
+                                                                                    </td>
+                            <td>
+                                                            Shows/Hides the mouse cursor in the on-air output window.
+                                                        </td>
+                        </tr>
+
+                    
+                                                    
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    <a href='./class_CVTimedCommands.html'>TC</a>
+                                                            </th>
+                            <td>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    TEST
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_CMain_TEST.html'>ECHO</a>
+                                                                                    </td>
+                            <td>
+                                                            Provides test functionality for command interface
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    TEST_SIGNALS
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_CMain_TEST_SIGNALS.html'>ACTIVE</a><br>
+                             
+                                <a href='./prop_CMain_TEST_SIGNALS.html'>INACTIVE</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                                                                                    
+                    
+                        <tr>
+                            <th>
+                                                                    TEXTURE*MEMORY
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_CMain_MEMORY.html'>GET</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                                                    
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    <a href='./class_Pool.html'>TEXTURE_IMAGE</a>
+                                                            </th>
+                            <td>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    <a href='./class_Pool.html'>TEXTURE_RENDERER</a>
+                                                            </th>
+                            <td>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    <a href='./class_Trace.html'>TRACE</a>
+                                                            </th>
+                            <td>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    <a href='./class_CVTrio.html'>TRIO</a>
+                                                            </th>
+                            <td>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    <a href='./class_CUndoRedo.html'>UNDOREDO</a>
+                                                            </th>
+                            <td>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    <a href='./class_viz::engine::UnrealBridge.html'>UNREAL</a>
+                                                            </th>
+                            <td>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    <a href='./class_CVVersion.html'>VERSIONS</a>
+                                                            </th>
+                            <td>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                                                                                    
+                    
+                                                                                    
+                    
+                        <tr>
+                            <th>
+                                                                    VIDEO*AUDIOOUT*FILENAME
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_CMain_FILENAME.html'>SET</a>
+                                                                                    </td>
+                            <td>
+                                                            Path for the audio file used to capture audio output of the engine
+                                                        </td>
+                        </tr>
+
+                    
+                                                            
+                    
+                        <tr>
+                            <th>
+                                                                    VIDEO*AUDIOOUT*RECORD
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_CMain_RECORD.html'>START</a><br>
+                             
+                                <a href='./prop_CMain_RECORD.html'>STOP</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                                                    
+                    
+                                                    
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    <a href='./class_CVClipPool.html'>VIDEO_CLIP</a>
+                                                            </th>
+                            <td>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    <a href='./class_VizOneServicesManager.html'>VIZONE</a>
+                                                            </th>
+                            <td>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    <a href='./class_CVVizCommunication.html'>VIZ_COMMUNICATION</a>
+                                                            </th>
+                            <td>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    VIZ_PROGRAMDATA_FOLDER
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_CMain_VIZ_PROGRAMDATA_FOLDER.html'>GET</a>
+                                                                                    </td>
+                            <td>
+                                                            Folder where VizArtist/Engine stores its machine specific data
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    VIZ_PUBLICDOCUMENTS_FOLDER
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_CMain_VIZ_PUBLICDOCUMENTS_FOLDER.html'>GET</a>
+                                                                                    </td>
+                            <td>
+                                                            Public Documents folder
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    <a href='./class_VTSSystem.html'>VTS</a>
+                                                            </th>
+                            <td>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    url
+                                                            </th>
+                            <td>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                    </table>
+    </div>
+</body>
+
+</html>

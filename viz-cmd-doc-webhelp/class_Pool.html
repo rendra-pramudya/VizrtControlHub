@@ -1,0 +1,602 @@
+<html>
+
+<head>
+    <link rel='stylesheet' type='text/css' href='resources/css/docutils_basic.css'/>
+    <link rel='stylesheet' type='text/css' href='resources/css/vizDocGenPy.css'/>
+    <title>Pool</title>
+</head>
+
+<body>
+    <div class='navbar'>
+    <table class='empty'><tr>
+        <th><img src='resources/img/vizrt-logo.svg' height='50px'/></th>
+        <td><b>Viz 5.3.1.60000 - Commands</b><br>
+            <a href='class_CMain.html#Properties'>Top locations</a>
+            <span style="display:inline-block; width: 10px;"></span>
+            <a href='index.html'>Class index</a>
+        </td></tr>
+    </table>
+</div>
+    <div class='content'>
+        <div class='sidebar'>
+            <a href='class_Pool.html#Commands'>Commands</a><br>
+            <a href='class_Pool.html#Properties'>Properties</a>
+        </div>
+        <h1>Pool</h1>
+                    <p>Inherits: <a href='class_OBJECTBASE.html'>OBJECTBASE</a></p>
+                                            <p>Derived classes:
+                                <a href='class_CFontPool.html'>CFontPool</a>
+                            ,
+                                                    <a href='class_CVAudioClipPool.html'>CVAudioClipPool</a>
+                            ,
+                                                    <a href='class_CVClipPool.html'>CVClipPool</a>
+                            ,
+                                                    <a href='class_CVSubstancePool.html'>CVSubstancePool</a>
+                            ,
+                                                    <a href='class_CVbaseFontPool.html'>CVbaseFontPool</a>
+                            ,
+                                                    <a href='class_CVcharStylePool.html'>CVcharStylePool</a>
+                            ,
+                                                    <a href='class_Geompool.html'>Geompool</a>
+                            ,
+                                                    <a href='class_Imagepool.html'>Imagepool</a>
+                            ,
+                                                    <a href='class_ImportPool.html'>ImportPool</a>
+                            ,
+                                                    <a href='class_MaterialAdvancedpool.html'>MaterialAdvancedpool</a>
+                            ,
+                                                    <a href='class_Materialpool.html'>Materialpool</a>
+                            ,
+                                                    <a href='class_Scenepool.html'>Scenepool</a>
+                            ,
+                                                    <a href='class_viz_engine_TextureImageCompatPool.html'>viz::engine::TextureImageCompatPool</a>
+                            </p>
+                            
+                            <div class='anchor'>
+                <a name='Commands'> </a>
+                <h2>Commands</h2>
+            </div>
+            <table>
+                <tr>
+                    <th>Command</th>
+                    <th>Arguments</th>
+                    <th>Info</th>
+                </tr>
+                        <tr>
+                    <th>ADD_GROUP</th>
+                    <td>
+                                                                        <i>String</i>
+                                                                    &nbsp;folder_name = NULL
+                                                                                            <br>
+                                                    <i>String</i>
+                                                                    &nbsp;location
+                                                                                            
+                                                                </td>
+                    <td>
+                                            Add a folder to the pool
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>CACHE_CLEANUP</th>
+                    <td>
+                                            –
+                                        </td>
+                    <td>
+                                            Remove all path to UUID mappings from memory
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>CLEANUP</th>
+                    <td>
+                                            –
+                                        </td>
+                    <td>
+                                            Remove all unused objects from memory
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>CLOSE</th>
+                    <td>
+                                                                        <i>Enum</i>
+                                                                    &nbsp;Enum = DEFAULT
+                                                                <br>
+                                    &nbsp;&nbsp;DEFAULT (0)
+                                <br>
+                                    &nbsp;&nbsp;FORCE (1)
+                                                            <br>
+                                                    <i>String</i>
+                                                                    &nbsp;location = NULL
+                                                                                            
+                                                                </td>
+                    <td>
+                                            Remove a pool object from memory. This command will be ignored if the object is in use
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>COPY</th>
+                    <td>
+                                                                        <i>Enum</i>
+                                                                    &nbsp;Enum = DEFAULT
+                                                                <br>
+                                    &nbsp;&nbsp;DEFAULT (0)
+                                <br>
+                                    &nbsp;&nbsp;REPLACE (1)
+                                <br>
+                                    &nbsp;&nbsp;ERROR (2)
+                                                            <br>
+                                                    <i>String</i>
+                                                                    &nbsp;from
+                                                                                            <br>
+                                                    <i>String</i>
+                                                                    &nbsp;to
+                                                                                            
+                                                                </td>
+                    <td>
+                                            Copy a pool element
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>DEC_REFERENCE_COUNT</th>
+                    <td>
+                                                                        <i>String</i>
+                                                                    &nbsp;location
+                                                                                            
+                                                                </td>
+                    <td>
+                                            Decrements a pool object&#39;s reference count to unlock it.
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>DELETE</th>
+                    <td>
+                                                                        <i>Int</i>
+                                                                    &nbsp;delete_references = 0
+                                                                                            <br>
+                                                    <i>String</i>
+                                                                    &nbsp;location
+                                                                                            
+                                                                </td>
+                    <td>
+                                            Delete an object or a folder
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>EXIST</th>
+                    <td>
+                                                                        <i>String</i>
+                                                                    &nbsp;location = NULL
+                                                                                            
+                                                                </td>
+                    <td>
+                                            Does a pool element exist
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>FOLDER_EXIST</th>
+                    <td>
+                                                                        <i>String</i>
+                                                                    &nbsp;folder = 
+                                                                                            
+                                                                </td>
+                    <td>
+                                            Checks whether the specified folder exists.
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>FORCE_DELETE</th>
+                    <td>
+                                                                        <i>Int</i>
+                                                                    &nbsp;delete_references = 0
+                                                                                            <br>
+                                                    <i>String</i>
+                                                                    &nbsp;location
+                                                                                            
+                                                                </td>
+                    <td>
+                                            Delete a folder even if it is not empty
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>GET</th>
+                    <td>
+                                                                        <i>String</i>
+                                                                    &nbsp;folder = 
+                                                                                            
+                                                                </td>
+                    <td>
+                                            Get all objects in a folder
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>GET_ALL_GROUPS</th>
+                    <td>
+                                            –
+                                        </td>
+                    <td>
+                                            Get all folders of the pool
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>GET_DETAIL</th>
+                    <td>
+                                                                        <i>String</i>
+                                                                    &nbsp;folder = 
+                                                                                            
+                                                                </td>
+                    <td>
+                                            Gets the names of files in the specified folder.
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>GET_DETAIL2</th>
+                    <td>
+                                                                        <i>String</i>
+                                                                    &nbsp;folder
+                                                                                            
+                                                                </td>
+                    <td>
+                                            Get detailed information of all objects in a folder
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>GET_EXTERNAL_FILE_REFERENCES</th>
+                    <td>
+                                                                        <i>ArgList</i>
+                                                                    &nbsp;dbpath = NULL
+                                                                                            
+                                                                </td>
+                    <td>
+                                            Returns all external file references contained in a scene.
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>GET_GROUPS</th>
+                    <td>
+                                                                        <i>String</i>
+                                                                    &nbsp;location = 
+                                                                                            <br>
+                                                    <i>Int</i>
+                                                                    &nbsp;sub_levels = 0
+                                                                                            
+                                                                </td>
+                    <td>
+                                            Get all folders inside a folder, but only one level deep
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>GET_GROUPS_DETAIL</th>
+                    <td>
+                                                                        <i>String</i>
+                                                                    &nbsp;folder = 
+                                                                                            
+                                                                </td>
+                    <td>
+                                            Gets the names of folders and projects in the specified folder.
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>GET_GROUPS_DOWN</th>
+                    <td>
+                                                                        <i>String</i>
+                                                                    &nbsp;String = 
+                                                                                            
+                                                                </td>
+                    <td>
+                                            Get all folders inside a folder (including all sub_folders)
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>GET_GROUPS_DOWN_1</th>
+                    <td>
+                                                                        <i>String</i>
+                                                                    &nbsp;location = NULL
+                                                                                            
+                                                                </td>
+                    <td>
+                                            Get all folders inside a folder 1 level down
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>GET_GROUPS_DOWN_2</th>
+                    <td>
+                                                                        <i>String</i>
+                                                                    &nbsp;location = NULL
+                                                                                            
+                                                                </td>
+                    <td>
+                                            Get all folders inside a folder 2 levels down
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>GET_ICON</th>
+                    <td>
+                                                                        <i>String</i>
+                                                                    &nbsp;location = NULL
+                                                                                            
+                                                                </td>
+                    <td>
+                                            Get the icon of a pool object
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>IMPORT_GET_NAME</th>
+                    <td>
+                                                                        <i>String</i>
+                                                                    &nbsp;sourcePath
+                                                                                            
+                                                                </td>
+                    <td>
+                                            Gets the filename under which an imported file will be stored in the db.
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>INC_REFERENCE_COUNT</th>
+                    <td>
+                                                                        <i>String</i>
+                                                                    &nbsp;location
+                                                                                            
+                                                                </td>
+                    <td>
+                                            Increments a pool object&#39;s reference count to lock it.
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>INFO</th>
+                    <td>
+                                            –
+                                        </td>
+                    <td>
+                                            Which pool object are in memory right now
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>IS_CHANGED</th>
+                    <td>
+                                                                        <i>String</i>
+                                                                    &nbsp;location
+                                                                                            
+                                                                </td>
+                    <td>
+                                            Was the object changed since it was loaded from disk
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>IS_IMPORTABLE</th>
+                    <td>
+                                                                        <i>String</i>
+                                                                    &nbsp;String
+                                                                                            
+                                                                </td>
+                    <td>
+                                            Can a file be imported into the pool
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>LOAD</th>
+                    <td>
+                                                                        <i>String</i>
+                                                                    &nbsp;location = NULL
+                                                                                            <br>
+                                                    <i>Int</i>
+                                                                    &nbsp;owner_id = -1
+                                                                                            
+                                                                </td>
+                    <td>
+                                            Load a pool object into memory
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>LOADBGL</th>
+                    <td>
+                                                                        <i>String</i>
+                                                                    &nbsp;location = NULL
+                                                                                            
+                                                                </td>
+                    <td>
+                                            Load a pool object into memory in the background
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>LOAD_ALL</th>
+                    <td>
+                                                                        <i>String</i>
+                                                                    &nbsp;folder
+                                                                                            <br>
+                                                    <i>Bool</i>
+                                                                    &nbsp;keep_in_memory = 0
+                                                                                            
+                                                                </td>
+                    <td>
+                                            Load all objects of a certain pool folder into memory
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>MARK_UNCHANGED</th>
+                    <td>
+                                                                        <i>String</i>
+                                                                    &nbsp;location
+                                                                                            
+                                                                </td>
+                    <td>
+                                            Marks a pool object unchanged.
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>MOVE</th>
+                    <td>
+                                                                        <i>Enum</i>
+                                                                    &nbsp;Enum = DEFAULT
+                                                                <br>
+                                    &nbsp;&nbsp;DEFAULT (0)
+                                <br>
+                                    &nbsp;&nbsp;REPLACE (1)
+                                <br>
+                                    &nbsp;&nbsp;ERROR (2)
+                                                            <br>
+                                                    <i>String</i>
+                                                                    &nbsp;from
+                                                                                            <br>
+                                                    <i>String</i>
+                                                                    &nbsp;to
+                                                                                            
+                                                                </td>
+                    <td>
+                                            Rename or move a pool object
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>NEW</th>
+                    <td>
+                                                                        <i>String</i>
+                                                                    &nbsp;name = NULL
+                                                                                            <br>
+                                                    <i>String</i>
+                                                                    &nbsp;type = NULL
+                                                                                            
+                                                                </td>
+                    <td>
+                                            Create a new pool object
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>RELOAD</th>
+                    <td>
+                                                                        <i>String</i>
+                                                                    &nbsp;location
+                                                                                            
+                                                                </td>
+                    <td>
+                                            Reload a pool object. This will restore the state of the object to the state when it was saved
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>RELOADBGL</th>
+                    <td>
+                                                                        <i>String</i>
+                                                                    &nbsp;location = NULL
+                                                                                            
+                                                                </td>
+                    <td>
+                                            Reload a pool object in background. This will restore the state of the object to the state when it was saved
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>RESTORE</th>
+                    <td>
+                                                                        <i>String</i>
+                                                                    &nbsp;location
+                                                                                            
+                                                                </td>
+                    <td>
+                                            Tries to restore a corrupt file.
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>SAVE</th>
+                    <td>
+                                                                        <i>String</i>
+                                                                    &nbsp;location = NULL
+                                                                                            
+                                                                </td>
+                    <td>
+                                            Write a pool object from memory to disk
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>SAVE_AS</th>
+                    <td>
+                                                                        <i>String</i>
+                                                                    &nbsp;location
+                                                                                            <br>
+                                                    <i>String</i>
+                                                                    &nbsp;new_location
+                                                                                            
+                                                                </td>
+                    <td>
+                                            Save a pool object under a different name
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>SAVE_AS_AND_RELOAD</th>
+                    <td>
+                                                                        <i>String</i>
+                                                                    &nbsp;location
+                                                                                            <br>
+                                                    <i>String</i>
+                                                                    &nbsp;new_location
+                                                                                            
+                                                                </td>
+                    <td>
+                                            Saves a pool object under a different name and reloads the (original) object
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>SAVE_TO_DATABASE</th>
+                    <td>
+                                                                        <i>String</i>
+                                                                    &nbsp;location
+                                                                                            <br>
+                                                    <i>String</i>
+                                                                    &nbsp;new_location
+                                                                                            
+                                                                </td>
+                    <td>
+                                            Write a pool object, which only exists in memory (e.g. NEW), to disk
+                                        </td>
+                </tr>
+                    </table>
+                        <div class='anchor'>
+            <a name='Properties'> </a>
+            <h2>Properties</h2>
+        </div>
+        <table>
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    ...
+                                                            </th>
+                            <td>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    &lt;uuid&gt;
+                                                            </th>
+                            <td>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    url
+                                                            </th>
+                            <td>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                    </table>
+    </div>
+</body>
+
+</html>

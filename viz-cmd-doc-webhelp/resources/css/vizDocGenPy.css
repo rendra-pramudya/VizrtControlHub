@@ -1,0 +1,38 @@
+.navbar {
+    overflow: hidden;
+    position: fixed;
+    background: white;
+    /* Set the navbar to fixed position */
+    top: 0;
+    /* Position the navbar at the top of the page */
+    width: 100%;
+    /* Full width */
+    border-bottom: 2px solid #ed8623;
+}
+
+.content {
+    margin-top: 6em;
+    /* Add a top margin to avoid content overlay */
+}
+
+table.empty {
+    border: 0px !important;
+    background: transparent !important;
+    width: 100% !important;
+}
+
+table.empty td,
+table.empty th {
+    border: 0px !important;
+    background: transparent !important;
+}
+
+.anchor a {
+    position: absolute;
+    left: 0px;
+    top: -6em;
+}
+
+.anchor {
+    position: relative;
+}

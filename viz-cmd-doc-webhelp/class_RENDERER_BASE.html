@@ -1,0 +1,792 @@
+<html>
+
+<head>
+    <link rel='stylesheet' type='text/css' href='resources/css/docutils_basic.css'/>
+    <link rel='stylesheet' type='text/css' href='resources/css/vizDocGenPy.css'/>
+    <title>RENDERER_BASE</title>
+</head>
+
+<body>
+    <div class='navbar'>
+    <table class='empty'><tr>
+        <th><img src='resources/img/vizrt-logo.svg' height='50px'/></th>
+        <td><b>Viz 5.3.1.60000 - Commands</b><br>
+            <a href='class_CMain.html#Properties'>Top locations</a>
+            <span style="display:inline-block; width: 10px;"></span>
+            <a href='index.html'>Class index</a>
+        </td></tr>
+    </table>
+</div>
+    <div class='content'>
+        <div class='sidebar'>
+            <a href='class_RENDERER_BASE.html#Commands'>Commands</a><br>
+            <a href='class_RENDERER_BASE.html#Properties'>Properties</a>
+        </div>
+        <h1>RENDERER_BASE</h1>
+                    <p>Inherits: <a href='class_Editor.html'>Editor</a></p>
+                                            <p>Derived classes:
+                                <a href='class_RENDER_EDITOR.html'>RENDER_EDITOR</a>
+                            ,
+                                                    <a href='class_RENDER_TEXTURE.html'>RENDER_TEXTURE</a>
+                            ,
+                                                    <a href='class_SCENE_EDITOR.html'>SCENE_EDITOR</a>
+                            </p>
+                            
+                            <div class='anchor'>
+                <a name='Commands'> </a>
+                <h2>Commands</h2>
+            </div>
+            <table>
+                <tr>
+                    <th>Command</th>
+                    <th>Arguments</th>
+                    <th>Info</th>
+                </tr>
+                        <tr>
+                    <th>ANTIALIASE</th>
+                    <td>
+                                                                        <i>Int</i>
+                                                                    &nbsp;Int
+                                                                                            
+                                                                </td>
+                    <td>
+                                            Do software scene antialiasing on the current output
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>GET_OBJECT</th>
+                    <td>
+                                            –
+                                        </td>
+                    <td>
+                                            Which object does the editor display right now
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>GET_OBJECT_LOCATION_PATH</th>
+                    <td>
+                                            –
+                                        </td>
+                    <td>
+                                            Returns the set location path
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>INITIALIZE</th>
+                    <td>
+                                            –
+                                        </td>
+                    <td>
+                                            Initialize the object for rendering. e.g. Defining textures, distplay lists...
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>REDRAW</th>
+                    <td>
+                                            –
+                                        </td>
+                    <td>
+                                            recomputes and redraws the scene
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>RENDER_TIME</th>
+                    <td>
+                                                                        <i>Int</i>
+                                                                    &nbsp;num_samples = 1
+                                                                                            
+                                                                </td>
+                    <td>
+                                            recomputes and redraws the scene and returns the render time in secs
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>SET_CHANNEL</th>
+                    <td>
+                                                                        <i>Int</i>
+                                                                    &nbsp;Int
+                                                                                            
+                                                                </td>
+                    <td>
+                                            Which channel is rendered with with editor. This is used in Viz Engine multi pipe rendering mode
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>SET_OBJECT</th>
+                    <td>
+                                                                        <i>Enum</i>
+                                                                    &nbsp;Enum = USE_CONFIG_VALUE
+                                                                <br>
+                                    &nbsp;&nbsp;USE_CONFIG_VALUE (0)
+                                <br>
+                                    &nbsp;&nbsp;TO_ALL_EDITORS (1)
+                                <br>
+                                    &nbsp;&nbsp;ONLY_THIS_EDITOR (2)
+                                                            <br>
+                                                    <i>String</i>
+                                                                    &nbsp;scene = NULL
+                                                                                            
+                                                                </td>
+                    <td>
+                                            Controls the object in the main layer
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>SET_PERFORMANCE</th>
+                    <td>
+                                                                        <i>Int</i>
+                                                                    &nbsp;Int
+                                                                                            
+                                                                </td>
+                    <td>
+                                            Show the performance meter
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>SET_SAFE_AREA</th>
+                    <td>
+                                                                        <i>Bool</i>
+                                                                    &nbsp;Bool
+                                                                                            
+                                                                </td>
+                    <td>
+                                            Set the safe area
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>SET_TITLE_AREA</th>
+                    <td>
+                                                                        <i>Bool</i>
+                                                                    &nbsp;Bool
+                                                                                            
+                                                                </td>
+                    <td>
+                                            Set the title area
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>SNAPSHOT</th>
+                    <td>
+                                                                        <i>Enum</i>
+                                                                    &nbsp;Enum
+                                                                <br>
+                                    &nbsp;&nbsp;RGB (6407)
+                                <br>
+                                    &nbsp;&nbsp;RGBA (6408)
+                                                            <br>
+                                                    <i>Int</i>
+                                                                    &nbsp;Int = -1
+                                                                                            <br>
+                                                    <i>Int</i>
+                                                                    &nbsp;Int = -1
+                                                                                            <br>
+                                                    <i>String</i>
+                                                                    &nbsp;String
+                                                                                            
+                                                                </td>
+                    <td>
+                                            Generate a snapshot of the current output and save it to disk
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>UNPROJECT</th>
+                    <td>
+                                                                        <i>Int</i>
+                                                                    &nbsp;Int
+                                                                                            <br>
+                                                    <i>Int</i>
+                                                                    &nbsp;Int
+                                                                                            
+                                                                </td>
+                    <td>
+                                            What coordinates (x, y, z) are responsible for a certain pixel position
+                                        </td>
+                </tr>
+                    </table>
+                        <div class='anchor'>
+            <a name='Properties'> </a>
+            <h2>Properties</h2>
+        </div>
+        <table>
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    <a href='./class_SCENE.html'>BACK_LAYER</a>
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_RENDERER_BASE_BACK_LAYER.html'>ADD_INJECT_BEFORE</a><br>
+                             
+                                <a href='./prop_RENDERER_BASE_BACK_LAYER.html'>CLEAR_INJECT_BEFORE</a><br>
+                             
+                                <a href='./prop_RENDERER_BASE_BACK_LAYER.html'>GET_ACTIVE</a><br>
+                             
+                                <a href='./prop_RENDERER_BASE_BACK_LAYER.html'>GET_INJECT_BEFORE</a><br>
+                             
+                                <a href='./prop_RENDERER_BASE_BACK_LAYER.html'>GET_OBJECT</a><br>
+                             
+                                <a href='./prop_RENDERER_BASE_BACK_LAYER.html'>GET_OBJECT_INFO</a><br>
+                             
+                                <a href='./prop_RENDERER_BASE_BACK_LAYER.html'>GET_OBJECT_LOCATION_PATH</a><br>
+                             
+                                <a href='./prop_RENDERER_BASE_BACK_LAYER.html'>SET_ACTIVE</a><br>
+                             
+                                <a href='./prop_RENDERER_BASE_BACK_LAYER.html'>SET_OBJECT</a>
+                                                                                    </td>
+                            <td>
+                                                            Controls the scene in the back layer
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    CONTENTS_VISIBLE
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_RENDERER_BASE_CONTENTS_VISIBLE.html'>GET</a><br>
+                             
+                                <a href='./prop_RENDERER_BASE_CONTENTS_VISIBLE.html'>SET</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    COORDINATE_SYSTEM
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_RENDERER_BASE_COORDINATE_SYSTEM.html'>GET</a><br>
+                             
+                                <a href='./prop_RENDERER_BASE_COORDINATE_SYSTEM.html'>SET</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    CSC
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_RENDERER_BASE_CSC.html'>GET</a><br>
+                             
+                                <a href='./prop_RENDERER_BASE_CSC.html'>HIDE</a><br>
+                             
+                                <a href='./prop_RENDERER_BASE_CSC.html'>SET</a><br>
+                             
+                                <a href='./prop_RENDERER_BASE_CSC.html'>SHOW</a>
+                                                                                    </td>
+                            <td>
+                                                            The Center Shift Calibration Marker
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                                                                                    
+                    
+                                                                                    
+                    
+                        <tr>
+                            <th>
+                                                                    FORMAT*ACTIVE_FORMAT*SIZE
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_RENDERER_BASE_SIZE.html'>GET</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                                                    
+                    
+                                                            
+                    
+                        <tr>
+                            <th>
+                                                                    FORMAT*REQUESTED_FORMAT
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_RENDERER_BASE_REQUESTED_FORMAT.html'>GET</a><br>
+                             
+                                <a href='./prop_RENDERER_BASE_REQUESTED_FORMAT.html'>SET</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                                                    
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    <a href='./class_SCENE.html'>FRONT_LAYER</a>
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_RENDERER_BASE_FRONT_LAYER.html'>ADD_INJECT_BEFORE</a><br>
+                             
+                                <a href='./prop_RENDERER_BASE_FRONT_LAYER.html'>CLEAR_INJECT_BEFORE</a><br>
+                             
+                                <a href='./prop_RENDERER_BASE_FRONT_LAYER.html'>GET_ACTIVE</a><br>
+                             
+                                <a href='./prop_RENDERER_BASE_FRONT_LAYER.html'>GET_INJECT_BEFORE</a><br>
+                             
+                                <a href='./prop_RENDERER_BASE_FRONT_LAYER.html'>GET_OBJECT</a><br>
+                             
+                                <a href='./prop_RENDERER_BASE_FRONT_LAYER.html'>GET_OBJECT_INFO</a><br>
+                             
+                                <a href='./prop_RENDERER_BASE_FRONT_LAYER.html'>GET_OBJECT_LOCATION_PATH</a><br>
+                             
+                                <a href='./prop_RENDERER_BASE_FRONT_LAYER.html'>SET_ACTIVE</a><br>
+                             
+                                <a href='./prop_RENDERER_BASE_FRONT_LAYER.html'>SET_OBJECT</a>
+                                                                                    </td>
+                            <td>
+                                                            Controls the scene in the front layer
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    <a href='./class_CVGrid.html'>GRID</a>
+                                                            </th>
+                            <td>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    HUD
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_RENDERER_BASE_HUD.html'>GET</a><br>
+                             
+                                <a href='./prop_RENDERER_BASE_HUD.html'>SET</a>
+                                                                                    </td>
+                            <td>
+                                                            The Head Up Display
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                                                                                    
+                    
+                        <tr>
+                            <th>
+                                                                    KEY_INTERNAL*ACTIVE
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_RENDERER_BASE_ACTIVE.html'>GET</a><br>
+                             
+                                <a href='./prop_RENDERER_BASE_ACTIVE.html'>SET</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                                                    
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    <a href='./class_SCENE.html'>MAIN_LAYER</a>
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_RENDERER_BASE_MAIN_LAYER.html'>ADD_INJECT_BEFORE</a><br>
+                             
+                                <a href='./prop_RENDERER_BASE_MAIN_LAYER.html'>CLEAR_INJECT_BEFORE</a><br>
+                             
+                                <a href='./prop_RENDERER_BASE_MAIN_LAYER.html'>GET_ACTIVE</a><br>
+                             
+                                <a href='./prop_RENDERER_BASE_MAIN_LAYER.html'>GET_INJECT_BEFORE</a><br>
+                             
+                                <a href='./prop_RENDERER_BASE_MAIN_LAYER.html'>GET_OBJECT</a><br>
+                             
+                                <a href='./prop_RENDERER_BASE_MAIN_LAYER.html'>GET_OBJECT_INFO</a><br>
+                             
+                                <a href='./prop_RENDERER_BASE_MAIN_LAYER.html'>GET_OBJECT_LOCATION_PATH</a><br>
+                             
+                                <a href='./prop_RENDERER_BASE_MAIN_LAYER.html'>SET_ACTIVE</a><br>
+                             
+                                <a href='./prop_RENDERER_BASE_MAIN_LAYER.html'>SET_OBJECT</a>
+                                                                                    </td>
+                            <td>
+                                                            Controls the scene in the main layer
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    <a href='./class_SCENE.html'>MIDDLE_LAYER</a>
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_RENDERER_BASE_MIDDLE_LAYER.html'>GET_OBJECT</a><br>
+                             
+                                <a href='./prop_RENDERER_BASE_MIDDLE_LAYER.html'>SET_OBJECT</a>
+                                                                                    </td>
+                            <td>
+                                                            for Trio
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    PERFORMANCE
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_RENDERER_BASE_PERFORMANCE.html'>GET</a><br>
+                             
+                                <a href='./prop_RENDERER_BASE_PERFORMANCE.html'>SET</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    PICK_LAYER
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_RENDERER_BASE_PICK_LAYER.html'>GET</a><br>
+                             
+                                <a href='./prop_RENDERER_BASE_PICK_LAYER.html'>SET</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    PICK_QUAD
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_RENDERER_BASE_PICK_QUAD.html'>SET</a>
+                                                                                    </td>
+                            <td>
+                                                            Set the Pick Quad for chroma key active or inactive
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    PICK_QUAD_DATA
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_RENDERER_BASE_PICK_QUAD_DATA.html'>SET</a>
+                                                                                    </td>
+                            <td>
+                                                            Set the Pick Quad Positiion and Size
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                                                                                    
+                    
+                        <tr>
+                            <th>
+                                                                    POST*STATUS
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_RENDERER_BASE_STATUS.html'>GET</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                                                    
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    POST_MODE
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_RENDERER_BASE_POST_MODE.html'>GET</a><br>
+                             
+                                <a href='./prop_RENDERER_BASE_POST_MODE.html'>SET</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                                                                                    
+                    
+                        <tr>
+                            <th>
+                                                                    SAA*ACTIVE
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_RENDERER_BASE_ACTIVE.html'>GET</a><br>
+                             
+                                <a href='./prop_RENDERER_BASE_ACTIVE.html'>SET</a>
+                                                                                    </td>
+                            <td>
+                                                            Do we render with software scene antialiasing
+                                                        </td>
+                        </tr>
+
+                    
+                                                            
+                    
+                        <tr>
+                            <th>
+                                                                    SAA*SAMPLES
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_RENDERER_BASE_SAMPLES.html'>GET</a><br>
+                             
+                                <a href='./prop_RENDERER_BASE_SAMPLES.html'>SET</a>
+                                                                                    </td>
+                            <td>
+                                                            How many samples do we want to use
+                                                        </td>
+                        </tr>
+
+                    
+                                                    
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    SHOW_SAFE_AREA
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_RENDERER_BASE_SHOW_SAFE_AREA.html'>GET</a><br>
+                             
+                                <a href='./prop_RENDERER_BASE_SHOW_SAFE_AREA.html'>SET</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    SHOW_TITLE_AREA
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_RENDERER_BASE_SHOW_TITLE_AREA.html'>GET</a><br>
+                             
+                                <a href='./prop_RENDERER_BASE_SHOW_TITLE_AREA.html'>SET</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    SIMULATE_INPUT
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_RENDERER_BASE_SIMULATE_INPUT.html'>MOUSETOUCH_DOWN</a><br>
+                             
+                                <a href='./prop_RENDERER_BASE_SIMULATE_INPUT.html'>MOUSETOUCH_MOVE</a><br>
+                             
+                                <a href='./prop_RENDERER_BASE_SIMULATE_INPUT.html'>MOUSETOUCH_UP</a><br>
+                             
+                                <a href='./prop_RENDERER_BASE_SIMULATE_INPUT.html'>MOUSE_CLICK</a><br>
+                             
+                                <a href='./prop_RENDERER_BASE_SIMULATE_INPUT.html'>MOUSE_DOWN</a><br>
+                             
+                                <a href='./prop_RENDERER_BASE_SIMULATE_INPUT.html'>MOUSE_MOVE</a><br>
+                             
+                                <a href='./prop_RENDERER_BASE_SIMULATE_INPUT.html'>MOUSE_UP</a><br>
+                             
+                                <a href='./prop_RENDERER_BASE_SIMULATE_INPUT.html'>W7TOUCH_DOWN</a><br>
+                             
+                                <a href='./prop_RENDERER_BASE_SIMULATE_INPUT.html'>W7TOUCH_MOVE</a><br>
+                             
+                                <a href='./prop_RENDERER_BASE_SIMULATE_INPUT.html'>W7TOUCH_UP</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    TEXT_EDITOR
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_RENDERER_BASE_TEXT_EDITOR.html'>SET</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    UPDATE
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_RENDERER_BASE_UPDATE.html'>GET</a><br>
+                             
+                                <a href='./prop_RENDERER_BASE_UPDATE.html'>SET</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    VGA_PREVIEW
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_RENDERER_BASE_VGA_PREVIEW.html'>GET</a><br>
+                             
+                                <a href='./prop_RENDERER_BASE_VGA_PREVIEW.html'>SET</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    VIEW
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_RENDERER_BASE_VIEW.html'>GET</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                    </table>
+    </div>
+</body>
+
+</html>

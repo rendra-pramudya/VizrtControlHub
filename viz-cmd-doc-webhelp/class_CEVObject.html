@@ -1,0 +1,222 @@
+<html>
+
+<head>
+    <link rel='stylesheet' type='text/css' href='resources/css/docutils_basic.css'/>
+    <link rel='stylesheet' type='text/css' href='resources/css/vizDocGenPy.css'/>
+    <title>CEVObject</title>
+</head>
+
+<body>
+    <div class='navbar'>
+    <table class='empty'><tr>
+        <th><img src='resources/img/vizrt-logo.svg' height='50px'/></th>
+        <td><b>Viz 5.3.1.60000 - Commands</b><br>
+            <a href='class_CMain.html#Properties'>Top locations</a>
+            <span style="display:inline-block; width: 10px;"></span>
+            <a href='index.html'>Class index</a>
+        </td></tr>
+    </table>
+</div>
+    <div class='content'>
+        <div class='sidebar'>
+            <a href='class_CEVObject.html#Commands'>Commands</a><br>
+            <a href='class_CEVObject.html#Properties'>Properties</a>
+        </div>
+        <h1>CEVObject</h1>
+                                            <p>Derived classes:
+                                <a href='class_CCfgData.html'>CCfgData</a>
+                            ,
+                                                    <a href='class_CCommandRecorder.html'>CCommandRecorder</a>
+                            ,
+                                                    <a href='class_CDebugControl.html'>CDebugControl</a>
+                            ,
+                                                    <a href='class_CDisplay.html'>CDisplay</a>
+                            ,
+                                                    <a href='class_CEditorPool.html'>CEditorPool</a>
+                            ,
+                                                    <a href='class_CFunctionManager.html'>CFunctionManager</a>
+                            ,
+                                                    <a href='class_CGlobal.html'>CGlobal</a>
+                            ,
+                                                    <a href='class_CMagicStuff.html'>CMagicStuff</a>
+                            ,
+                                                    <a href='class_CModifierManager.html'>CModifierManager</a>
+                            ,
+                                                    <a href='class_CPluginList.html'>CPluginList</a>
+                            ,
+                                                    <a href='class_CPluginManager.html'>CPluginManager</a>
+                            ,
+                                                    <a href='class_CShaderManager.html'>CShaderManager</a>
+                            ,
+                                                    <a href='class_CUndoRedo.html'>CUndoRedo</a>
+                            ,
+                                                    <a href='class_CVArchive.html'>CVArchive</a>
+                            ,
+                                                    <a href='class_CVDBInterface.html'>CVDBInterface</a>
+                            ,
+                                                    <a href='class_CVHeap.html'>CVHeap</a>
+                            ,
+                                                    <a href='class_CVStageEvents.html'>CVStageEvents</a>
+                            ,
+                                                    <a href='class_CVVersion.html'>CVVersion</a>
+                            ,
+                                                    <a href='class_Color.html'>Color</a>
+                            ,
+                                                    <a href='class_EventPool.html'>EventPool</a>
+                            ,
+                                                    <a href='class_ExtensionPluginManager.html'>ExtensionPluginManager</a>
+                            ,
+                                                    <a href='class_New_License.html'>New_License</a>
+                            ,
+                                                    <a href='class_OBJECTBASE.html'>OBJECTBASE</a>
+                            ,
+                                                    <a href='class_Old_License.html'>Old_License</a>
+                            ,
+                                                    <a href='class_Plugin.html'>Plugin</a>
+                            ,
+                                                    <a href='class_TechniquePluginManager.html'>TechniquePluginManager</a>
+                            ,
+                                                    <a href='class_VizOneServicesManager.html'>VizOneServicesManager</a>
+                            </p>
+                            
+                            <div class='anchor'>
+                <a name='Commands'> </a>
+                <h2>Commands</h2>
+            </div>
+            <table>
+                <tr>
+                    <th>Command</th>
+                    <th>Arguments</th>
+                    <th>Info</th>
+                </tr>
+                        <tr>
+                    <th>COMMAND_COMPLETE</th>
+                    <td>
+                                                                        <i>String</i>
+                                                                    &nbsp;String
+                                                                                            
+                                                                </td>
+                    <td>
+                                            returns a json of the next level commands to enable code completition.
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>COMMAND_EXIST</th>
+                    <td>
+                                                                        <i>String</i>
+                                                                    &nbsp;class
+                                                                                            <br>
+                                                    <i>String</i>
+                                                                    &nbsp;command = 
+                                                                                            <br>
+                                                    <i>String</i>
+                                                                    &nbsp;sub-location or command = 
+                                                                                            
+                                                                </td>
+                    <td>
+                                            Returns availability of a command in given class or property.
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>COMMAND_INFO</th>
+                    <td>
+                                                                        <i>Enum</i>
+                                                                    &nbsp;Enum = ALL
+                                                                <br>
+                                    &nbsp;&nbsp;ALL (0)
+                                <br>
+                                    &nbsp;&nbsp;COMMANDS (1)
+                                <br>
+                                    &nbsp;&nbsp;PROPERTIES (2)
+                                <br>
+                                    &nbsp;&nbsp;ONE_LEVEL (3)
+                                <br>
+                                    &nbsp;&nbsp;ONE_LEVEL_COMMANDS (4)
+                                <br>
+                                    &nbsp;&nbsp;ONE_LEVEL_PROPERTIES (5)
+                                                            <br>
+                                                    <i>Enum</i>
+                                                                    &nbsp;Enum = DEFAULT
+                                                                <br>
+                                    &nbsp;&nbsp;DEFAULT (0)
+                                                            <br>
+                                                    <i>UInt</i>
+                                                                    &nbsp;output line width(not yet supported in this version) = 80
+                                                                                            <br>
+                                                    <i>String</i>
+                                                                    &nbsp;specific command name or wildcards(*) = *
+                                                                                            <br>
+                                                    <i>String</i>
+                                                                    &nbsp;sublocation(automatically filled by command framework)
+                                                                                            
+                                                                </td>
+                    <td>
+                                            Returns help on a command or location.
+ Example
+ [1] MAIN COMMAND_INFO COMMAND_INFO
+ [2] MAIN COMMAND_INFO * COMMANDS
+
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>PROPERTY_STATUS</th>
+                    <td>
+                                                                        <i>String</i>
+                                                                    &nbsp;String
+                                                                                            <br>
+                                                    <i>String</i>
+                                                                    &nbsp;String = 
+                                                                                            <br>
+                                                    <i>String</i>
+                                                                    &nbsp;String = 
+                                                                                            
+                                                                </td>
+                    <td>
+                                            Lists the format status of all available properties on this object, provides operations to lock, copy, reset format.
+                                        </td>
+                </tr>
+                    </table>
+                        <div class='anchor'>
+            <a name='Properties'> </a>
+            <h2>Properties</h2>
+        </div>
+        <table>
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    COMMANDS_XML
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_CEVObject_COMMANDS_XML.html'>GET</a>
+                                                                                    </td>
+                            <td>
+                                                            Describes the command interface of this object
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    OBJECT_TYPE
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_CEVObject_OBJECT_TYPE.html'>GET</a>
+                                                                                    </td>
+                            <td>
+                                                            What type of object is this
+                                                        </td>
+                        </tr>
+
+                    
+                    </table>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,214 @@
+<html>
+
+<head>
+    <link rel='stylesheet' type='text/css' href='resources/css/docutils_basic.css'/>
+    <link rel='stylesheet' type='text/css' href='resources/css/vizDocGenPy.css'/>
+    <title>Editor</title>
+</head>
+
+<body>
+    <div class='navbar'>
+    <table class='empty'><tr>
+        <th><img src='resources/img/vizrt-logo.svg' height='50px'/></th>
+        <td><b>Viz 5.3.1.60000 - Commands</b><br>
+            <a href='class_CMain.html#Properties'>Top locations</a>
+            <span style="display:inline-block; width: 10px;"></span>
+            <a href='index.html'>Class index</a>
+        </td></tr>
+    </table>
+</div>
+    <div class='content'>
+        <div class='sidebar'>
+            <a href='class_Editor.html#Commands'>Commands</a><br>
+            <a href='class_Editor.html#Properties'>Properties</a>
+        </div>
+        <h1>Editor</h1>
+                    <p>Inherits: <a href='class_OBJECTBASE.html'>OBJECTBASE</a></p>
+                                            <p>Derived classes:
+                                <a href='class_CAnimEditor.html'>CAnimEditor</a>
+                            ,
+                                                    <a href='class_CVImageEditor.html'>CVImageEditor</a>
+                            ,
+                                                    <a href='class_CVImagePvwEditor.html'>CVImagePvwEditor</a>
+                            ,
+                                                    <a href='class_FONT_EDITOR.html'>FONT_EDITOR</a>
+                            ,
+                                                    <a href='class_IMAGE_EDITOR.html'>IMAGE_EDITOR</a>
+                            ,
+                                                    <a href='class_MATERIAL_EDITOR.html'>MATERIAL_EDITOR</a>
+                            ,
+                                                    <a href='class_RENDERER_BASE.html'>RENDERER_BASE</a>
+                            </p>
+                            
+                            <div class='anchor'>
+                <a name='Commands'> </a>
+                <h2>Commands</h2>
+            </div>
+            <table>
+                <tr>
+                    <th>Command</th>
+                    <th>Arguments</th>
+                    <th>Info</th>
+                </tr>
+                        <tr>
+                    <th>CLOSE</th>
+                    <td>
+                                            –
+                                        </td>
+                    <td>
+                                            Close the editor window
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>FOCUS</th>
+                    <td>
+                                                                        <i>Enum</i>
+                                                                    &nbsp;Enum = NONE
+                                                                <br>
+                                    &nbsp;&nbsp;NONE (0)
+                                <br>
+                                    &nbsp;&nbsp;WINDOW_MSG (1)
+                                <br>
+                                    &nbsp;&nbsp;ARTIST_FOCUS (2)
+                                                            
+                                                                </td>
+                    <td>
+                                            Gives this editor keyboard focus, optionally specifying a reason
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>GET_WINDOW_INFO</th>
+                    <td>
+                                            –
+                                        </td>
+                    <td>
+                                            Get info about the window. ID, width and height
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>SET_OBJECT</th>
+                    <td>
+                                                                        <i>Bool</i>
+                                                                    &nbsp;Bool = FALSE
+                                                                                            <br>
+                                                    <i>PObject</i>
+                                                                    &nbsp;PObject = NULL
+                                                                                            
+                                                                </td>
+                    <td>
+                                            Tell the editor to edit this object
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>WINDOW_OPEN</th>
+                    <td>
+                                                                        <i>ArgList</i>
+                                                                    &nbsp;ArgList
+                                                                                            
+                                                                </td>
+                    <td>
+                                            Open a window on screen
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>WINDOW_OPEN_ON_PARENT</th>
+                    <td>
+                                                                        <i>ArgList</i>
+                                                                    &nbsp;ArgList
+                                                                                            
+                                                                </td>
+                    <td>
+                                            Open the window into a parent window which id is supplied in the arguments
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>WINDOW_REPARENT</th>
+                    <td>
+                                                                        <i>String</i>
+                                                                    &nbsp;wndId
+                                                                                            
+                                                                </td>
+                    <td>
+                                            Changes the window&#39;s parent window.
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>WINDOW_RESIZE</th>
+                    <td>
+                                                                        <i>Int</i>
+                                                                    &nbsp;Int
+                                                                                            <br>
+                                                    <i>Int</i>
+                                                                    &nbsp;Int
+                                                                                            
+                                                                </td>
+                    <td>
+                                            Resize the window of this editor
+                                        </td>
+                </tr>
+                    </table>
+                        <div class='anchor'>
+            <a name='Properties'> </a>
+            <h2>Properties</h2>
+        </div>
+        <table>
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    DPI_SCALING
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_Editor_DPI_SCALING.html'>GET</a><br>
+                             
+                                <a href='./prop_Editor_DPI_SCALING.html'>SET</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    GUI_SHORTCUT_ACTIONS
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_Editor_GUI_SHORTCUT_ACTIONS.html'>EXEC</a><br>
+                             
+                                <a href='./prop_Editor_GUI_SHORTCUT_ACTIONS.html'>GET</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    SHORTCUTS
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_Editor_SHORTCUTS.html'>GET_GUI_INFO</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                    </table>
+    </div>
+</body>
+
+</html>

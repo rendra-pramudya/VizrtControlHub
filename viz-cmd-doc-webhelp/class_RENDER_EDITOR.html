@@ -1,0 +1,589 @@
+<html>
+
+<head>
+    <link rel='stylesheet' type='text/css' href='resources/css/docutils_basic.css'/>
+    <link rel='stylesheet' type='text/css' href='resources/css/vizDocGenPy.css'/>
+    <title>RENDER_EDITOR</title>
+</head>
+
+<body>
+    <div class='navbar'>
+    <table class='empty'><tr>
+        <th><img src='resources/img/vizrt-logo.svg' height='50px'/></th>
+        <td><b>Viz 5.3.1.60000 - Commands</b><br>
+            <a href='class_CMain.html#Properties'>Top locations</a>
+            <span style="display:inline-block; width: 10px;"></span>
+            <a href='index.html'>Class index</a>
+        </td></tr>
+    </table>
+</div>
+    <div class='content'>
+        <div class='sidebar'>
+            <a href='class_RENDER_EDITOR.html#Commands'>Commands</a><br>
+            <a href='class_RENDER_EDITOR.html#Properties'>Properties</a>
+        </div>
+        <h1>RENDER_EDITOR</h1>
+                    <p>Inherits: <a href='class_RENDERER_BASE.html'>RENDERER_BASE</a></p>
+                        
+                            <div class='anchor'>
+                <a name='Commands'> </a>
+                <h2>Commands</h2>
+            </div>
+            <table>
+                <tr>
+                    <th>Command</th>
+                    <th>Arguments</th>
+                    <th>Info</th>
+                </tr>
+                        <tr>
+                    <th>DROP</th>
+                    <td>
+                                                                        <i>Bool</i>
+                                                                    &nbsp;Bool = 0
+                                                                                            <br>
+                                                    <i>Int</i>
+                                                                    &nbsp;x
+                                                                                            <br>
+                                                    <i>Int</i>
+                                                                    &nbsp;y
+                                                                                            
+                                                                </td>
+                    <td>
+                                            –
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>DROPINZ</th>
+                    <td>
+                                                                        <i>Bool</i>
+                                                                    &nbsp;Bool = 1
+                                                                                            <br>
+                                                    <i>Int</i>
+                                                                    &nbsp;x
+                                                                                            <br>
+                                                    <i>Int</i>
+                                                                    &nbsp;y
+                                                                                            
+                                                                </td>
+                    <td>
+                                            –
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>DROPZ</th>
+                    <td>
+                                                                        <i>Bool</i>
+                                                                    &nbsp;Bool = 1
+                                                                                            <br>
+                                                    <i>Int</i>
+                                                                    &nbsp;x
+                                                                                            <br>
+                                                    <i>Int</i>
+                                                                    &nbsp;y
+                                                                                            
+                                                                </td>
+                    <td>
+                                            –
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>JOIN_SWAPGROUP</th>
+                    <td>
+                                                                        <i>Int</i>
+                                                                    &nbsp;Int
+                                                                                            
+                                                                </td>
+                    <td>
+                                            join swap group
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>PREVIEW</th>
+                    <td>
+                                                                        <i>ArgList</i>
+                                                                    &nbsp;Director names and times in pairs = NULL
+                                                                                            <br>
+                                                    <i>String</i>
+                                                                    &nbsp;Output=VIDEO|ANSWER|filename
+                                                                                            <br>
+                                                    <i>String</i>
+                                                                    &nbsp;Scene=SCENE*&lt;path&gt;
+                                                                                            
+                                                                </td>
+                    <td>
+                                            Renders a preview of the given scene without disturbing the video output (assuming that enough rendering power is available)
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>PREVIEW_SIZE</th>
+                    <td>
+                                                                        <i>Int</i>
+                                                                    &nbsp;Int = -1
+                                                                                            <br>
+                                                    <i>Int</i>
+                                                                    &nbsp;Int = -1
+                                                                                            
+                                                                </td>
+                    <td>
+                                            Sets the size of the preview for the PREVIEW command, only affects &#39;ANSWER&#39; output
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>SET_CAMERA</th>
+                    <td>
+                                                                        <i>Int</i>
+                                                                    &nbsp;Int
+                                                                                            
+                                                                </td>
+                    <td>
+                                            –
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>SET_CAMERA_IMMEDIATE</th>
+                    <td>
+                                                                        <i>Int</i>
+                                                                    &nbsp;Int
+                                                                                            
+                                                                </td>
+                    <td>
+                                            –
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>SET_KEY</th>
+                    <td>
+                                                                        <i>Bool</i>
+                                                                    &nbsp;Bool
+                                                                                            
+                                                                </td>
+                    <td>
+                                            –
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>SHOW_BOUNDING_BOX</th>
+                    <td>
+                                                                        <i>Bool</i>
+                                                                    &nbsp;Bool
+                                                                                            
+                                                                </td>
+                    <td>
+                                            Are we able to show the bounding box of the selected object in the render window
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>SLEEP</th>
+                    <td>
+                                                                        <i>Int</i>
+                                                                    &nbsp;Int
+                                                                                            
+                                                                </td>
+                    <td>
+                                            sleep for some ms
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>SYNC_DISPLAYS</th>
+                    <td>
+                                            –
+                                        </td>
+                    <td>
+                                            synchronize displays
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>SYNC_VIDEOINS</th>
+                    <td>
+                                            –
+                                        </td>
+                    <td>
+                                            synchronize videoins
+                                        </td>
+                </tr>
+                    </table>
+                        <div class='anchor'>
+            <a name='Properties'> </a>
+            <h2>Properties</h2>
+        </div>
+        <table>
+                            
+                
+                    
+                                                                                    
+                    
+                        <tr>
+                            <th>
+                                                                    BACK_LAYER*EYE_SEPARATION
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_RENDER_EDITOR_EYE_SEPARATION.html'>GET</a><br>
+                             
+                                <a href='./prop_RENDER_EDITOR_EYE_SEPARATION.html'>SET</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                                                            
+                    
+                        <tr>
+                            <th>
+                                                                    BACK_LAYER*LAYER_VISIBLE
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_RENDER_EDITOR_LAYER_VISIBLE.html'>GET</a><br>
+                             
+                                <a href='./prop_RENDER_EDITOR_LAYER_VISIBLE.html'>SET</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                                                            
+                    
+                        <tr>
+                            <th>
+                                                                    BACK_LAYER*OVERWRITE_STEREO
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_RENDER_EDITOR_OVERWRITE_STEREO.html'>SET</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                                                            
+                    
+                        <tr>
+                            <th>
+                                                                    BACK_LAYER*ZERO_PARALLAX_DIST
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_RENDER_EDITOR_ZERO_PARALLAX_DIST.html'>GET</a><br>
+                             
+                                <a href='./prop_RENDER_EDITOR_ZERO_PARALLAX_DIST.html'>SET</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                                                    
+                    
+                            
+                
+                    
+                                                                                    
+                    
+                        <tr>
+                            <th>
+                                                                    CURRENT_CAMERA*EYE_SEPARATION
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_RENDER_EDITOR_EYE_SEPARATION.html'>GET</a><br>
+                             
+                                <a href='./prop_RENDER_EDITOR_EYE_SEPARATION.html'>SET</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                                                            
+                    
+                        <tr>
+                            <th>
+                                                                    CURRENT_CAMERA*STEREO_METHOD
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_RENDER_EDITOR_STEREO_METHOD.html'>GET</a><br>
+                             
+                                <a href='./prop_RENDER_EDITOR_STEREO_METHOD.html'>SET</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                                                            
+                    
+                        <tr>
+                            <th>
+                                                                    CURRENT_CAMERA*ZERO_PARALLAX_DIST
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_RENDER_EDITOR_ZERO_PARALLAX_DIST.html'>GET</a><br>
+                             
+                                <a href='./prop_RENDER_EDITOR_ZERO_PARALLAX_DIST.html'>SET</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                                                    
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    EYE_SEPARATION
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_RENDER_EDITOR_EYE_SEPARATION.html'>GET</a><br>
+                             
+                                <a href='./prop_RENDER_EDITOR_EYE_SEPARATION.html'>SET</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                                                                                    
+                    
+                        <tr>
+                            <th>
+                                                                    FRONT_LAYER*EYE_SEPARATION
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_RENDER_EDITOR_EYE_SEPARATION.html'>GET</a><br>
+                             
+                                <a href='./prop_RENDER_EDITOR_EYE_SEPARATION.html'>SET</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                                                            
+                    
+                        <tr>
+                            <th>
+                                                                    FRONT_LAYER*LAYER_VISIBLE
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_RENDER_EDITOR_LAYER_VISIBLE.html'>GET</a><br>
+                             
+                                <a href='./prop_RENDER_EDITOR_LAYER_VISIBLE.html'>SET</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                                                            
+                    
+                        <tr>
+                            <th>
+                                                                    FRONT_LAYER*OVERWRITE_STEREO
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_RENDER_EDITOR_OVERWRITE_STEREO.html'>SET</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                                                            
+                    
+                        <tr>
+                            <th>
+                                                                    FRONT_LAYER*ZERO_PARALLAX_DIST
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_RENDER_EDITOR_ZERO_PARALLAX_DIST.html'>GET</a><br>
+                             
+                                <a href='./prop_RENDER_EDITOR_ZERO_PARALLAX_DIST.html'>SET</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                                                    
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    KEY
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_RENDER_EDITOR_KEY.html'>GET</a><br>
+                             
+                                <a href='./prop_RENDER_EDITOR_KEY.html'>SET</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                                                                                    
+                    
+                        <tr>
+                            <th>
+                                                                    MAIN_LAYER*EYE_SEPARATION
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_RENDER_EDITOR_EYE_SEPARATION.html'>GET</a><br>
+                             
+                                <a href='./prop_RENDER_EDITOR_EYE_SEPARATION.html'>SET</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                                                            
+                    
+                        <tr>
+                            <th>
+                                                                    MAIN_LAYER*LAYER_VISIBLE
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_RENDER_EDITOR_LAYER_VISIBLE.html'>GET</a><br>
+                             
+                                <a href='./prop_RENDER_EDITOR_LAYER_VISIBLE.html'>SET</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                                                            
+                    
+                        <tr>
+                            <th>
+                                                                    MAIN_LAYER*OVERWRITE_STEREO
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_RENDER_EDITOR_OVERWRITE_STEREO.html'>SET</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                                                            
+                    
+                        <tr>
+                            <th>
+                                                                    MAIN_LAYER*ZERO_PARALLAX_DIST
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_RENDER_EDITOR_ZERO_PARALLAX_DIST.html'>GET</a><br>
+                             
+                                <a href='./prop_RENDER_EDITOR_ZERO_PARALLAX_DIST.html'>SET</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                                                    
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    OVERWRITE_STEREO
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_RENDER_EDITOR_OVERWRITE_STEREO.html'>SET</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    STEREO_PARAMETERS
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_RENDER_EDITOR_STEREO_PARAMETERS.html'>GET</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    ZERO_PARALLAX_DIST
+                                                            </th>
+                            <td>
+                             
+                                <a href='./prop_RENDER_EDITOR_ZERO_PARALLAX_DIST.html'>GET</a><br>
+                             
+                                <a href='./prop_RENDER_EDITOR_ZERO_PARALLAX_DIST.html'>SET</a>
+                                                                                    </td>
+                            <td>
+                                                            –
+                                                        </td>
+                        </tr>
+
+                    
+                    </table>
+    </div>
+</body>
+
+</html>

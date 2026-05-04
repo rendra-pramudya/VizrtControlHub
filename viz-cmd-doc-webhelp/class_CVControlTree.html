@@ -1,0 +1,269 @@
+<html>
+
+<head>
+    <link rel='stylesheet' type='text/css' href='resources/css/docutils_basic.css'/>
+    <link rel='stylesheet' type='text/css' href='resources/css/vizDocGenPy.css'/>
+    <title>CVControlTree</title>
+</head>
+
+<body>
+    <div class='navbar'>
+    <table class='empty'><tr>
+        <th><img src='resources/img/vizrt-logo.svg' height='50px'/></th>
+        <td><b>Viz 5.3.1.60000 - Commands</b><br>
+            <a href='class_CMain.html#Properties'>Top locations</a>
+            <span style="display:inline-block; width: 10px;"></span>
+            <a href='index.html'>Class index</a>
+        </td></tr>
+    </table>
+</div>
+    <div class='content'>
+        <div class='sidebar'>
+            <a href='class_CVControlTree.html#Commands'>Commands</a><br>
+            <a href='class_CVControlTree.html#Properties'>Properties</a>
+        </div>
+        <h1>CVControlTree</h1>
+                    <p>Inherits: <a href='class_OBJECTBASE.html'>OBJECTBASE</a></p>
+                        
+                            <div class='anchor'>
+                <a name='Commands'> </a>
+                <h2>Commands</h2>
+            </div>
+            <table>
+                <tr>
+                    <th>Command</th>
+                    <th>Arguments</th>
+                    <th>Info</th>
+                </tr>
+                        <tr>
+                    <th>ADD_CHANNEL</th>
+                    <td>
+                                                                        <i>Enum</i>
+                                                                    &nbsp;Enum = AFTER
+                                                                <br>
+                                    &nbsp;&nbsp;BEFORE (0)
+                                <br>
+                                    &nbsp;&nbsp;AFTER (1)
+                                <br>
+                                    &nbsp;&nbsp;UNDER (2)
+                                                            <br>
+                                                    <i>String</i>
+                                                                    &nbsp;destination_path
+                                                                                            <br>
+                                                    <i>String</i>
+                                                                    &nbsp;location
+                                                                                            <br>
+                                                    <i>String</i>
+                                                                    &nbsp;name
+                                                                                            
+                                                                </td>
+                    <td>
+                                            add a new control channel to control &#39;location&#39;
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>ADD_GROUP</th>
+                    <td>
+                                                                        <i>Enum</i>
+                                                                    &nbsp;Enum = AFTER
+                                                                <br>
+                                    &nbsp;&nbsp;BEFORE (0)
+                                <br>
+                                    &nbsp;&nbsp;AFTER (1)
+                                <br>
+                                    &nbsp;&nbsp;UNDER (2)
+                                                            <br>
+                                                    <i>String</i>
+                                                                    &nbsp;destination_path
+                                                                                            <br>
+                                                    <i>String</i>
+                                                                    &nbsp;group_name
+                                                                                            
+                                                                </td>
+                    <td>
+                                            add a new control group
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>CLOSE</th>
+                    <td>
+                                                                        <i>String</i>
+                                                                    &nbsp;paths
+                                                                                            
+                                                                </td>
+                    <td>
+                                            close entries
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>CLOSE_TREE</th>
+                    <td>
+                                            –
+                                        </td>
+                    <td>
+                                            open all control groups in the tree
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>COPY</th>
+                    <td>
+                                                                        <i>Enum</i>
+                                                                    &nbsp;Enum = AFTER
+                                                                <br>
+                                    &nbsp;&nbsp;BEFORE (0)
+                                <br>
+                                    &nbsp;&nbsp;AFTER (1)
+                                <br>
+                                    &nbsp;&nbsp;UNDER (2)
+                                                            <br>
+                                                    <i>String</i>
+                                                                    &nbsp;dest_path
+                                                                                            <br>
+                                                    <i>String</i>
+                                                                    &nbsp;entry_paths
+                                                                                            
+                                                                </td>
+                    <td>
+                                            copy entries
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>DELETE</th>
+                    <td>
+                                                                        <i>String</i>
+                                                                    &nbsp;paths
+                                                                                            
+                                                                </td>
+                    <td>
+                                            delete entries
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>GET</th>
+                    <td>
+                                                                        <i>Bool</i>
+                                                                    &nbsp;expanded_list = FALSE
+                                                                                            <br>
+                                                    <i>Bool</i>
+                                                                    &nbsp;extended_parameters_list = FALSE
+                                                                                            
+                                                                </td>
+                    <td>
+                                            get list of all control entries
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>GET_NEW_CHANNEL_NAME</th>
+                    <td>
+                                                                        <i>String</i>
+                                                                    &nbsp;location
+                                                                                            
+                                                                </td>
+                    <td>
+                                            called by the GUI to get a default channel name for a new channel
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>GET_SELECTED</th>
+                    <td>
+                                            –
+                                        </td>
+                    <td>
+                                            get list of all control entries which belong to containers selected in the scenetree.
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>MOVE</th>
+                    <td>
+                                                                        <i>Enum</i>
+                                                                    &nbsp;Enum = AFTER
+                                                                <br>
+                                    &nbsp;&nbsp;BEFORE (0)
+                                <br>
+                                    &nbsp;&nbsp;AFTER (1)
+                                <br>
+                                    &nbsp;&nbsp;UNDER (2)
+                                                            <br>
+                                                    <i>String</i>
+                                                                    &nbsp;dest_path
+                                                                                            <br>
+                                                    <i>String</i>
+                                                                    &nbsp;entry_paths
+                                                                                            
+                                                                </td>
+                    <td>
+                                            move entries
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>OPEN</th>
+                    <td>
+                                                                        <i>String</i>
+                                                                    &nbsp;paths
+                                                                                            
+                                                                </td>
+                    <td>
+                                            open entries
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>OPEN_TREE</th>
+                    <td>
+                                            –
+                                        </td>
+                    <td>
+                                            open all control groups in the tree
+                                        </td>
+                </tr>
+                                        <tr>
+                    <th>TOGGLE</th>
+                    <td>
+                                                                        <i>String</i>
+                                                                    &nbsp;paths
+                                                                                            
+                                                                </td>
+                    <td>
+                                            toggle open/closed state of entries
+                                        </td>
+                </tr>
+                    </table>
+                        <div class='anchor'>
+            <a name='Properties'> </a>
+            <h2>Properties</h2>
+        </div>
+        <table>
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    $...
+                                                            </th>
+                            <td>
+                                                                                    </td>
+                            <td>
+                                                            access channel/group by name
+                                                        </td>
+                        </tr>
+
+                    
+                            
+                
+                    
+                        <tr>
+                            <th>
+                                                                    /...
+                                                            </th>
+                            <td>
+                                                                                    </td>
+                            <td>
+                                                            access channel/group by tree path
+                                                        </td>
+                        </tr>
+
+                    
+                    </table>
+    </div>
+</body>
+
+</html>
