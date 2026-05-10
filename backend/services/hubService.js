@@ -43,12 +43,14 @@ function parseFile(e) {
     .filter((c) => c.$ && c.$.scheme === "http://www.vizrt.com/types" && c.$.term !== "asset")
     .map((c) => c.$.term);
   const thumb = toArray(e["media:thumbnail"] || [])[0];
+  const authorEl = toArray(e.author || [])[0];
   return {
     uuid: e.id[0].replace("urn:uuid:", ""),
     name: e.title[0]._ || e.title[0],
-    updated: e.updated[0],
+    updated: e.updated?.[0] || null,
     published: e.published?.[0] || null,
     type: terms[0] || "UNKNOWN",
+    owner: authorEl?.name?.[0] || null,
     thumbnailUrl: thumb?.$.url || null,
     thumbnailW: thumb ? parseInt(thumb.$.width || "64", 10) : 64,
     thumbnailH: thumb ? parseInt(thumb.$.height || "64", 10) : 64,

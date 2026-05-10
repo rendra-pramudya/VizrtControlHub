@@ -52,6 +52,22 @@ router.get("/profiles/:profile/state", async (req, res) => {
   }
 });
 
+// POST /api/mse/playlists/:storageId/elements/move
+// body: { elementEditUrl, direction: 'up'|'down' }
+router.post("/playlists/:storageId/elements/move", async (req, res) => {
+  const { storageId } = req.params;
+  const { elementEditUrl, toIndex } = req.body;
+  if (!elementEditUrl || toIndex === undefined) {
+    return res.status(400).json({ error: "elementEditUrl and toIndex are required" });
+  }
+  try {
+    res.json(await mseService.moveElement(storageId, elementEditUrl, toIndex));
+  } catch (err) {
+    console.error("[moveElement]", err.message);
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // POST /api/mse/playlists/:storageId/elements
 // body: { title, contentSrc }
 router.post("/playlists/:storageId/elements", async (req, res) => {

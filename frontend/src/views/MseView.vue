@@ -49,12 +49,16 @@
       </div>
     </div>
 
+    <!-- Body: table + detail panel -->
+    <div class="mse-body">
+
     <!-- Table -->
     <div class="table-wrap">
       <table class="playlist-table">
         <thead>
           <tr>
             <th class="col-ind"></th>
+            <th class="col-elid">Elem ID</th>
             <th class="col-desc">Description</th>
             <th class="col-tpl">Template Id</th>
             <th class="col-layer">Layer</th>
@@ -65,39 +69,100 @@
         </thead>
         <tbody>
           <tr v-if="loadingElements">
-            <td colspan="7" class="td-msg">Loading...</td>
+            <td colspan="8" class="td-msg">Loading...</td>
           </tr>
           <tr v-else-if="!selectedPlaylistId">
-            <td colspan="7" class="td-msg">Select a playlist above.</td>
+            <td colspan="8" class="td-msg">Select a playlist above.</td>
           </tr>
           <tr v-else-if="!store.elements.length">
-            <td colspan="7" class="td-msg">No elements in this playlist.</td>
+            <td colspan="8" class="td-msg">No elements in this playlist.</td>
           </tr>
           <tr
-            v-for="el in store.elements"
+            v-for="(el, idx) in store.elements"
             :key="el.id"
+            draggable="true"
             :class="{
               'row-selected': selectedElement?.id === el.id,
               'row-active': activatedElement?.id === el.id,
+              'row-dragging': dragIndex === idx,
+              'row-dragover': dragOverIndex === idx,
             }"
             @click="selectedElement = el"
             @dblclick="onTrigger('take')"
+            @dragstart="onDragStart(idx, $event)"
+            @dragover.prevent="dragOverIndex = idx"
+            @dragleave="dragOverIndex = null"
+            @drop.prevent="onDrop(idx)"
+            @dragend="onDragEnd"
           >
             <td class="col-ind">
               <span v-if="activatedElement?.id === el.id" class="arrow-on">▶</span>
             </td>
+            <td class="col-elid">{{ el.pilotElementId ? el.pilotElementId.slice(0, 8) : '—' }}</td>
             <td class="col-desc">
               <span class="el-icon">🖼</span> {{ el.name }}
             </td>
             <td class="col-tpl">{{ el.templateId ?? '—' }}</td>
             <td class="col-layer">—</td>
-            <td class="col-ch">[PROGRAM]</td>
+            <td class="col-ch">{{ el.channel ? `[${el.channel}]` : '[PROGRAM]' }}</td>
             <td class="col-concept">{{ el.concept ? `[${el.concept}]` : '—' }}</td>
             <td class="col-variant">{{ el.variant ? `[${el.variant}]` : '—' }}</td>
           </tr>
         </tbody>
       </table>
-    </div>
+    </div><!-- /table-wrap -->
+
+    <!-- Detail panel (1/3) -->
+    <div class="detail-panel">
+      <div class="dp-title">
+        Element Details
+        <span v-if="selectedElement" class="dp-elname"> — {{ selectedElement.name }}</span>
+      </div>
+
+      <template v-if="!selectedElement">
+        <div class="dp-empty">Select an element to view details.</div>
+      </template>
+      <template v-else>
+        <!-- Meta -->
+        <div class="dp-section-label">Info</div>
+        <div class="dp-meta">
+          <div class="dp-meta-row"><span class="dp-key">UUID</span><span class="dp-val mono">{{ selectedElement.id }}</span></div>
+          <div class="dp-meta-row"><span class="dp-key">Pilot ID</span><span class="dp-val mono">{{ selectedElement.pilotElementId ?? '—' }}</span></div>
+          <div class="dp-meta-row"><span class="dp-key">Template</span><span class="dp-val mono">{{ selectedElement.templateId ?? '—' }}</span></div>
+          <div class="dp-meta-row"><span class="dp-key">Concept</span><span class="dp-val">{{ selectedElement.concept ?? '—' }}</span></div>
+          <div class="dp-meta-row"><span class="dp-key">Variant</span><span class="dp-val">{{ selectedElement.variant ?? '—' }}</span></div>
+          <div class="dp-meta-row"><span class="dp-key">Channel</span><span class="dp-val">{{ selectedElement.channel ?? 'PROGRAM' }}</span></div>
+          <div class="dp-meta-row"><span class="dp-key">Valid</span><span class="dp-val" :class="selectedElement.valid ? 'val-ok' : 'val-no'">{{ selectedElement.valid ? 'yes' : 'no' }}</span></div>
+        </div>
+
+        <!-- Pilot fields -->
+        <template v-if="selectedElement.pilotElementId">
+          <div class="dp-section-label">
+            Pilot Fields
+            <span v-if="loadingDetail" class="dp-loading">loading…</span>
+          </div>
+          <div class="dp-fields">
+            <div v-for="field in detailFields" :key="field.name" class="field-row">
+              <label class="field-label">{{ field.name }}</label>
+              <input class="field-input" v-model="field.value" />
+            </div>
+            <div v-if="!loadingDetail && !detailFields.length" class="dp-empty-fields">No editable fields.</div>
+          </div>
+          <div class="dp-actions">
+            <button class="btn-save" @click="saveDetail" :disabled="savingDetail || loadingDetail">
+              {{ savingDetail ? 'Saving…' : 'Save' }}
+            </button>
+            <span v-if="savedDetail" class="saved-msg">Saved!</span>
+            <span v-if="saveDetailError" class="error-msg">{{ saveDetailError }}</span>
+          </div>
+        </template>
+        <template v-else>
+          <div class="dp-empty">No Pilot data element linked.</div>
+        </template>
+      </template>
+    </div><!-- /detail-panel -->
+
+    </div><!-- /mse-body -->
 
     <!-- Feedback bar -->
     <div v-if="triggerMsg" class="feedback-bar" :class="triggerMsgOk ? 'ok' : 'err'">
@@ -125,9 +190,10 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, onActivated, onDeactivated } from "vue";
+import { ref, computed, watch, onMounted, onActivated, onDeactivated } from "vue";
 import { storeToRefs } from "pinia";
 import { useMseStore } from "../stores/useMseStore";
+import { api } from "../services/api";
 
 const store = useMseStore();
 const { selectedProfile } = storeToRefs(store);
@@ -137,8 +203,34 @@ const selectedElement = ref(null);
 const activatedElement = ref(null);
 const loadingElements = ref(false);
 const triggering = ref(false);
+const moving = ref(false);
+const dragIndex = ref(null);
+const dragOverIndex = ref(null);
 const triggerMsg = ref("");
 const triggerMsgOk = ref(true);
+
+// Detail panel
+const detailFields = ref([]);
+const loadingDetail = ref(false);
+const savingDetail = ref(false);
+const savedDetail = ref(false);
+const saveDetailError = ref("");
+
+watch(selectedElement, async (el) => {
+  detailFields.value = [];
+  savedDetail.value = false;
+  saveDetailError.value = "";
+  if (!el?.pilotElementId) return;
+  loadingDetail.value = true;
+  try {
+    const data = await api.get(`/pilot/data-elements/${el.pilotElementId}`);
+    detailFields.value = data.fields.map((f) => ({ ...f }));
+  } catch {
+    detailFields.value = [];
+  } finally {
+    loadingDetail.value = false;
+  }
+});
 
 const hasSelected = computed(() => !!selectedElement.value);
 
@@ -183,6 +275,53 @@ async function onPlaylistChange() {
   loadingElements.value = false;
 }
 
+function onDragStart(idx, evt) {
+  dragIndex.value = idx;
+  evt.dataTransfer.effectAllowed = "move";
+}
+
+function onDragEnd() {
+  dragIndex.value = null;
+  dragOverIndex.value = null;
+}
+
+async function onDrop(toIdx) {
+  const fromIdx = dragIndex.value;
+  onDragEnd();
+  if (fromIdx === null || fromIdx === toIdx) return;
+  const el = store.elements[fromIdx];
+  if (!el?.editUrl) return;
+  moving.value = true;
+  try {
+    await store.moveElement(el.editUrl, toIdx);
+  } catch (e) {
+    triggerMsg.value = `Move failed: ${e.message}`;
+    triggerMsgOk.value = false;
+    setTimeout(() => (triggerMsg.value = ""), 4000);
+  } finally {
+    moving.value = false;
+  }
+}
+
+async function saveDetail() {
+  if (!selectedElement.value?.pilotElementId) return;
+  savingDetail.value = true;
+  savedDetail.value = false;
+  saveDetailError.value = "";
+  const prevId = selectedElement.value.id;
+  try {
+    await api.put(`/pilot/data-elements/${selectedElement.value.pilotElementId}`, { fields: detailFields.value });
+    await store.selectPlaylist(selectedPlaylistId.value);
+    selectedElement.value = store.elements.find((e) => e.id === prevId) ?? null;
+    savedDetail.value = true;
+    setTimeout(() => (savedDetail.value = false), 2500);
+  } catch (e) {
+    saveDetailError.value = e.message;
+  } finally {
+    savingDetail.value = false;
+  }
+}
+
 async function onTrigger(action) {
   triggering.value = true;
   triggerMsg.value = "";
@@ -206,7 +345,7 @@ async function onTrigger(action) {
 </script>
 
 <style scoped>
-.mse-root { display: flex; flex-direction: column; height: calc(100vh - 60px); background: #0d0d1a; }
+.mse-root { display: flex; flex-direction: column; height: calc(100vh - 60px); background: #0d0d1a; overflow: hidden; }
 
 /* Toolbar */
 .toolbar {
@@ -245,8 +384,11 @@ async function onTrigger(action) {
 .feedback-bar.ok { background: #0e2b0e; color: #4caf50; border-bottom: 1px solid #1a4a1a; }
 .feedback-bar.err { background: #2b0e0e; color: #f44336; border-bottom: 1px solid #4a1a1a; }
 
+/* Body */
+.mse-body { display: flex; flex: 1; overflow: hidden; }
+
 /* Table */
-.table-wrap { flex: 1; overflow-y: auto; }
+.table-wrap { flex: 2; overflow-y: auto; }
 .playlist-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
 .playlist-table thead { position: sticky; top: 0; z-index: 1; }
 .playlist-table th {
@@ -266,6 +408,12 @@ async function onTrigger(action) {
 .playlist-table tr.row-selected.row-active td { background: #1e3055; }
 
 .col-ind { width: 24px; text-align: center; padding: 0 0.25rem; }
+.col-elid { width: 68px; font-family: monospace; font-size: 0.78rem; color: #7ec8e3; }
+
+.playlist-table tbody tr { cursor: grab; }
+.playlist-table tbody tr:active { cursor: grabbing; }
+.playlist-table tr.row-dragging td { opacity: 0.35; background: #0d0d1a !important; }
+.playlist-table tr.row-dragover td { border-top: 2px solid #7ec8e3; }
 .col-tpl { width: 110px; color: #7ec8e3; }
 .col-layer { width: 110px; }
 .col-ch { width: 100px; }
@@ -275,6 +423,51 @@ async function onTrigger(action) {
 .arrow-on { color: #4caf50; font-size: 0.7rem; }
 .el-icon { font-size: 0.7rem; margin-right: 0.25rem; opacity: 0.5; }
 .td-msg { text-align: center; color: #555; font-style: italic; padding: 1rem; }
+
+/* Detail panel */
+.detail-panel {
+  flex: 1; min-width: 260px; max-width: 380px;
+  display: flex; flex-direction: column;
+  background: #161625; border-left: 1px solid #2a2a3e;
+  overflow-y: auto;
+}
+.dp-title {
+  padding: 0.6rem 0.9rem; background: #1a1a2e;
+  font-size: 0.8rem; font-weight: bold; text-transform: uppercase;
+  letter-spacing: 0.05em; color: #aaa; border-bottom: 1px solid #2a2a3e;
+  flex-shrink: 0; position: sticky; top: 0; z-index: 1;
+}
+.dp-elname { text-transform: none; font-weight: normal; color: #7ec8e3; }
+.dp-section-label {
+  padding: 0.35rem 0.9rem; font-size: 0.7rem; text-transform: uppercase;
+  letter-spacing: 0.06em; color: #555; background: #111120;
+  border-bottom: 1px solid #1e1e30; border-top: 1px solid #1e1e30;
+  display: flex; align-items: center; gap: 0.5rem;
+}
+.dp-loading { font-size: 0.7rem; color: #444; font-style: italic; text-transform: none; }
+.dp-empty { padding: 0.75rem 0.9rem; color: #555; font-style: italic; font-size: 0.82rem; }
+.dp-empty-fields { padding: 0.5rem 0.9rem; color: #444; font-style: italic; font-size: 0.8rem; }
+
+.dp-meta { flex-shrink: 0; }
+.dp-meta-row { display: flex; align-items: baseline; gap: 0.5rem; padding: 0.3rem 0.9rem; border-bottom: 1px solid #1a1a28; }
+.dp-key { width: 68px; min-width: 68px; font-size: 0.72rem; color: #666; text-transform: uppercase; letter-spacing: 0.04em; }
+.dp-val { font-size: 0.82rem; color: #ccc; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.dp-val.mono { font-family: monospace; font-size: 0.78rem; color: #7ec8e3; }
+.val-ok { color: #4caf50 !important; }
+.val-no { color: #f44336 !important; }
+
+.dp-fields { flex: 1; overflow-y: auto; }
+.field-row { display: flex; align-items: center; gap: 0.5rem; padding: 0.35rem 0.9rem; border-bottom: 1px solid #1a1a28; }
+.field-label { width: 120px; min-width: 120px; font-size: 0.78rem; color: #888; font-family: monospace; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.field-input { flex: 1; background: #1e1e2e; color: #eee; border: 1px solid #333; padding: 0.28rem 0.45rem; border-radius: 4px; font-size: 0.83rem; min-width: 0; }
+.field-input:focus { outline: none; border-color: #2a5caa; }
+
+.dp-actions { padding: 0.65rem 0.9rem; display: flex; align-items: center; gap: 0.75rem; flex-shrink: 0; border-top: 1px solid #2a2a3e; background: #13131f; }
+.btn-save { background: #2a5caa; color: #fff; border: none; padding: 0.35rem 1rem; border-radius: 4px; cursor: pointer; font-size: 0.83rem; }
+.btn-save:hover:not(:disabled) { background: #3468c0; }
+.btn-save:disabled { opacity: 0.5; cursor: not-allowed; }
+.saved-msg { color: #4caf50; font-size: 0.8rem; }
+.error-msg { color: #f44336; font-size: 0.78rem; word-break: break-word; }
 
 /* Status bar */
 .status-bar {

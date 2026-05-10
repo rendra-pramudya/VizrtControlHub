@@ -44,7 +44,7 @@ async function getPlaylistElements(storageId) {
   const res = await axios.get(url, { headers: ATOM_HEADERS });
   const parsed = await xml2js.parseStringPromise(res.data, { explicitArray: true });
 
-  const elements = toArray(parsed.feed.entry).map((e) => {
+  const elements = toArray(parsed.feed.entry).map((e, i) => {
     const contentSrc = e.content?.[0]?.$?.src || null;
     const pilotMatch = contentSrc?.match(/\/dataelements\/(\d+)\/payload/);
     return {
@@ -54,9 +54,11 @@ async function getPlaylistElements(storageId) {
       availableStatus: e["viz:available_status"] ? parseFloat(e["viz:available_status"][0]) : null,
       loadedStatus: e["viz:loaded_status"] ? parseFloat(e["viz:loaded_status"][0]) : null,
       valid: e["viz:valid_element"]?.[0] === "yes",
+      channel: e["viz:channel"]?.[0] || null,
       editUrl: getLinkHref(e, "edit"),
       contentSrc,
       pilotElementId: pilotMatch ? pilotMatch[1] : null,
+      position: i,
       templateId: null,
       concept: null,
       variant: null,
@@ -177,6 +179,49 @@ async function addElementToPlaylist(storageId, hubUuid, fileName, vizLayer = "MI
   return { success: true };
 }
 
+async function moveElement(storageId, elementEditUrl, toIndex) {
+  const elements = await getPlaylistElements(storageId);
+  const fromIndex = elements.findIndex((el) => el.editUrl === elementEditUrl);
+  if (fromIndex === -1) throw new Error("Element not found in playlist");
+  if (toIndex < 0 || toIndex >= elements.length) throw new Error("Target index out of bounds");
+  if (fromIndex === toIndex) return { moved: false, reason: "Same position" };
+
+  // Use MSE native PATCH reorder — no delete, element UUID is preserved
+  const elementAtomId = `urn:uuid:${elements[fromIndex].id}`;
+
+  let destinationXml;
+  if (toIndex === 0) {
+    destinationXml = `<destination><top/></destination>`;
+  } else if (toIndex < fromIndex) {
+    destinationXml = `<destination><before><atomid>urn:uuid:${elements[toIndex].id}</atomid></before></destination>`;
+  } else {
+    destinationXml = `<destination><after><atomid>urn:uuid:${elements[toIndex].id}</atomid></after></destination>`;
+  }
+
+  const body = `<?xml version="1.0" encoding="UTF-8"?>
+<reorder xmlns="http://schema.vizrt.com/2018/atom-patch">
+  <entries>
+    <atomid>${elementAtomId}</atomid>
+  </entries>
+  ${destinationXml}
+</reorder>`;
+
+  const hierarchyUrl = `${getBaseUrl()}/hierarchy_collection/storage/playlists/%7B${storageId}%7D/`;
+  const patchRes = await axios.patch(hierarchyUrl, body, {
+    headers: {
+      "Content-Type": "application/vnd.vizrt.atom-reorder+xml",
+      Accept: "application/atom+xml",
+    },
+    validateStatus: () => true,
+  });
+
+  if (patchRes.status >= 400) {
+    throw new Error(`Reorder PATCH ${patchRes.status}\nURL: ${hierarchyUrl}\nBody:\n${body}\nResponse: ${String(patchRes.data).slice(0, 300)}`);
+  }
+
+  return { moved: true, from: fromIndex, to: toIndex };
+}
+
 async function triggerProfileAction(profile, action, elementEditUrl) {
   const url = `${getBaseUrl()}/profiles/${encodeURIComponent(profile)}/${action}`;
 
@@ -192,4 +237,4 @@ async function triggerProfileAction(profile, action, elementEditUrl) {
   };
 }
 
-module.exports = { getPlaylists, getPlaylistElements, getProfiles, getProfileState, triggerProfileAction, addElementToPlaylist, inspectPlaylistElements };
+module.exports = { getPlaylists, getPlaylistElements, getProfiles, getProfileState, triggerProfileAction, addElementToPlaylist, inspectPlaylistElements, moveElement };

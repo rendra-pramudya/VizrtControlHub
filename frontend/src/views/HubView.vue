@@ -57,8 +57,10 @@
               <tr>
                 <th class="col-icon"></th>
                 <th class="col-name">Name</th>
-                <th class="col-type">Type</th>
-                <th class="col-date">Modified</th>
+                <th class="col-uuid">UUID</th>
+                <th class="col-date">Date Created</th>
+                <th class="col-date">Date Modified</th>
+                <th class="col-owner">Owner</th>
               </tr>
             </thead>
             <tbody>
@@ -73,8 +75,10 @@
               >
                 <td class="col-icon"><span class="icon">{{ folderIcon(f.type) }}</span></td>
                 <td class="col-name">{{ f.name }}</td>
-                <td class="col-type">{{ f.type }}</td>
+                <td class="col-uuid" :title="f.uuid">{{ f.uuid }}</td>
+                <td class="col-date">—</td>
                 <td class="col-date">{{ fmtDate(f.updated) }}</td>
+                <td class="col-owner">—</td>
               </tr>
               <!-- Files -->
               <tr
@@ -96,12 +100,14 @@
                   <span v-else class="icon">{{ fileIcon(file.type) }}</span>
                 </td>
                 <td class="col-name">{{ file.name }}</td>
-                <td class="col-type">{{ typeLabel(file.type) }}</td>
+                <td class="col-uuid" :title="file.uuid">{{ file.uuid }}</td>
+                <td class="col-date">{{ fmtDate(file.published) }}</td>
                 <td class="col-date">{{ fmtDate(file.updated) }}</td>
+                <td class="col-owner">{{ file.owner || '—' }}</td>
               </tr>
               <!-- Empty state -->
               <tr v-if="!store.folders.length && !filteredFiles.length">
-                <td colspan="4" class="empty-row">This folder is empty.</td>
+                <td colspan="6" class="empty-row">This folder is empty.</td>
               </tr>
             </tbody>
           </table>
@@ -382,9 +388,10 @@ const FolderTreeNode = defineComponent({
 .content-table tr:hover td { background: #161625; }
 .content-table tr.selected td { background: #1e3055; }
 
-.col-icon { width: 36px; text-align: center; padding: 0.2rem; }
-.col-type { width: 110px; color: #888; }
-.col-date { width: 100px; color: #666; font-family: monospace; font-size: 0.78rem; }
+.col-icon  { width: 36px; text-align: center; padding: 0.2rem; }
+.col-uuid  { width: 260px; color: #555; font-family: monospace; font-size: 0.72rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 260px; }
+.col-date  { width: 96px; color: #666; font-family: monospace; font-size: 0.78rem; }
+.col-owner { width: 100px; color: #888; font-size: 0.78rem; }
 
 .thumb { width: 32px; height: 32px; object-fit: cover; border-radius: 2px; display: block; margin: auto; }
 .icon { font-size: 1rem; }

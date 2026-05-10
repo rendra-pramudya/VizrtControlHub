@@ -37,6 +37,13 @@ export const useMseStore = defineStore("mse", () => {
     return api.post(`/mse/profiles/${selectedProfile.value}/${action}`, { elementEditUrl });
   }
 
+  async function moveElement(elementEditUrl, toIndex) {
+    if (!selectedPlaylist.value) throw new Error("No active playlist selected");
+    const { storageId } = selectedPlaylist.value;
+    await api.post(`/mse/playlists/${storageId}/elements/move`, { elementEditUrl, toIndex });
+    elements.value = await api.get(`/mse/playlists/${storageId}/elements`);
+  }
+
   async function addElementToPlaylist(hubUuid, fileName, vizLayer = "MIDDLE") {
     if (!selectedPlaylist.value) throw new Error("No active playlist selected in MSE tab");
     const { storageId } = selectedPlaylist.value;
@@ -75,6 +82,6 @@ export const useMseStore = defineStore("mse", () => {
     playlists, selectedPlaylist, elements, profiles, selectedProfile, channelState, liveEvents,
     fetchPlaylists, selectPlaylist, fetchProfiles, fetchProfileState,
     triggerAction, startStatePolling, stopStatePolling, connectLive, disconnectLive,
-    addElementToPlaylist,
+    addElementToPlaylist, moveElement,
   };
 });
