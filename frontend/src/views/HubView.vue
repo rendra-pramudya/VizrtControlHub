@@ -48,7 +48,7 @@
         </div>
       </div>
 
-      <!-- Right: content table -->
+      <!-- Center: content table -->
       <div class="content-panel">
         <div v-if="store.loadingContent" class="loading-row">Loading...</div>
         <template v-else>
@@ -57,9 +57,8 @@
               <tr>
                 <th class="col-icon"></th>
                 <th class="col-name">Name</th>
-                <th class="col-uuid">UUID</th>
-                <th class="col-date">Date Created</th>
-                <th class="col-date">Date Modified</th>
+                <th class="col-type">Type</th>
+                <th class="col-date">Modified</th>
                 <th class="col-owner">Owner</th>
               </tr>
             </thead>
@@ -75,8 +74,7 @@
               >
                 <td class="col-icon"><span class="icon">{{ folderIcon(f.type) }}</span></td>
                 <td class="col-name">{{ f.name }}</td>
-                <td class="col-uuid" :title="f.uuid">{{ f.uuid }}</td>
-                <td class="col-date">—</td>
+                <td class="col-type">{{ typeLabel(f.type) }}</td>
                 <td class="col-date">{{ fmtDate(f.updated) }}</td>
                 <td class="col-owner">—</td>
               </tr>
@@ -100,18 +98,107 @@
                   <span v-else class="icon">{{ fileIcon(file.type) }}</span>
                 </td>
                 <td class="col-name">{{ file.name }}</td>
-                <td class="col-uuid" :title="file.uuid">{{ file.uuid }}</td>
-                <td class="col-date">{{ fmtDate(file.published) }}</td>
+                <td class="col-type">{{ typeLabel(file.type) }}</td>
                 <td class="col-date">{{ fmtDate(file.updated) }}</td>
                 <td class="col-owner">{{ file.owner || '—' }}</td>
               </tr>
               <!-- Empty state -->
               <tr v-if="!store.folders.length && !filteredFiles.length">
-                <td colspan="6" class="empty-row">This folder is empty.</td>
+                <td colspan="5" class="empty-row">This folder is empty.</td>
               </tr>
             </tbody>
           </table>
         </template>
+      </div>
+
+      <!-- Right: detail panel -->
+      <div class="detail-panel" :class="{ 'detail-panel--visible': !!selectedItem }">
+        <template v-if="selectedItem">
+          <div class="dp-header">
+            <span class="dp-type-badge">{{ typeLabel(selectedItem.type) }}</span>
+            <span class="dp-name" :title="selectedItem.name">{{ selectedItem.name }}</span>
+          </div>
+
+          <!-- Thumbnail -->
+          <div class="dp-thumb-wrap">
+            <img
+              v-if="selectedItem.thumbnailUrl"
+              :src="`/api/hub/thumbnail/${selectedItem.uuid}`"
+              class="dp-thumb"
+              :alt="selectedItem.name"
+            />
+            <div v-else class="dp-thumb-placeholder">
+              <span class="dp-big-icon">{{ selectedItem.childCount != null ? folderIcon(selectedItem.type) : fileIcon(selectedItem.type) }}</span>
+            </div>
+          </div>
+
+          <div class="dp-props">
+            <!-- Path (most important) -->
+            <div class="dp-row dp-row--path">
+              <div class="dp-label">Path</div>
+              <div class="dp-path-wrap">
+                <span class="dp-path">{{ selectedItemPath }}</span>
+                <button class="dp-copy" :class="{ copied: copied === 'path' }" @click="copyToClipboard(selectedItemPath, 'path')" title="Copy path">
+                  {{ copied === 'path' ? '✓' : '⎘' }}
+                </button>
+              </div>
+            </div>
+
+            <!-- UUID -->
+            <div class="dp-row">
+              <div class="dp-label">UUID</div>
+              <div class="dp-val-wrap">
+                <span class="dp-uuid">{{ selectedItem.uuid }}</span>
+                <button class="dp-copy" :class="{ copied: copied === 'uuid' }" @click="copyToClipboard(selectedItem.uuid, 'uuid')" title="Copy UUID">
+                  {{ copied === 'uuid' ? '✓' : '⎘' }}
+                </button>
+              </div>
+            </div>
+
+            <!-- Owner -->
+            <div class="dp-row" v-if="selectedItem.owner">
+              <div class="dp-label">Owner</div>
+              <div class="dp-val">{{ selectedItem.owner }}</div>
+            </div>
+
+            <!-- Created -->
+            <div class="dp-row" v-if="selectedItem.published">
+              <div class="dp-label">Created</div>
+              <div class="dp-val dp-date">{{ fmtDate(selectedItem.published) }}</div>
+            </div>
+
+            <!-- Modified -->
+            <div class="dp-row" v-if="selectedItem.updated">
+              <div class="dp-label">Modified</div>
+              <div class="dp-val dp-date">{{ fmtDate(selectedItem.updated) }}</div>
+            </div>
+
+            <!-- Children (folders) -->
+            <div class="dp-row" v-if="selectedItem.childCount != null">
+              <div class="dp-label">Children</div>
+              <div class="dp-val">{{ selectedItem.childCount }}</div>
+            </div>
+          </div>
+
+          <!-- Actions -->
+          <div class="dp-actions">
+            <button v-if="selectedItem.childCount != null" class="dp-btn dp-btn--primary" @click="store.navigateTo(selectedItem.uuid)">
+              Open Folder →
+            </button>
+            <template v-else>
+              <div v-if="mseStore.selectedPlaylist" class="dp-playlist-label">
+                → {{ mseStore.selectedPlaylist.name }}
+              </div>
+              <div v-if="mseStore.selectedPlaylist" class="dp-layer-btns">
+                <button class="dp-btn" @click="sendToPlaylistDirect('MIDDLE')">Middle</button>
+                <button class="dp-btn" @click="sendToPlaylistDirect('FRONT')">Front</button>
+                <button class="dp-btn" @click="sendToPlaylistDirect('BACK')">Back</button>
+              </div>
+              <div v-else class="dp-hint">Open MSE tab and select a playlist to add</div>
+            </template>
+          </div>
+        </template>
+        <div v-else class="dp-empty">Select an item to view details</div>
       </div>
 
     </div>
@@ -136,15 +223,6 @@
     <!-- Toast notification -->
     <div v-if="toast.visible" class="toast" :class="toast.type">{{ toast.message }}</div>
 
-    <!-- Detail strip (bottom) -->
-    <div v-if="selectedItem" class="detail-bar">
-      <span class="det-icon">{{ selectedItem.type === 'Project' || selectedItem.childCount != null ? folderIcon(selectedItem.type) : fileIcon(selectedItem.type) }}</span>
-      <span class="det-name">{{ selectedItem.name }}</span>
-      <span class="det-type">{{ typeLabel(selectedItem.type) }}</span>
-      <span class="det-date">{{ fmtDate(selectedItem.updated) }}</span>
-      <button v-if="selectedItem.childCount != null" class="det-open" @click="store.navigateTo(selectedItem.uuid)">Open →</button>
-    </div>
-
   </div>
 </template>
 
@@ -158,10 +236,39 @@ const mseStore = useMseStore();
 const selectedItem = ref(null);
 const rootFolders = ref([]);
 const filterType = ref("ALL");
+const copied = ref(null);
+let copiedTimer = null;
 
 const ctxMenu = ref({ visible: false, x: 0, y: 0, file: null });
 const toast = ref({ visible: false, message: "", type: "success" });
 let toastTimer = null;
+
+const selectedItemPath = computed(() => {
+  if (!selectedItem.value) return "";
+  const parts = store.breadcrumbs.map((b) => b.name);
+  parts.push(selectedItem.value.name);
+  return parts.join("/");
+});
+
+function copyToClipboard(text, key) {
+  navigator.clipboard.writeText(text).catch(() => {});
+  copied.value = key;
+  if (copiedTimer) clearTimeout(copiedTimer);
+  copiedTimer = setTimeout(() => { copied.value = null; }, 1500);
+}
+
+async function sendToPlaylistDirect(vizLayer) {
+  if (!mseStore.selectedPlaylist || !selectedItem.value) return;
+  const file = selectedItem.value;
+  const playlistName = mseStore.selectedPlaylist.name;
+  try {
+    const scenePath = file.type === "SCENE" ? selectedItemPath.value : null;
+    await mseStore.addElementToPlaylist(file.uuid, file.name, vizLayer, scenePath);
+    showToast(`"${file.name}" added to ${playlistName} (${vizLayer})`, "success");
+  } catch (err) {
+    showToast(err.message, "error");
+  }
+}
 
 const TYPE_GROUPS = {
   Scene:    ["SCENE"],
@@ -195,7 +302,8 @@ async function sendToPlaylist(vizLayer) {
   const file = ctxMenu.value.file;
   const playlistName = mseStore.selectedPlaylist.name;
   try {
-    await mseStore.addElementToPlaylist(file.uuid, file.name, vizLayer);
+    const scenePath = file.type === "SCENE" ? selectedItemPath.value : null;
+    await mseStore.addElementToPlaylist(file.uuid, file.name, vizLayer, scenePath);
     showToast(`"${file.name}" added to ${playlistName} (${vizLayer})`, "success");
   } catch (err) {
     showToast(err.message, "error");
@@ -223,6 +331,7 @@ onMounted(async () => {
 onUnmounted(() => {
   document.removeEventListener("mousedown", onDocMousedown);
   if (toastTimer) clearTimeout(toastTimer);
+  if (copiedTimer) clearTimeout(copiedTimer);
 });
 
 const totalItems = computed(() => store.folders.length + filteredFiles.value.length);
@@ -338,8 +447,7 @@ const FolderTreeNode = defineComponent({
 .sep { color: #444; }
 .filter-select {
   background: #111122; color: #aaa; border: 1px solid #333;
-  padding: 0.2rem 0.4rem; border-radius: 3px; font-size: 0.75rem;
-  flex-shrink: 0;
+  padding: 0.2rem 0.4rem; border-radius: 3px; font-size: 0.75rem; flex-shrink: 0;
 }
 .item-count { color: #555; font-size: 0.75rem; white-space: nowrap; }
 
@@ -348,7 +456,7 @@ const FolderTreeNode = defineComponent({
 
 /* Left tree */
 .tree-panel {
-  width: 220px; min-width: 160px; flex-shrink: 0;
+  width: 200px; min-width: 140px; flex-shrink: 0;
   background: #111120; border-right: 1px solid #1e1e30;
   display: flex; flex-direction: column;
 }
@@ -371,8 +479,8 @@ const FolderTreeNode = defineComponent({
 :deep(.tree-label) { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 0.8rem; }
 :deep(.tree-count) { font-size: 0.65rem; color: #555; flex-shrink: 0; }
 
-/* Right content */
-.content-panel { flex: 1; overflow-y: auto; }
+/* Center content */
+.content-panel { flex: 2; overflow-y: auto; min-width: 0; }
 .content-table { width: 100%; border-collapse: collapse; }
 .content-table thead { position: sticky; top: 0; z-index: 1; }
 .content-table th {
@@ -389,9 +497,9 @@ const FolderTreeNode = defineComponent({
 .content-table tr.selected td { background: #1e3055; }
 
 .col-icon  { width: 36px; text-align: center; padding: 0.2rem; }
-.col-uuid  { width: 260px; color: #555; font-family: monospace; font-size: 0.72rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 260px; }
-.col-date  { width: 96px; color: #666; font-family: monospace; font-size: 0.78rem; }
-.col-owner { width: 100px; color: #888; font-size: 0.78rem; }
+.col-type  { width: 90px; color: #777; font-size: 0.75rem; }
+.col-date  { width: 90px; color: #666; font-family: monospace; font-size: 0.78rem; }
+.col-owner { width: 90px; color: #888; font-size: 0.78rem; }
 
 .thumb { width: 32px; height: 32px; object-fit: cover; border-radius: 2px; display: block; margin: auto; }
 .icon { font-size: 1rem; }
@@ -400,22 +508,88 @@ const FolderTreeNode = defineComponent({
 .empty-row { text-align: center; color: #444; font-style: italic; padding: 2rem !important; }
 .loading-row { text-align: center; color: #555; padding: 2rem; font-style: italic; }
 
-/* Detail bar */
-.detail-bar {
-  display: flex; align-items: center; gap: 0.75rem;
-  background: #111120; border-top: 1px solid #1e1e30;
-  padding: 0.3rem 0.75rem; flex-shrink: 0; min-height: 30px;
+/* ── Right detail panel ── */
+.detail-panel {
+  width: 0; flex-shrink: 0; overflow: hidden;
+  background: #10101e; border-left: 1px solid #1e1e30;
+  display: flex; flex-direction: column;
+  transition: width 0.18s ease;
 }
-.det-icon { font-size: 0.9rem; }
-.det-name { color: #eee; font-weight: 500; }
-.det-type { color: #888; font-size: 0.78rem; background: #1a1a2e; padding: 0.1rem 0.4rem; border-radius: 3px; }
-.det-date { color: #555; font-size: 0.78rem; font-family: monospace; }
-.det-open {
-  margin-left: auto; background: #1e3a5c; color: #7ec8e3;
-  border: 1px solid #2a5caa; padding: 0.2rem 0.6rem; border-radius: 3px;
-  cursor: pointer; font-size: 0.78rem;
+.detail-panel--visible { width: 280px; }
+
+.dp-header {
+  padding: 0.7rem 0.8rem 0.5rem;
+  border-bottom: 1px solid #1e1e30; flex-shrink: 0;
 }
-.det-open:hover { background: #2a4e7c; }
+.dp-type-badge {
+  display: inline-block; background: #1a2a3a; color: #7ec8e3;
+  font-size: 0.68rem; padding: 0.1rem 0.45rem; border-radius: 3px;
+  letter-spacing: 0.04em; margin-bottom: 0.3rem;
+}
+.dp-name {
+  display: block; color: #eee; font-weight: 600; font-size: 0.88rem;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+
+.dp-thumb-wrap {
+  flex-shrink: 0; background: #0a0a16; border-bottom: 1px solid #1a1a2e;
+  display: flex; align-items: center; justify-content: center;
+  height: 140px;
+}
+.dp-thumb { max-width: 100%; max-height: 140px; object-fit: contain; }
+.dp-thumb-placeholder { display: flex; align-items: center; justify-content: center; width: 100%; height: 100%; }
+.dp-big-icon { font-size: 3rem; opacity: 0.3; }
+
+.dp-props { flex: 1; overflow-y: auto; padding: 0.5rem 0; }
+
+.dp-row {
+  display: flex; align-items: flex-start; gap: 0.4rem;
+  padding: 0.3rem 0.8rem; border-bottom: 1px solid #13131f;
+}
+.dp-row--path { flex-direction: column; gap: 0.25rem; }
+.dp-label {
+  font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.04em;
+  color: #555; flex-shrink: 0; padding-top: 0.05rem;
+}
+.dp-row--path .dp-label { color: #7ec8e3; font-size: 0.7rem; }
+.dp-val { color: #ccc; font-size: 0.8rem; word-break: break-all; }
+.dp-uuid { font-family: monospace; font-size: 0.7rem; color: #777; word-break: break-all; }
+.dp-date { font-family: monospace; font-size: 0.78rem; color: #888; }
+
+.dp-path-wrap, .dp-val-wrap {
+  display: flex; align-items: flex-start; gap: 0.3rem; width: 100%;
+}
+.dp-path {
+  font-family: monospace; font-size: 0.78rem; color: #c8e6ff;
+  word-break: break-all; flex: 1; line-height: 1.4;
+}
+.dp-copy {
+  flex-shrink: 0; background: #1a1a2e; border: 1px solid #2a2a40;
+  color: #666; width: 22px; height: 22px; border-radius: 3px;
+  cursor: pointer; font-size: 0.75rem; display: flex; align-items: center; justify-content: center;
+  transition: color 0.2s, border-color 0.2s;
+}
+.dp-copy:hover { color: #aaa; border-color: #444; }
+.dp-copy.copied { color: #81c784; border-color: #2e7d32; }
+
+.dp-actions {
+  flex-shrink: 0; padding: 0.65rem 0.8rem;
+  border-top: 1px solid #1e1e30; display: flex; flex-direction: column; gap: 0.4rem;
+}
+.dp-playlist-label {
+  font-size: 0.72rem; color: #7ec8e3; white-space: nowrap;
+  overflow: hidden; text-overflow: ellipsis;
+}
+.dp-layer-btns { display: flex; gap: 0.3rem; }
+.dp-btn {
+  flex: 1; background: #1a2a3a; color: #9ec8e8; border: 1px solid #2a4a6a;
+  padding: 0.3rem 0.5rem; border-radius: 3px; cursor: pointer; font-size: 0.75rem;
+}
+.dp-btn:hover { background: #1e3a5a; }
+.dp-btn--primary { background: #1e3a5c; color: #7ec8e3; border-color: #2a5caa; flex: none; }
+.dp-btn--primary:hover { background: #2a4e7c; }
+.dp-hint { font-size: 0.72rem; color: #444; font-style: italic; }
+.dp-empty { flex: 1; display: flex; align-items: center; justify-content: center; color: #2a2a40; font-style: italic; font-size: 0.8rem; }
 
 /* Context menu */
 .ctx-menu {

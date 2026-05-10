@@ -44,10 +44,10 @@ export const useMseStore = defineStore("mse", () => {
     elements.value = await api.get(`/mse/playlists/${storageId}/elements`);
   }
 
-  async function addElementToPlaylist(hubUuid, fileName, vizLayer = "MIDDLE") {
+  async function addElementToPlaylist(hubUuid, fileName, vizLayer = "MIDDLE", scenePath = null) {
     if (!selectedPlaylist.value) throw new Error("No active playlist selected in MSE tab");
     const { storageId } = selectedPlaylist.value;
-    await api.post(`/mse/playlists/${storageId}/elements`, { hubUuid, fileName, vizLayer });
+    await api.post(`/mse/playlists/${storageId}/elements`, { hubUuid, fileName, vizLayer, scenePath });
     elements.value = await api.get(`/mse/playlists/${storageId}/elements`);
   }
 

@@ -100,7 +100,7 @@
             </td>
             <td class="col-elid">{{ el.pilotElementId ? el.pilotElementId.slice(0, 8) : '—' }}</td>
             <td class="col-desc">
-              <span class="el-icon">🖼</span> {{ el.name }}
+              <span class="el-icon">{{ el.elementType === 'viz_scene' || el.elementType === 'viz_commands' ? '🎬' : '🖼' }}</span> {{ el.name }}
             </td>
             <td class="col-tpl">{{ el.templateId ?? '—' }}</td>
             <td class="col-layer">—</td>
@@ -156,6 +156,34 @@
             <span v-if="saveDetailError" class="error-msg">{{ saveDetailError }}</span>
           </div>
         </template>
+
+        <!-- Scene element -->
+        <template v-else-if="selectedElement.elementType === 'viz_commands' || selectedElement.elementType === 'viz_scene'">
+          <div class="dp-section-label">
+            Scene
+            <span v-if="loadingScene" class="dp-loading">loading…</span>
+          </div>
+          <div class="dp-meta">
+            <div class="dp-meta-row">
+              <span class="dp-key">Type</span>
+              <span class="dp-val">{{ selectedElement.elementType === 'viz_scene' ? 'Viz Scene (VCP)' : 'Viz Commands' }}</span>
+            </div>
+            <div class="dp-meta-row dp-scene-path-row" v-if="sceneInfo.scenePath">
+              <span class="dp-key">Path</span>
+              <span class="dp-scene-path">{{ sceneInfo.scenePath }}</span>
+              <button class="dp-copy-btn" :class="{ copied: copiedScene }" @click="copyScenePath" title="Copy scene path">
+                {{ copiedScene ? '✓' : '⎘' }}
+              </button>
+            </div>
+            <div class="dp-meta-row" v-else-if="!loadingScene">
+              <span class="dp-key">Path</span>
+              <span class="dp-val" style="color:#555; font-style:italic">
+                {{ selectedElement.elementType === 'viz_scene' ? 'Not accessible via REST' : '—' }}
+              </span>
+            </div>
+          </div>
+        </template>
+
         <template v-else>
           <div class="dp-empty">No Pilot data element linked.</div>
         </template>
@@ -216,19 +244,46 @@ const savingDetail = ref(false);
 const savedDetail = ref(false);
 const saveDetailError = ref("");
 
+const sceneInfo = ref({ elementType: null, scenePath: null });
+const loadingScene = ref(false);
+const copiedScene = ref(false);
+let copiedSceneTimer = null;
+
+function copyScenePath() {
+  if (!sceneInfo.value.scenePath) return;
+  navigator.clipboard.writeText(sceneInfo.value.scenePath).catch(() => {});
+  copiedScene.value = true;
+  if (copiedSceneTimer) clearTimeout(copiedSceneTimer);
+  copiedSceneTimer = setTimeout(() => { copiedScene.value = false; }, 1500);
+}
+
 watch(selectedElement, async (el) => {
   detailFields.value = [];
+  sceneInfo.value = { elementType: null, scenePath: null };
   savedDetail.value = false;
   saveDetailError.value = "";
-  if (!el?.pilotElementId) return;
-  loadingDetail.value = true;
-  try {
-    const data = await api.get(`/pilot/data-elements/${el.pilotElementId}`);
-    detailFields.value = data.fields.map((f) => ({ ...f }));
-  } catch {
-    detailFields.value = [];
-  } finally {
-    loadingDetail.value = false;
+  if (!el) return;
+
+  if (el.pilotElementId) {
+    loadingDetail.value = true;
+    try {
+      const data = await api.get(`/pilot/data-elements/${el.pilotElementId}`);
+      detailFields.value = data.fields.map((f) => ({ ...f }));
+    } catch {
+      detailFields.value = [];
+    } finally {
+      loadingDetail.value = false;
+    }
+  } else if (el.editUrl && (el.elementType === "viz_commands" || el.elementType === "viz_scene")) {
+    loadingScene.value = true;
+    try {
+      const data = await api.get(`/mse/element/content?editUrl=${encodeURIComponent(el.editUrl)}`);
+      sceneInfo.value = data;
+    } catch {
+      sceneInfo.value = { elementType: el.elementType, scenePath: null };
+    } finally {
+      loadingScene.value = false;
+    }
   }
 });
 
@@ -461,6 +516,20 @@ async function onTrigger(action) {
 .field-label { width: 120px; min-width: 120px; font-size: 0.78rem; color: #888; font-family: monospace; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .field-input { flex: 1; background: #1e1e2e; color: #eee; border: 1px solid #333; padding: 0.28rem 0.45rem; border-radius: 4px; font-size: 0.83rem; min-width: 0; }
 .field-input:focus { outline: none; border-color: #2a5caa; }
+
+.dp-scene-path-row { align-items: flex-start; gap: 0.4rem; }
+.dp-scene-path {
+  font-family: monospace; font-size: 0.78rem; color: #c8e6ff;
+  word-break: break-all; flex: 1; line-height: 1.45;
+}
+.dp-copy-btn {
+  flex-shrink: 0; background: #1a1a2e; border: 1px solid #2a2a40;
+  color: #666; width: 20px; height: 20px; border-radius: 3px;
+  cursor: pointer; font-size: 0.72rem; display: flex; align-items: center; justify-content: center;
+  margin-top: 0.05rem;
+}
+.dp-copy-btn:hover { color: #aaa; border-color: #444; }
+.dp-copy-btn.copied { color: #4caf50; border-color: #2e7d32; }
 
 .dp-actions { padding: 0.65rem 0.9rem; display: flex; align-items: center; gap: 0.75rem; flex-shrink: 0; border-top: 1px solid #2a2a3e; background: #13131f; }
 .btn-save { background: #2a5caa; color: #fff; border: none; padding: 0.35rem 1rem; border-radius: 4px; cursor: pointer; font-size: 0.83rem; }

@@ -52,6 +52,17 @@ router.get("/profiles/:profile/state", async (req, res) => {
   }
 });
 
+// GET /api/mse/element/content?editUrl=... — fetch scene path from element payload
+router.get("/element/content", async (req, res) => {
+  const { editUrl } = req.query;
+  if (!editUrl) return res.status(400).json({ error: "editUrl is required" });
+  try {
+    res.json(await mseService.getElementContent(editUrl));
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // POST /api/mse/playlists/:storageId/elements/move
 // body: { elementEditUrl, direction: 'up'|'down' }
 router.post("/playlists/:storageId/elements/move", async (req, res) => {
@@ -72,12 +83,12 @@ router.post("/playlists/:storageId/elements/move", async (req, res) => {
 // body: { title, contentSrc }
 router.post("/playlists/:storageId/elements", async (req, res) => {
   const { storageId } = req.params;
-  const { hubUuid, fileName, vizLayer } = req.body;
+  const { hubUuid, fileName, vizLayer, scenePath } = req.body;
   if (!hubUuid || !fileName) {
     return res.status(400).json({ error: "hubUuid and fileName are required" });
   }
   try {
-    res.json(await mseService.addElementToPlaylist(storageId, hubUuid, fileName, vizLayer || "MIDDLE"));
+    res.json(await mseService.addElementToPlaylist(storageId, hubUuid, fileName, vizLayer || "MIDDLE", scenePath || null));
   } catch (err) {
     console.error("[addElementToPlaylist]", err.message);
     res.status(500).json({ error: err.message });
