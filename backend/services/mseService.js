@@ -326,4 +326,35 @@ async function getElementContent(editUrl) {
   }
 }
 
-module.exports = { getPlaylists, getPlaylistElements, getProfiles, getProfileState, triggerProfileAction, addElementToPlaylist, inspectPlaylistElements, moveElement, getElementContent };
+async function getPreviewImage(payloadUrl, scenePath, width = 320, height = 180) {
+  const config = require("../../config");
+  const ps = config.previewServer;
+  if (!ps?.host || !ps?.port) throw new Error("previewServer not configured in config.js");
+
+  const previewBase = `http://${ps.host}:${ps.port}`;
+  const snapshotXml = `<snapshotrequest xmlns="http://www.vizrt.com/snapshotrequest"><position><fposition>0</fposition></position><videomoderequest><width>${width}</width><height>${height}</height></videomoderequest><snapshotdata view="all"/></snapshotrequest>`;
+
+  let fetchUrl;
+  if (payloadUrl) {
+    fetchUrl = `${previewBase}/api/preview/snapshot?s=${encodeURIComponent(snapshotXml)}&u=${encodeURIComponent(payloadUrl)}`;
+  } else if (scenePath) {
+    const payloadXml = `<payload xmlns="http://www.vizrt.com/types" xmlns:bgfx="http://www.vizrt.com/2011/bgfx"><bgfx:sceneinfo><bgfx:scenepath>SCENE*${scenePath}</bgfx:scenepath></bgfx:sceneinfo></payload>`;
+    fetchUrl = `${previewBase}/api/preview/snapshot?s=${encodeURIComponent(snapshotXml)}&p=${encodeURIComponent(payloadXml)}`;
+  } else {
+    throw new Error("payloadUrl or scenePath is required");
+  }
+
+  const res = await axios.get(fetchUrl, {
+    responseType: "arraybuffer",
+    validateStatus: () => true,
+  });
+
+  if (res.status !== 200) {
+    const msg = Buffer.from(res.data).toString("utf8").slice(0, 300);
+    throw new Error(`Preview server ${res.status}: ${msg}`);
+  }
+
+  return Buffer.from(res.data);
+}
+
+module.exports = { getPlaylists, getPlaylistElements, getProfiles, getProfileState, triggerProfileAction, addElementToPlaylist, inspectPlaylistElements, moveElement, getElementContent, getPreviewImage };

@@ -4,6 +4,9 @@ const { z } = require("zod");
 const axios = require("axios");
 const xml2js = require("xml2js");
 const net = require("net");
+const fs   = require("fs");
+const os   = require("os");
+const path = require("path");
 const config = require("../config.js");
 
 // ── Viz Engine TCP helper ────────────────────────────────────────────────────
@@ -66,6 +69,9 @@ function extractStorageId(url) {
 }
 async function parseAtom(data) {
   return xml2js.parseStringPromise(data, { explicitArray: true });
+}
+function stripDataPrefix(path) {
+  return path ? path.replace(/^data\//i, "") : path;
 }
 
 // ── server ───────────────────────────────────────────────────────────────────
@@ -212,6 +218,134 @@ server.tool(
         }, null, 2),
       }],
     };
+  }
+);
+
+server.tool(
+  "mse_add_scene_by_path",
+  "Add a Viz Engine scene to an MSE playlist using its scene path (e.g. 'ShowName/Folder/Scene'). Tries viz_scene payload first, falls back to viz-commands with SET_OBJECT SCENE*. The 'data/' prefix is stripped automatically.",
+  {
+    storageId: z.string().describe("Playlist storageId from mse_list_playlists"),
+    scenePath: z.string().describe("Viz Engine scene path, e.g. 'AJEnglish/40_RESOURCE/Scene1'. 'data/' prefix is stripped automatically."),
+    name:      z.string().describe("Display name for the element in the playlist"),
+    vizLayer:  z.enum(["MIDDLE", "FRONT", "BACK"]).default("MIDDLE").describe("Which renderer layer to target"),
+  },
+  async ({ storageId, scenePath, name, vizLayer }) => {
+    const rendererMap = { MIDDLE: "RENDERER", FRONT: "RENDERER*FRONT_LAYER", BACK: "RENDERER*BACK_LAYER" };
+    const renderer   = rendererMap[vizLayer];
+    const cleanScene = stripDataPrefix(scenePath);
+    const safeTitle  = name.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    const safeScene  = cleanScene.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    const collectionUrl = `${MSE}/element_collection/storage/playlists/%7B${storageId}%7D/`;
+
+    // Attempt 1: viz_scene payload
+    const vizSceneBody = `<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+  <title>${safeTitle}</title>
+  <content type="application/vnd.vizrt.payload+xml">
+    <payload xmlns="http://www.vizrt.com/types">
+      <field name="viz_scene"><value>${safeScene}</value></field>
+      <field name="viz_layer"><value>${vizLayer}</value></field>
+    </payload>
+  </content>
+</entry>`;
+
+    const sceneRes = await axios.post(collectionUrl, vizSceneBody, {
+      headers: { "Content-Type": "application/atom+xml;type=entry" },
+      validateStatus: s => s < 500,
+    });
+    if (sceneRes.status < 400) {
+      return { content: [{ type: "text", text: `Added "${name}" as viz_scene (layer: ${vizLayer}, path: ${cleanScene}).` }] };
+    }
+
+    // Fallback: viz-commands
+    const vizCommand = `0 ${renderer} SET_OBJECT SCENE*${safeScene}`;
+    const modelUrl   = `${MSE}/models/vdf/system/default-templates/mastertemplates/viz-commands`;
+    const cmdBody = `<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom">
+  <title>${safeTitle}</title>
+  <content type="application/vnd.vizrt.payload+xml">
+    <payload xmlns="http://www.vizrt.com/types" model="${modelUrl}">
+      <field name="viz-custom-commands"><value>${vizCommand}</value></field>
+    </payload>
+  </content>
+</entry>`;
+
+    const res = await axios.post(collectionUrl, cmdBody, {
+      headers: { "Content-Type": "application/atom+xml;type=entry" },
+      validateStatus: s => s < 500,
+    });
+    if (res.status >= 400) throw new Error(`MSE error ${res.status}: ${String(res.data).slice(0, 300)}`);
+    return { content: [{ type: "text", text: `Added "${name}" as viz-commands (layer: ${vizLayer}, path: ${cleanScene}).` }] };
+  }
+);
+
+server.tool(
+  "mse_delete_element",
+  "Delete an element from an MSE playlist by its editUrl. Get the editUrl from mse_list_elements.",
+  {
+    elementEditUrl: z.string().describe("Element editUrl from mse_list_elements"),
+  },
+  async ({ elementEditUrl }) => {
+    const res = await axios.delete(elementEditUrl, {
+      headers: ATOM,
+      validateStatus: s => s < 500,
+    });
+    if (res.status >= 400) throw new Error(`MSE DELETE ${res.status}: ${String(res.data).slice(0, 300)}`);
+    return { content: [{ type: "text", text: JSON.stringify({ deleted: true, status: res.status, elementEditUrl }) }] };
+  }
+);
+
+server.tool(
+  "mse_move_element",
+  "Reorder an element within an MSE playlist to a specific index. Uses the native MSE PATCH hierarchy_collection reorder API — the element UUID is preserved.",
+  {
+    storageId:      z.string().describe("Playlist storageId from mse_list_playlists"),
+    elementEditUrl: z.string().describe("Element editUrl from mse_list_elements"),
+    toIndex:        z.number().int().min(0).describe("Target zero-based position in the playlist"),
+  },
+  async ({ storageId, elementEditUrl, toIndex }) => {
+    const url = `${MSE}/element_collection/storage/playlists/%7B${storageId}%7D/`;
+    const res = await axios.get(url, { headers: ATOM });
+    const p   = await parseAtom(res.data);
+    const elements = toArray(p.feed.entry).map((e, i) => ({
+      id:      e.id[0].replace("urn:uuid:", ""),
+      editUrl: linkHref(e, "edit"),
+      position: i,
+    }));
+
+    const fromIndex = elements.findIndex(el => el.editUrl === elementEditUrl);
+    if (fromIndex === -1) throw new Error("Element not found in playlist");
+    if (toIndex < 0 || toIndex >= elements.length) throw new Error(`Target index ${toIndex} out of bounds (0–${elements.length - 1})`);
+    if (fromIndex === toIndex) return { content: [{ type: "text", text: JSON.stringify({ moved: false, reason: "Already at target position" }) }] };
+
+    const elementAtomId = `urn:uuid:${elements[fromIndex].id}`;
+    let destinationXml;
+    if (toIndex === 0) {
+      destinationXml = `<destination><top/></destination>`;
+    } else if (toIndex < fromIndex) {
+      destinationXml = `<destination><before><atomid>urn:uuid:${elements[toIndex].id}</atomid></before></destination>`;
+    } else {
+      destinationXml = `<destination><after><atomid>urn:uuid:${elements[toIndex].id}</atomid></after></destination>`;
+    }
+
+    const body = `<?xml version="1.0" encoding="UTF-8"?>
+<reorder xmlns="http://schema.vizrt.com/2018/atom-patch">
+  <entries>
+    <atomid>${elementAtomId}</atomid>
+  </entries>
+  ${destinationXml}
+</reorder>`;
+
+    const hierarchyUrl = `${MSE}/hierarchy_collection/storage/playlists/%7B${storageId}%7D/`;
+    const patchRes = await axios.patch(hierarchyUrl, body, {
+      headers: { "Content-Type": "application/vnd.vizrt.atom-reorder+xml", Accept: "application/atom+xml" },
+      validateStatus: () => true,
+    });
+    if (patchRes.status >= 400) {
+      throw new Error(`Reorder PATCH ${patchRes.status}: ${String(patchRes.data).slice(0, 300)}`);
+    }
+    return { content: [{ type: "text", text: JSON.stringify({ moved: true, from: fromIndex, to: toIndex }) }] };
   }
 );
 
@@ -692,6 +826,70 @@ server.tool(
   }
 );
 
+server.tool(
+  "hub_get_file_info",
+  "Find a file in Viz Graphic Hub by its UUID and return its name and full folder path. Walks the Hub folder tree via BFS starting from the given folder (or root). Provide startFolderUuid to narrow the search. Returns scenePath with 'data/' prefix stripped — ready for Viz Engine SET_OBJECT commands.",
+  {
+    uuid:            z.string().describe("File UUID to look up"),
+    startFolderUuid: z.string().optional().describe("Folder UUID to start the search from; omit to search from root"),
+    maxDepth:        z.number().int().min(1).max(10).default(5).describe("Maximum folder depth to search (default: 5)"),
+  },
+  async ({ uuid, startFolderUuid, maxDepth = 5 }) => {
+    const ROOT      = "00000000-0000-0000-0000-000000000000";
+    const startUuid = startFolderUuid || ROOT;
+    const queue     = [{ folderUuid: startUuid, path: [], depth: 0 }];
+
+    while (queue.length > 0) {
+      const { folderUuid, path, depth } = queue.shift();
+
+      const filesRes = await axios.get(`${HUB}/files/${folderUuid}`, {
+        headers: ATOM, auth: HUB_AUTH, validateStatus: s => s < 500,
+      });
+      if (filesRes.status < 400) {
+        const fp    = await parseAtom(filesRes.data);
+        const files = toArray(fp.feed?.entry || []);
+        for (const f of files) {
+          const fileUuid = f.id[0].replace("urn:uuid:", "");
+          if (fileUuid === uuid) {
+            const name       = f.title[0]._ || f.title[0];
+            const folderPath = path.join("/");
+            const fullPath   = [...path, name].join("/");
+            const scenePath  = stripDataPrefix(fullPath);
+            return {
+              content: [{
+                type: "text",
+                text: JSON.stringify({ uuid, name, folderPath, fullPath, scenePath }, null, 2),
+              }],
+            };
+          }
+        }
+      }
+
+      if (depth < maxDepth) {
+        const foldersRes = await axios.get(`${HUB}/folders/${folderUuid}`, {
+          headers: ATOM, auth: HUB_AUTH, validateStatus: s => s < 500,
+        });
+        if (foldersRes.status < 400) {
+          const foldP   = await parseAtom(foldersRes.data);
+          const folders = toArray(foldP.feed?.entry || []);
+          for (const folder of folders) {
+            const folderName  = folder.title[0]._ || folder.title[0];
+            const childUuid   = folder.id[0].replace("urn:uuid:", "");
+            queue.push({ folderUuid: childUuid, path: [...path, folderName], depth: depth + 1 });
+          }
+        }
+      }
+    }
+
+    return {
+      content: [{
+        type: "text",
+        text: JSON.stringify({ uuid, found: false, message: `File not found within depth ${maxDepth} from folder ${startUuid}` }, null, 2),
+      }],
+    };
+  }
+);
+
 // ════════════════════════════════════════════════════════════════════════════
 // VIZ ENGINE — DIRECT TCP CONTROL
 // ════════════════════════════════════════════════════════════════════════════
@@ -741,6 +939,85 @@ server.tool(
         })), null, 2),
       }],
     };
+  }
+);
+
+// ════════════════════════════════════════════════════════════════════════════
+// VIZ ENGINE — FRAME GRAB
+// ════════════════════════════════════════════════════════════════════════════
+
+server.tool(
+  "viz_grab_frame",
+  "Capture the current Viz Engine output as a PNG image and return it inline. Use this to see what is currently rendered after building or modifying a scene. Returns an image content block that the LLM can view directly. Optional inputs: engineId (which engine, defaults to first enabled), width and height (default to engine's native output resolution). Use after building/modifying scenes to verify the visual result, especially when iterating on layout, color, or text content.",
+  {
+    engineId: z.string().optional().describe("Engine ID from config; defaults to first enabled engine"),
+    width:    z.number().optional().describe("Output width in pixels (e.g. 960 for thumbnails)"),
+    height:   z.number().optional().describe("Output height in pixels"),
+  },
+  async ({ engineId, width, height }) => {
+    const engines = config.engine.filter(e => e.enabled);
+    if (!engines.length) throw new Error("No enabled Viz Engines in config.");
+    const engine = engineId ? (engines.find(e => e.id === engineId) || engines[0]) : engines[0];
+
+    // Phase 3: try the preview server first (no engine TCP round-trip)
+    const ps = config.previewServer;
+    if (ps?.host && ps?.port) {
+      const previewPaths = ["/api/v1/snapshot", "/v1/snapshot", "/snapshot", "/api/snapshot"];
+      for (const ppath of previewPaths) {
+        try {
+          const qs = (width && height) ? `?width=${width}&height=${height}` : "";
+          const pr = await axios.get(`http://${ps.host}:${ps.port}${ppath}${qs}`, {
+            responseType: "arraybuffer",
+            validateStatus: s => s === 200,
+            timeout: 2000,
+          });
+          const buf = Buffer.from(pr.data);
+          if (buf.length > 100) {
+            return { content: [{ type: "image", data: buf.toString("base64"), mimeType: "image/png" }] };
+          }
+        } catch { /* try next endpoint */ }
+      }
+    }
+
+    // Phase 2: IMAGE SNAPSHOT + IMAGE EXPORT → read PNG from disk
+    const w         = width  ?? 1920;
+    const h         = height ?? 1080;
+    const imageSlot = "ZZ_CLEANUP/RenderPreview";
+    const exportBase = "C:/Temp/RenderPreview";
+    const pngFile   = "C:\\Temp\\RenderPreview.png";
+
+    let responses;
+    try {
+      responses = await sendToEngine(engine.host, engine.port, [
+        `IMAGE SNAPSHOT "${imageSlot}" RGBA ${w} ${h}`,
+        `IMAGE EXPORT "${imageSlot}" "${exportBase}" png`,
+      ], 10000);
+    } catch (err) {
+      throw new Error(`Engine TCP failed (${engine.host}:${engine.port}): ${err.message}`);
+    }
+
+    // Poll until Viz Engine finishes writing the file
+    let buf = null;
+    for (let i = 0; i < 15; i++) {
+      await new Promise(r => setTimeout(r, 300));
+      try {
+        const stat = fs.statSync(pngFile);
+        if (stat.size > 0) { buf = fs.readFileSync(pngFile); break; }
+      } catch { /* not yet written */ }
+    }
+
+    try { fs.unlinkSync(pngFile); } catch { /* ignore */ }
+
+    if (!buf) {
+      throw new Error(
+        `PNG not found after export.\n` +
+        `Expected: ${pngFile}\n` +
+        `Engine: ${engine.host}:${engine.port}\n` +
+        `Engine responses: ${JSON.stringify(responses)}`
+      );
+    }
+
+    return { content: [{ type: "image", data: buf.toString("base64"), mimeType: "image/png" }] };
   }
 );
 

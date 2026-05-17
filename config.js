@@ -28,5 +28,9 @@ module.exports = {
     "port": 19398,
     "username": "Admin",
     "password": "VizDb"
+  },
+  "previewServer": {
+    "host": "127.0.0.1",
+    "port": 21098
   }
 };

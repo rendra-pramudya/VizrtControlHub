@@ -50,7 +50,7 @@
     </div>
 
     <!-- Body: table + detail panel -->
-    <div class="mse-body">
+    <div class="mse-body" ref="bodyRef">
 
     <!-- Table -->
     <div class="table-wrap">
@@ -112,8 +112,11 @@
       </table>
     </div><!-- /table-wrap -->
 
-    <!-- Detail panel (1/3) -->
-    <div class="detail-panel">
+    <!-- Resize handle -->
+    <div class="panel-resizer" @mousedown.prevent="onResizerMousedown"></div>
+
+    <!-- Detail panel -->
+    <div class="detail-panel" :style="{ width: panelWidth + 'px', flex: 'none' }">
       <div class="dp-title">
         Element Details
         <span v-if="selectedElement" class="dp-elname"> — {{ selectedElement.name }}</span>
@@ -187,6 +190,26 @@
         <template v-else>
           <div class="dp-empty">No Pilot data element linked.</div>
         </template>
+
+        <!-- Preview -->
+        <div class="dp-section-label">
+          Preview
+          <button class="dp-refresh-btn" @click="doRefreshPreview" :disabled="previewImgLoading" title="Refresh preview">↻</button>
+          <span v-if="previewImgLoading" class="dp-loading">loading…</span>
+        </div>
+        <div class="dp-preview-wrap">
+          <img
+            v-if="previewSrc"
+            :src="previewSrc"
+            class="dp-preview-img"
+            :class="{ 'dp-preview-hidden': previewImgLoading }"
+            alt="Preview"
+            @load="previewImgLoading = false; previewImgError = false"
+            @error="previewImgLoading = false; previewImgError = true"
+          />
+          <div v-if="previewImgError" class="dp-preview-msg dp-preview-err">Preview unavailable</div>
+          <div v-else-if="!previewSrc" class="dp-preview-msg">No preview available</div>
+        </div>
       </template>
     </div><!-- /detail-panel -->
 
@@ -226,6 +249,32 @@ import { api } from "../services/api";
 const store = useMseStore();
 const { selectedProfile } = storeToRefs(store);
 
+const bodyRef = ref(null);
+const panelWidth = ref(400); // will be updated to 50% on mount
+
+function onResizerMousedown(e) {
+  const startX = e.clientX;
+  const startWidth = panelWidth.value;
+
+  function onMousemove(ev) {
+    const dx = startX - ev.clientX;
+    const bodyW = bodyRef.value?.offsetWidth ?? 800;
+    panelWidth.value = Math.max(200, Math.min(bodyW - 200, startWidth + dx));
+  }
+
+  function onMouseup() {
+    document.removeEventListener("mousemove", onMousemove);
+    document.removeEventListener("mouseup", onMouseup);
+    document.body.style.cursor = "";
+    document.body.style.userSelect = "";
+  }
+
+  document.body.style.cursor = "col-resize";
+  document.body.style.userSelect = "none";
+  document.addEventListener("mousemove", onMousemove);
+  document.addEventListener("mouseup", onMouseup);
+}
+
 const selectedPlaylistId = ref("");
 const selectedElement = ref(null);
 const activatedElement = ref(null);
@@ -249,6 +298,31 @@ const loadingScene = ref(false);
 const copiedScene = ref(false);
 let copiedSceneTimer = null;
 
+const previewSrc = ref(null);
+const previewImgLoading = ref(false);
+const previewImgError = ref(false);
+
+function buildPreviewSrc(el, resolvedScenePath = null) {
+  const t = Date.now();
+  if (el.contentSrc) {
+    return `/api/mse/preview?payloadUrl=${encodeURIComponent(el.contentSrc)}&width=320&height=180&_t=${t}`;
+  }
+  if (resolvedScenePath) {
+    return `/api/mse/preview?scenePath=${encodeURIComponent(resolvedScenePath)}&width=320&height=180&_t=${t}`;
+  }
+  return null;
+}
+
+function doRefreshPreview() {
+  const el = selectedElement.value;
+  if (!el) return;
+  const src = buildPreviewSrc(el, sceneInfo.value.scenePath);
+  if (!src) return;
+  previewImgLoading.value = true;
+  previewImgError.value = false;
+  previewSrc.value = src;
+}
+
 function copyScenePath() {
   if (!sceneInfo.value.scenePath) return;
   navigator.clipboard.writeText(sceneInfo.value.scenePath).catch(() => {});
@@ -262,6 +336,9 @@ watch(selectedElement, async (el) => {
   sceneInfo.value = { elementType: null, scenePath: null };
   savedDetail.value = false;
   saveDetailError.value = "";
+  previewSrc.value = null;
+  previewImgLoading.value = false;
+  previewImgError.value = false;
   if (!el) return;
 
   if (el.pilotElementId) {
@@ -274,11 +351,17 @@ watch(selectedElement, async (el) => {
     } finally {
       loadingDetail.value = false;
     }
+    // Pilot: preview via contentSrc payload URL
+    const src = buildPreviewSrc(el);
+    if (src) { previewImgLoading.value = true; previewSrc.value = src; }
   } else if (el.editUrl && (el.elementType === "viz_commands" || el.elementType === "viz_scene")) {
     loadingScene.value = true;
     try {
       const data = await api.get(`/mse/element/content?editUrl=${encodeURIComponent(el.editUrl)}`);
       sceneInfo.value = data;
+      // Scene: preview via scenePath if resolved
+      const src = buildPreviewSrc(el, data.scenePath);
+      if (src) { previewImgLoading.value = true; previewSrc.value = src; }
     } catch {
       sceneInfo.value = { elementType: el.elementType, scenePath: null };
     } finally {
@@ -302,6 +385,8 @@ function stateClass(state) {
 }
 
 onMounted(async () => {
+  if (bodyRef.value) panelWidth.value = Math.round(bodyRef.value.offsetWidth * 0.5);
+
   await Promise.all([
     store.fetchPlaylists().catch(() => {}),
     store.fetchProfiles().catch(() => {}),
@@ -442,8 +527,16 @@ async function onTrigger(action) {
 /* Body */
 .mse-body { display: flex; flex: 1; overflow: hidden; }
 
+/* Resize handle */
+.panel-resizer {
+  width: 4px; flex-shrink: 0; cursor: col-resize;
+  background: #1e1e30;
+  transition: background 0.15s;
+}
+.panel-resizer:hover { background: #2a5caa; }
+
 /* Table */
-.table-wrap { flex: 2; overflow-y: auto; }
+.table-wrap { flex: 1; min-width: 0; overflow-y: auto; }
 .playlist-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
 .playlist-table thead { position: sticky; top: 0; z-index: 1; }
 .playlist-table th {
@@ -481,7 +574,7 @@ async function onTrigger(action) {
 
 /* Detail panel */
 .detail-panel {
-  flex: 1; min-width: 260px; max-width: 380px;
+  min-width: 200px;
   display: flex; flex-direction: column;
   background: #161625; border-left: 1px solid #2a2a3e;
   overflow-y: auto;
@@ -537,6 +630,28 @@ async function onTrigger(action) {
 .btn-save:disabled { opacity: 0.5; cursor: not-allowed; }
 .saved-msg { color: #4caf50; font-size: 0.8rem; }
 .error-msg { color: #f44336; font-size: 0.78rem; word-break: break-word; }
+
+/* Preview */
+.dp-refresh-btn {
+  background: none; border: 1px solid #2a2a3e; color: #555;
+  cursor: pointer; font-size: 0.85rem; line-height: 1;
+  padding: 0 0.3rem; border-radius: 3px; margin-left: auto;
+  transition: color 0.15s, border-color 0.15s;
+}
+.dp-refresh-btn:hover:not(:disabled) { color: #aaa; border-color: #444; }
+.dp-refresh-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+.dp-preview-wrap {
+  padding: 0.6rem 0.9rem;
+  display: flex; flex-direction: column; align-items: center; gap: 0.4rem;
+}
+.dp-preview-img {
+  width: 100%; max-width: 320px; height: auto;
+  border-radius: 4px; border: 1px solid #2a2a3e;
+  display: block; background: #0d0d1a;
+}
+.dp-preview-hidden { opacity: 0; }
+.dp-preview-msg { font-size: 0.78rem; color: #555; font-style: italic; }
+.dp-preview-err { color: #c62828; }
 
 /* Status bar */
 .status-bar {

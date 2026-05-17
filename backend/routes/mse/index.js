@@ -52,6 +52,28 @@ router.get("/profiles/:profile/state", async (req, res) => {
   }
 });
 
+// GET /api/mse/preview?payloadUrl=...&width=320&height=180
+// GET /api/mse/preview?scenePath=...&width=320&height=180
+router.get("/preview", async (req, res) => {
+  const { payloadUrl, scenePath, width, height } = req.query;
+  if (!payloadUrl && !scenePath) {
+    return res.status(400).json({ error: "payloadUrl or scenePath is required" });
+  }
+  try {
+    const buf = await mseService.getPreviewImage(
+      payloadUrl || null,
+      scenePath || null,
+      width ? parseInt(width, 10) : 320,
+      height ? parseInt(height, 10) : 180,
+    );
+    res.set("Content-Type", "image/png");
+    res.set("Cache-Control", "no-cache");
+    res.send(buf);
+  } catch (err) {
+    res.status(502).json({ error: err.message });
+  }
+});
+
 // GET /api/mse/element/content?editUrl=... — fetch scene path from element payload
 router.get("/element/content", async (req, res) => {
   const { editUrl } = req.query;
