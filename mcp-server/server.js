@@ -471,7 +471,7 @@ server.tool(
 
 server.tool(
   "pilot_list_templates",
-  "List graphic templates in Viz Content Pilot, optionally filtered by conceptId.",
+  "List graphic templates in Viz Content Pilot, optionally filtered by conceptId. Returns id and name only. Use pilot_search_templates to also search by the templatedescription field.",
   { conceptId: z.string().optional().describe("Filter by concept ID from pilot_list_concepts") },
   async ({ conceptId }) => {
     const url = conceptId ? `${PILOT}/templates?concept=${conceptId}` : `${PILOT}/templates`;
@@ -483,6 +483,59 @@ server.tool(
       return { id, name: e.title[0]._ || e.title[0] };
     });
     return { content: [{ type: "text", text: JSON.stringify(templates, null, 2) }] };
+  }
+);
+
+server.tool(
+  "pilot_search_templates",
+  "Search Pilot templates by name or description. Every template has a 'templatedescription' field containing a human-readable description of what the template does. Use this tool to find the right template before calling pilot_create_element_from_template. Leave query empty to list all templates with their descriptions.",
+  {
+    query:     z.string().optional().describe("Text to match against template name or templatedescription. Case-insensitive. Leave empty to return all templates with descriptions."),
+    conceptId: z.string().optional().describe("Narrow results to a specific concept ID from pilot_list_concepts"),
+  },
+  async ({ query, conceptId }) => {
+    const url = conceptId ? `${PILOT}/templates?concept=${conceptId}` : `${PILOT}/templates`;
+    const res = await axios.get(url, { headers: ATOM });
+    const p = await parseAtom(res.data);
+    const templates = toArray(p.feed.entry).map(e => {
+      const raw = e["atomext:pilotdbid"]?.[0];
+      const id = typeof raw === "string" ? raw.trim() : (raw?._ || "").trim();
+      return { id, name: e.title[0]._ || e.title[0] };
+    });
+
+    // Fetch templatedescription from each template's model in parallel
+    const withDescriptions = await Promise.all(
+      templates.map(async (t) => {
+        try {
+          const mr = await axios.get(`${PILOT}/templates/${t.id}/model`, { validateStatus: () => true });
+          if (mr.status >= 400) return { ...t, description: "" };
+          const mp = await xml2js.parseStringPromise(mr.data, { explicitArray: true });
+          const descField = toArray(mp.payload?.field || []).find(f => f.$?.name === "templatedescription");
+          if (!descField) return { ...t, description: "" };
+          const val = descField.value?.[0];
+          let description = "";
+          if (typeof val === "string") description = val.trim();
+          else if (val?.["fo:wrapper"]) {
+            const w = val["fo:wrapper"][0];
+            description = (typeof w === "string" ? w : w._ || "").trim();
+          } else if (val?._) description = val._.trim();
+          return { ...t, description };
+        } catch {
+          return { ...t, description: "" };
+        }
+      })
+    );
+
+    // Filter by query if provided
+    if (query) {
+      const q = query.toLowerCase();
+      const filtered = withDescriptions.filter(t =>
+        t.name.toLowerCase().includes(q) || t.description.toLowerCase().includes(q)
+      );
+      return { content: [{ type: "text", text: JSON.stringify(filtered, null, 2) }] };
+    }
+
+    return { content: [{ type: "text", text: JSON.stringify(withDescriptions, null, 2) }] };
   }
 );
 
