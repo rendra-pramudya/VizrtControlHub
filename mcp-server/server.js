@@ -169,7 +169,7 @@ server.tool(
     name:           z.string().optional().describe("Display name override; defaults to the Pilot element's own title"),
   },
   async ({ storageId, pilotElementId, name }) => {
-    const postUrl = `${MSE}/element_collection/storage/playlists/%7B${storageId}%7D/elements`;
+    const collectionUrl = `${MSE}/element_collection/storage/playlists/%7B${storageId}%7D/`;
 
     // 1. Resolve display name from Pilot if not provided
     let elementName = name;
@@ -182,24 +182,24 @@ server.tool(
       elementName = ep.entry?.title?.[0]?._ || ep.entry?.title?.[0] || `element-${pilotElementId}`;
     }
 
-    // 2. Build minimal verified body — only <title> + <content src> with /payload suffix
+    // 2. Build Atom entry with src= reference to the Pilot payload.
+    //    This is the native MSE format for Pilot elements — MSE fetches live from Pilot at take time.
     const pilotPayloadUrl = `${PILOT}/dataelements/${pilotElementId}/payload`;
     const safeTitle = elementName.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
     const body = `<?xml version="1.0" encoding="UTF-8"?>
 <entry xmlns="http://www.w3.org/2005/Atom">
   <title>${safeTitle}</title>
-  <content type="application/vnd.vizrt.payload+xml"
-           src="${pilotPayloadUrl}"/>
+  <content type="application/vnd.vizrt.payload+xml" src="${pilotPayloadUrl}"/>
 </entry>`;
 
-    // 3. POST
-    const res = await axios.post(postUrl, body, {
-      headers: { "Content-Type": "application/atom+xml", Accept: "application/atom+xml; type=entry" },
+    // 3. POST to collection
+    const res = await axios.post(collectionUrl, body, {
+      headers: { "Content-Type": "application/atom+xml;type=entry" },
       validateStatus: () => true,
     });
     if (res.status >= 400) {
       const detail = typeof res.data === "string" ? res.data.slice(0, 500) : JSON.stringify(res.data);
-      throw new Error(`MSE ${res.status}\nURL: ${postUrl}\nBody:\n${body}\nResponse:\n${detail}`);
+      throw new Error(`MSE ${res.status}\nURL: ${collectionUrl}\nBody:\n${body}\nResponse:\n${detail}`);
     }
 
     // 4. Parse 201 Created — MSE returns the new entry's Atom XML
@@ -211,6 +211,7 @@ server.tool(
         text: JSON.stringify({
           id:              ne?.id?.[0]?.replace("urn:uuid:", "") || null,
           name:            ne?.title?.[0]?._ || ne?.title?.[0] || elementName,
+          pilotElementId,
           editUrl:         linkHref(ne, "self"),
           valid:           ne?.["viz:valid_element"]?.[0] === "yes",
           availableStatus: ne?.["viz:available_status"] ? parseFloat(ne["viz:available_status"][0]) : null,
@@ -424,7 +425,7 @@ server.tool(
     action:         z.enum(["take", "cue", "continue", "cut", "out"]).default("take").describe("MSE trigger action"),
   },
   async ({ elementEditUrl, pilotElementId, fields, profile, action }) => {
-    // Step 1: Pilot update — abort if it fails, do NOT fire MSE
+    // Step 1: Update Pilot element — abort everything if it fails
     try {
       await updatePilotFields(pilotElementId, fields);
     } catch (err) {
@@ -437,7 +438,7 @@ server.tool(
       };
     }
 
-    // Step 2: MSE trigger — surface partial state if it fails
+    // Step 2: MSE trigger — MSE fetches the latest payload from Pilot via its stored src= link
     const mseResult = await fireMseTrigger(profile, action, elementEditUrl);
     const isError = mseResult.status >= 400;
     return {
@@ -619,68 +620,59 @@ server.tool(
 
 server.tool(
   "pilot_create_element_from_template",
-  "Create a new data element in Viz Content Pilot from a template. Fetches the template model to populate all required fields. Returns the new element ID.",
+  "Create a new data element in Viz Content Pilot from a template with fields fully populated in a single call. Use pilot_search_templates first to discover the templateId and field names from the templatedescription. Returns the new element ID.",
   {
-    templateId: z.string().describe("Template ID from pilot_list_templates"),
-    name:       z.string().describe("Name/title for the new data element"),
+    templateId: z.string().describe("Template ID from pilot_search_templates"),
+    name:       z.string().describe("Display name for the new data element"),
     conceptId:  z.string().optional().describe("Concept ID to associate the element with"),
-    fields:     z.array(z.object({ name: z.string(), value: z.string() })).optional().describe("Field values to set — overrides template defaults"),
+    fields:     z.array(z.object({ name: z.string(), value: z.string() })).optional().describe("Field values to set — field names come from the template's templatedescription"),
   },
   async ({ templateId, name, conceptId, fields }) => {
     function xe(s) { return String(s || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
 
-    // 1. Resolve concept name from ID (needed for -concept-variant-choice field)
-    let conceptName = "";
-    if (conceptId) {
-      const cr = await axios.get(`${PILOT}/concepts`, { headers: ATOM, validateStatus: () => true });
-      if (cr.status === 200) {
-        const cp = await parseAtom(cr.data);
-        const match = toArray(cp.feed?.entry || []).find(e =>
-          e.id[0].replace("urn:concept:dbid:", "") === String(conceptId)
-        );
-        if (match) conceptName = match.title[0]._ || match.title[0];
-      }
-    }
-
-    // 2. GET template model — provides every required field and their types/defaults
+    // 1. Fetch template model — validates template exists and reveals per-field fo:wrapper usage
     const modelUrl = `${PILOT}/templates/${templateId}/model`;
     const mr = await axios.get(modelUrl, { validateStatus: () => true });
-    if (mr.status >= 400) throw new Error(`GET template model ${mr.status}: ${String(mr.data).slice(0, 200)}`);
-    const modelParsed = await xml2js.parseStringPromise(mr.data, { explicitArray: true });
-    const modelFields = toArray(modelParsed.payload?.field || []);
-
-    // 3. Build field XML — every model field included, user values override defaults
-    const userMap = Object.fromEntries((fields || []).map(f => [f.name, f.value]));
-    const hasFoWrapper = f => !!(f.value?.[0]?.["fo:wrapper"]);
-
-    function renderField(f, pad = "      ") {
-      const fname = f.$?.name || "";
-      const subFields = toArray(f.field || []);
-
-      if (subFields.length > 0) {
-        if (fname === "-concept-variant-choice") {
-          return [
-            `${pad}<field name="${fname}">`,
-            `${pad}  <field name="concept"><value>${xe(conceptName)}</value></field>`,
-            `${pad}  <field name="variant"><value></value></field>`,
-            `${pad}</field>`,
-          ].join("\n");
-        }
-        const inner = subFields.map(sf => renderField(sf, pad + "  ")).join("\n");
-        return `${pad}<field name="${fname}">\n${inner}\n${pad}</field>`;
-      }
-
-      const defaultVal = hasFoWrapper(f)
-        ? (typeof f.value[0]["fo:wrapper"][0] === "string" ? f.value[0]["fo:wrapper"][0] : f.value[0]["fo:wrapper"][0]?._ || "")
-        : (typeof f.value?.[0] === "string" ? f.value[0] : f.value?.[0]?._ || "");
-      const val = fname in userMap ? userMap[fname] : defaultVal;
-
-      return hasFoWrapper(f)
-        ? `${pad}<field name="${fname}"><value><fo:wrapper xmlns:fo="http://www.w3.org/1999/XSL/Format">${xe(val)}</fo:wrapper></value></field>`
-        : `${pad}<field name="${fname}"><value>${xe(val)}</value></field>`;
+    if (mr.status >= 400) {
+      throw new Error(`Template ${templateId} not found (${mr.status}): ${String(mr.data).slice(0, 300)}`);
     }
 
-    const fieldsXml = modelFields.map(f => renderField(f)).join("\n");
+    // Build a set of field names that use fo:wrapper based on the model's default values.
+    // Fields absent from this set default to fo:wrapper for non-system fields.
+    const modelParsed = await xml2js.parseStringPromise(mr.data, { explicitArray: true });
+    const modelFieldList = toArray(modelParsed.payload?.field || []);
+    const plainFields = new Set(
+      modelFieldList
+        .filter(f => !(f.value?.[0]?.["fo:wrapper"]))
+        .map(f => f.$?.name)
+        .filter(Boolean)
+    );
+
+    // 2. Build payload XML from user-supplied fields only.
+    //    - Content fields (no leading "-"): use fo:wrapper unless model says plain text.
+    //    - System fields (leading "-"): always plain value.
+    const userFields = fields || [];
+    const userFieldNames = new Set(userFields.map(f => f.name));
+
+    const fieldLines = userFields.map(f => {
+      const isSystemField = f.name.startsWith("-") || f.name === "templatedescription";
+      const useWrapper = !isSystemField && !plainFields.has(f.name);
+      if (useWrapper) {
+        return `      <field name="${xe(f.name)}"><value><fo:wrapper xmlns:fo="http://www.w3.org/1999/XSL/Format">${xe(f.value)}</fo:wrapper></value></field>`;
+      }
+      return `      <field name="${xe(f.name)}"><value>${xe(f.value)}</value></field>`;
+    });
+
+    // 3. Auto-compute -auto-generated-title from the first two content fields if not provided.
+    if (!userFieldNames.has("-auto-generated-title")) {
+      const contentFields = userFields.filter(f => !f.name.startsWith("-") && f.name !== "templatedescription");
+      if (contentFields.length > 0) {
+        const autoTitle = contentFields.slice(0, 2).map(f => f.value).join(" / ");
+        fieldLines.push(`      <field name="-auto-generated-title"><value>${xe(autoTitle)}</value></field>`);
+      }
+    }
+
+    const fieldsXml = fieldLines.join("\n");
     const conceptLink = conceptId ? `\n  <link rel="concept" href="${PILOT}/concepts/${conceptId}"/>` : "";
 
     const body = `<?xml version="1.0" encoding="UTF-8"?>
@@ -700,18 +692,18 @@ ${fieldsXml}
     });
     if (createRes.status >= 400) {
       const detail = typeof createRes.data === "string" ? createRes.data.slice(0, 500) : JSON.stringify(createRes.data);
-      throw new Error(`Pilot ${createRes.status}\nURL: ${PILOT}/dataelements\nBody:\n${body}\nResponse:\n${detail}`);
+      throw new Error(`Pilot POST /dataelements failed (${createRes.status})\nBody sent:\n${body}\nPilot response:\n${detail}`);
     }
 
     const created = await xml2js.parseStringPromise(createRes.data, { explicitArray: true });
     const raw = created.entry?.["atomext:pilotdbid"]?.[0];
     const newId = typeof raw === "string" ? raw.trim() : (raw?._ || "").trim();
-    if (!newId) throw new Error("Element created but could not extract new ID from response");
+    if (!newId) throw new Error(`Element created but could not parse new ID.\nPilot response:\n${createRes.data?.slice?.(0, 300)}`);
 
     return {
       content: [{
         type: "text",
-        text: JSON.stringify({ id: newId, name, templateId, conceptId, fieldsSet: fields?.length || 0 }, null, 2),
+        text: JSON.stringify({ id: newId, name, templateId, conceptId: conceptId || null, fieldsSet: userFields.length }, null, 2),
       }],
     };
   }
