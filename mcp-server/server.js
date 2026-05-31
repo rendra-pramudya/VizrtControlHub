@@ -182,14 +182,16 @@ server.tool(
       elementName = ep.entry?.title?.[0]?._ || ep.entry?.title?.[0] || `element-${pilotElementId}`;
     }
 
-    // 2. Build Atom entry with src= reference to the Pilot payload.
-    //    This is the native MSE format for Pilot elements — MSE fetches live from Pilot at take time.
-    const pilotPayloadUrl = `${PILOT}/dataelements/${pilotElementId}/payload`;
+    // 2. Build Atom entry pointing src= at the backend proxy, which strips Pilot's
+    //    UTF-8 BOM and rewrites the model= URL to also go through the proxy.
+    //    Direct src= to Pilot fails because Pilot returns BOM-prefixed XML that MSE rejects.
+    const proxyBase = "http://127.0.0.1:3000/api/pilot";
+    const proxyPayloadUrl = `${proxyBase}/data-elements/${pilotElementId}/payload-proxy`;
     const safeTitle = elementName.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
     const body = `<?xml version="1.0" encoding="UTF-8"?>
 <entry xmlns="http://www.w3.org/2005/Atom">
   <title>${safeTitle}</title>
-  <content type="application/vnd.vizrt.payload+xml" src="${pilotPayloadUrl}"/>
+  <content type="application/vnd.vizrt.payload+xml" src="${proxyPayloadUrl}"/>
 </entry>`;
 
     // 3. POST to collection

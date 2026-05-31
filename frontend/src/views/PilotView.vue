@@ -53,7 +53,7 @@
     <div class="resizer" @mousedown.prevent="startResize(1, $event)"></div>
 
     <!-- Panel 3: Field Editor -->
-    <div class="panel" :style="{ width: widths[2] + 'px' }">
+    <div class="panel field-panel">
       <div class="panel-title">
         Fields<span v-if="selectedElement" class="el-name"> — {{ elementName }}</span>
       </div>
@@ -78,63 +78,6 @@
       </template>
     </div>
 
-    <div class="resizer" @mousedown.prevent="startResize(2, $event)"></div>
-
-    <!-- Panel 4: MSE Playlist -->
-    <div class="panel mse-panel">
-      <div class="panel-title">MSE Playlist</div>
-
-      <!-- Selectors -->
-      <div class="mse-selectors">
-        <select class="mse-select" v-model="msePlaylistId" @change="onMsePlaylistChange">
-          <option value="">— Select Playlist —</option>
-          <option v-for="pl in mseStore.playlists" :key="pl.storageId" :value="pl.storageId">
-            {{ pl.name }}
-          </option>
-        </select>
-        <select class="mse-profile" v-model="mseStore.selectedProfile">
-          <option v-for="p in mseStore.profiles" :key="p.id" :value="p.id">&lt;{{ p.id }}&gt;</option>
-        </select>
-      </div>
-
-      <!-- Action buttons -->
-      <div class="mse-actions">
-        <button class="mse-btn" :disabled="mseTriggering" @click="mseTrigger('stop')" title="Stop">■ Stop</button>
-        <button class="mse-btn" :disabled="mseTriggering" @click="mseTrigger('cleanup')" title="Cleanup">⏸ Cleanup</button>
-        <button class="mse-btn mse-btn-cue" :disabled="!mseSelectedEl || mseTriggering" @click="mseTrigger('cue')" title="Cue">⬛ Cue</button>
-        <button class="mse-btn mse-btn-take" :disabled="!mseSelectedEl || mseTriggering" @click="mseTrigger('take')" title="Take">▶ Take</button>
-        <button class="mse-btn" :disabled="mseTriggering" @click="mseTrigger('continue')" title="Continue">⏩ Cont</button>
-        <button class="mse-btn" :disabled="mseTriggering" @click="mseTrigger('out')" title="Take out">⏹ Out</button>
-      </div>
-
-      <!-- Feedback -->
-      <div v-if="mseTriggerMsg" class="mse-feedback" :class="mseTriggerOk ? 'ok' : 'err'">
-        {{ mseTriggerMsg }}
-      </div>
-
-      <!-- Elements list -->
-      <div class="panel-scroll">
-        <div v-if="mseLoadingEl" class="empty">Loading...</div>
-        <div v-else-if="!msePlaylistId" class="empty">Select a playlist.</div>
-        <div v-else-if="!mseStore.elements.length" class="empty">No elements.</div>
-        <div
-          v-for="el in mseStore.elements"
-          :key="el.id"
-          class="list-item mse-el-item"
-          :class="{
-            active: mseSelectedEl?.id === el.id,
-            activated: mseActivatedEl?.id === el.id,
-          }"
-          @click="mseSelectedEl = el"
-          @dblclick="mseTrigger('take')"
-        >
-          <span class="mse-arrow" v-if="mseActivatedEl?.id === el.id">▶</span>
-          <span class="mse-el-icon">{{ el.elementType === 'viz_scene' || el.elementType === 'viz_commands' ? '🎬' : '🖼' }}</span>
-          <span class="mse-el-name">{{ el.name }}</span>
-        </div>
-      </div>
-    </div>
-
   </div>
 </template>
 
@@ -142,9 +85,7 @@
 import { ref, computed, onMounted } from "vue";
 import { storeToRefs } from "pinia";
 import { usePilotStore } from "../stores/usePilotStore";
-import { useMseStore } from "../stores/useMseStore";
 
-// --- Pilot store ---
 const store = usePilotStore();
 const { concepts, templates, dataElements, selectedTemplate, selectedElement } = storeToRefs(store);
 
@@ -170,49 +111,9 @@ const filteredElements = computed(() => {
   return dataElements.value.filter((e) => e.name.toLowerCase().includes(q));
 });
 
-// --- MSE panel ---
-const mseStore = useMseStore();
-const msePlaylistId = ref("");
-const mseSelectedEl = ref(null);
-const mseActivatedEl = ref(null);
-const mseTriggering = ref(false);
-const mseLoadingEl = ref(false);
-const mseTriggerMsg = ref("");
-const mseTriggerOk = ref(true);
-
-async function onMsePlaylistChange() {
-  mseSelectedEl.value = null;
-  mseActivatedEl.value = null;
-  if (!msePlaylistId.value) return;
-  mseLoadingEl.value = true;
-  await mseStore.selectPlaylist(msePlaylistId.value).catch(() => {});
-  mseLoadingEl.value = false;
-}
-
-async function mseTrigger(action) {
-  mseTriggering.value = true;
-  mseTriggerMsg.value = "";
-  try {
-    const elementEditUrl = mseSelectedEl.value?.editUrl ?? null;
-    const result = await mseStore.triggerAction(action, elementEditUrl);
-    mseTriggerMsg.value = result.message || `${action} OK`;
-    mseTriggerOk.value = result.success !== false;
-    if (action === "take" && mseSelectedEl.value) {
-      mseActivatedEl.value = mseSelectedEl.value;
-    }
-    await mseStore.fetchProfileState();
-  } catch (e) {
-    mseTriggerMsg.value = e.message;
-    mseTriggerOk.value = false;
-  } finally {
-    mseTriggering.value = false;
-    setTimeout(() => (mseTriggerMsg.value = ""), 3000);
-  }
-}
-
 // --- Resizable panels ---
 const layoutRef = ref(null);
-const widths = ref([220, 220, 280]);
+const widths = ref([220, 220]);
 
 function startResize(index, e) {
   const startX = e.clientX;
@@ -238,18 +139,9 @@ function startResize(index, e) {
 // --- Lifecycle ---
 onMounted(async () => {
   loadingConcept.value = true;
-  await Promise.all([
-    store.fetchConcepts().catch(() => {}),
-    mseStore.fetchPlaylists().catch(() => {}),
-    mseStore.fetchProfiles().catch(() => {}),
-  ]);
+  await store.fetchConcepts().catch(() => {});
   await store.changeConcept(null).catch(() => {});
   loadingConcept.value = false;
-
-  // Restore MSE playlist if store already has one
-  if (mseStore.selectedPlaylist && !msePlaylistId.value) {
-    msePlaylistId.value = mseStore.selectedPlaylist.storageId;
-  }
 });
 
 async function onConceptChange() {
@@ -314,10 +206,9 @@ async function save() {
   overflow: hidden;
 }
 
-.mse-panel {
+.field-panel {
   flex: 1;
   flex-shrink: 1;
-  min-width: 200px;
   border-right: none;
 }
 
@@ -398,82 +289,4 @@ button:disabled { opacity: 0.5; cursor: not-allowed; }
 .saved-msg { color: #4caf50; font-size: 0.82rem; }
 .error-msg { color: #f44336; font-size: 0.82rem; }
 .empty { padding: 0.75rem 0.9rem; color: #555; font-style: italic; font-size: 0.85rem; }
-
-/* MSE panel */
-.mse-selectors {
-  display: flex;
-  gap: 0.4rem;
-  padding: 0.5rem 0.9rem;
-  border-bottom: 1px solid #2a2a3e;
-  background: #13131f;
-  flex-shrink: 0;
-}
-.mse-select {
-  flex: 1;
-  background: #1e1e1e;
-  color: #eee;
-  border: 1px solid #444;
-  padding: 0.3rem 0.5rem;
-  border-radius: 4px;
-  font-size: 0.82rem;
-  min-width: 0;
-}
-.mse-profile {
-  background: #1e1e1e;
-  color: #eee;
-  border: 1px solid #444;
-  padding: 0.3rem 0.4rem;
-  border-radius: 4px;
-  font-size: 0.82rem;
-  flex-shrink: 0;
-}
-
-.mse-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 3px;
-  padding: 0.4rem 0.9rem;
-  border-bottom: 1px solid #2a2a3e;
-  background: #111120;
-  flex-shrink: 0;
-}
-.mse-btn {
-  display: flex;
-  align-items: center;
-  gap: 0.2rem;
-  background: #222235;
-  color: #ccc;
-  border: 1px solid #333;
-  padding: 0.22rem 0.5rem;
-  border-radius: 3px;
-  font-size: 0.75rem;
-  cursor: pointer;
-  white-space: nowrap;
-  transition: background 0.1s;
-}
-.mse-btn:hover:not(:disabled) { background: #2c2c45; border-color: #555; }
-.mse-btn:disabled { opacity: 0.4; cursor: not-allowed; }
-.mse-btn-take { background: #1e3a1e; border-color: #2e6a2e; color: #7eca7e; font-weight: bold; }
-.mse-btn-take:hover:not(:disabled) { background: #245924; }
-.mse-btn-cue { background: #1e2e4a; border-color: #2a4a8a; }
-
-.mse-feedback {
-  padding: 0.2rem 0.9rem;
-  font-size: 0.78rem;
-  flex-shrink: 0;
-}
-.mse-feedback.ok { background: #0e2b0e; color: #4caf50; border-bottom: 1px solid #1a4a1a; }
-.mse-feedback.err { background: #2b0e0e; color: #f44336; border-bottom: 1px solid #4a1a1a; }
-
-.mse-el-item {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-}
-.mse-el-item.activated { background: #1a2e1a; }
-.mse-el-item.active { background: #1e3055; border-left: 2px solid #2a5caa; }
-.mse-el-item.activated.active { background: #1e3055; }
-.mse-arrow { color: #4caf50; font-size: 0.7rem; width: 10px; flex-shrink: 0; }
-.mse-el-icon { font-size: 0.7rem; opacity: 0.5; flex-shrink: 0; }
-.mse-el-name { font-size: 0.85rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 </style>
