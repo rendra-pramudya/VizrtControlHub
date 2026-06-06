@@ -1016,9 +1016,9 @@ server.tool(
     let responses;
     try {
       responses = await sendToEngine(engine.host, engine.port, [
-        `IMAGE EXIST "${imageSlot}"`,
-        `IMAGE SNAPSHOT "${imageSlot}" RGBA ${w} ${h}`,
-        `IMAGE EXPORT ${imageSlot} "${exportBase}" png`,
+        `vizsend IMAGE EXIST "${imageSlot}"`,
+        `vizsend IMAGE SNAPSHOT "${imageSlot}" RGBA ${w} ${h}`,
+        `vizsend IMAGE EXPORT ${imageSlot} "${exportBase}" png`,
       ], 10000);
     } catch (err) {
       throw new Error(`Engine TCP failed (${engine.host}:${engine.port}): ${err.message}`);
