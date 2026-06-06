@@ -1006,38 +1006,19 @@ server.tool(
     if (!engines.length) throw new Error("No enabled Viz Engines in config.");
     const engine = engineId ? (engines.find(e => e.id === engineId) || engines[0]) : engines[0];
 
-    // Phase 3: try the preview server first (no engine TCP round-trip)
-    const ps = config.previewServer;
-    if (ps?.host && ps?.port) {
-      const previewPaths = ["/api/v1/snapshot", "/v1/snapshot", "/snapshot", "/api/snapshot"];
-      for (const ppath of previewPaths) {
-        try {
-          const qs = (width && height) ? `?width=${width}&height=${height}` : "";
-          const pr = await axios.get(`http://${ps.host}:${ps.port}${ppath}${qs}`, {
-            responseType: "arraybuffer",
-            validateStatus: s => s === 200,
-            timeout: 2000,
-          });
-          const buf = Buffer.from(pr.data);
-          if (buf.length > 100) {
-            return { content: [{ type: "image", data: buf.toString("base64"), mimeType: "image/png" }] };
-          }
-        } catch { /* try next endpoint */ }
-      }
-    }
-
-    // Phase 2: IMAGE SNAPSHOT + IMAGE EXPORT → read PNG from disk
-    const w         = width  ?? 1920;
-    const h         = height ?? 1080;
-    const imageSlot = "ZZ_CLEANUP/RenderPreview";
-    const exportBase = "C:/Temp/RenderPreview";
-    const pngFile   = "C:\\Temp\\RenderPreview.png";
+    // IMAGE EXIST → IMAGE SNAPSHOT → IMAGE EXPORT → read PNG from disk
+    const w          = width  ?? 1920;
+    const h          = height ?? 1080;
+    const imageSlot  = "/00_AI_PREVIEW/AI_FEEDBACK";
+    const exportBase = "C:/00_AI_PREVIEW/AI_FEEDBACK";
+    const pngFile    = "C:\\00_AI_PREVIEW\\AI_FEEDBACK.png";
 
     let responses;
     try {
       responses = await sendToEngine(engine.host, engine.port, [
+        `IMAGE EXIST "${imageSlot}"`,
         `IMAGE SNAPSHOT "${imageSlot}" RGBA ${w} ${h}`,
-        `IMAGE EXPORT "${imageSlot}" "${exportBase}" png`,
+        `IMAGE EXPORT ${imageSlot} "${exportBase}" png`,
       ], 10000);
     } catch (err) {
       throw new Error(`Engine TCP failed (${engine.host}:${engine.port}): ${err.message}`);
@@ -1045,7 +1026,7 @@ server.tool(
 
     // Poll until Viz Engine finishes writing the file
     let buf = null;
-    for (let i = 0; i < 15; i++) {
+    for (let i = 0; i < 20; i++) {
       await new Promise(r => setTimeout(r, 300));
       try {
         const stat = fs.statSync(pngFile);
@@ -1053,12 +1034,11 @@ server.tool(
       } catch { /* not yet written */ }
     }
 
-    try { fs.unlinkSync(pngFile); } catch { /* ignore */ }
-
     if (!buf) {
       throw new Error(
         `PNG not found after export.\n` +
         `Expected: ${pngFile}\n` +
+        `Ensure C:\\00_AI_PREVIEW\\ exists on the machine running Viz Engine.\n` +
         `Engine: ${engine.host}:${engine.port}\n` +
         `Engine responses: ${JSON.stringify(responses)}`
       );
