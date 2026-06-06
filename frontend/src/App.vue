@@ -5,6 +5,7 @@
       <router-link to="/pilot">Pilot</router-link>
       <router-link to="/mse">MSE</router-link>
       <router-link to="/hub">Hub</router-link>
+      <router-link to="/udp">UDP</router-link>
       <router-link to="/settings">Settings</router-link>
     </nav>
     <main>

@@ -1,7 +1,8 @@
 const express = require("express");
 const cors = require("cors");
 const http = require("http");
-const { initWebSocket } = require("./websocket/mseSocket");
+const { initWebSocket, broadcastMseStatus } = require("./websocket/mseSocket");
+const { startUdpListener, getMessages } = require("./services/udpListener");
 
 const engineRoutes = require("./routes/engine");
 const pilotRoutes = require("./routes/pilot");
@@ -32,6 +33,9 @@ app.get("/api/health", (req, res) => {
 });
 
 initWebSocket(server);
+startUdpListener((msg) => broadcastMseStatus(msg));
+
+app.get("/api/udp/messages", (req, res) => res.json(getMessages()));
 
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
