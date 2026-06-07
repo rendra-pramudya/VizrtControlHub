@@ -1056,6 +1056,11 @@ const pluginRegistry = JSON.parse(
   fs.readFileSync(path.join(__dirname, "viz-plugin-registry.json"), "utf8")
 );
 
+const vizCommands = JSON.parse(
+  fs.readFileSync(path.join(__dirname, "viz_commands.json"), "utf8")
+);
+const builtInGeometries = vizCommands.builtInGeometries || {};
+
 function flattenGeometry() {
   return Object.entries(pluginRegistry.geometry).flatMap(([sub, names]) =>
     names.map(n => ({ name: n, category: "geometry", subcategory: sub }))
@@ -1255,6 +1260,98 @@ server.tool(
         type: "text",
         text: JSON.stringify({
           container_id, plugin_name, success, response: raw,
+        }, null, 2),
+      }],
+    };
+  }
+);
+
+// ════════════════════════════════════════════════════════════════════════════
+// VIZ ENGINE — BUILT-IN GEOMETRY TOOLS
+// ════════════════════════════════════════════════════════════════════════════
+
+server.tool(
+  "viz_geometry_info",
+  "Return the full parameter schema for a built-in Viz Engine geometry type (from local registry — no TCP call). Use this before viz_create_geometry to know exact param names, types, defaults, and ranges.",
+  {
+    type: z.string().describe("Geometry key, e.g. 'rectangle', 'circle', 'cube', 'sphere', 'cylinder', 'cone', 'torus', 'arrow', 'star'"),
+  },
+  async ({ type }) => {
+    const key = type.toLowerCase();
+    const geo = builtInGeometries[key];
+    if (!geo) {
+      const available = Object.keys(builtInGeometries).join(", ");
+      throw new Error(`Unknown geometry '${type}'. Available: ${available}`);
+    }
+    return {
+      content: [{ type: "text", text: JSON.stringify({ type: key, ...geo }, null, 2) }],
+    };
+  }
+);
+
+server.tool(
+  "viz_create_geometry",
+  "Create a new top-level container in the active Viz Engine scene with a built-in geometry applied. Handles the full sequence: RENDERER*TREE CREATE TOP → NAME SET → GEOM SET → ACTIVE SET → DYNAMIC_PARAMETER SET for each param. Returns the container handle. Use viz_geometry_info first to see valid param names.",
+  {
+    type:     z.string().describe("Geometry key, e.g. 'rectangle', 'circle', 'cube', 'sphere', 'cylinder', 'cone', 'torus', 'arrow', 'star'"),
+    name:     z.string().optional().describe("Optional container name shown in Viz Artist tree, e.g. 'MyBox'"),
+    params:   z.record(z.string()).optional().describe("Geometry parameters as key/value pairs. Keys are case-sensitive — use viz_geometry_info to get exact names. E.g. { \"width\": \"400\", \"height\": \"20\" }"),
+    channel:  z.number().int().optional().default(1).describe("Viz Engine renderer channel (default 1)"),
+    engineId: z.string().optional().describe("Engine ID from config; defaults to first enabled engine"),
+  },
+  async ({ type, name, params = {}, channel = 1, engineId }) => {
+    const engines = config.engine.filter(e => e.enabled);
+    if (!engines.length) throw new Error("No enabled Viz Engines in config.");
+    const engine = engineId ? (engines.find(e => e.id === engineId) || engines[0]) : engines[0];
+
+    const key = type.toLowerCase();
+    const geo = builtInGeometries[key];
+    if (!geo) {
+      const available = Object.keys(builtInGeometries).join(", ");
+      throw new Error(`Unknown geometry '${type}'. Available: ${available}`);
+    }
+
+    // Validate supplied param names against schema
+    const knownParams = new Set((geo.params || []).map(p => p.name));
+    const unknownParams = Object.keys(params).filter(k => !knownParams.has(k));
+
+    // Step 1: create container — needs channel prefix
+    const createResp = (await sendToEngine(engine.host, engine.port, `${channel} RENDERER*TREE CREATE TOP`))[0] || "";
+    if (createResp.startsWith("ERROR") || createResp.includes("invalid")) {
+      throw new Error(`Failed to create container: ${createResp}`);
+    }
+    const handleMatch = createResp.match(/#\d+/);
+    if (!handleMatch) throw new Error(`Unexpected CREATE response: ${createResp}`);
+    const handle = handleMatch[0];
+    const ch = `${channel} ${handle}`;
+
+    // Steps 2+: name, geom, activate, params — all on one connection
+    const followUp = [];
+    if (name) followUp.push(`${ch}*NAME SET ${name}`);
+    followUp.push(`${ch}*GEOM SET ${geo.geomPath}`);
+    followUp.push(`${ch}*ACTIVE SET 1`);
+    for (const [k, v] of Object.entries(params)) {
+      followUp.push(`${ch}*GEOM*DYNAMIC_PARAMETER*${k} SET ${v}`);
+    }
+
+    const followResp = await sendToEngine(engine.host, engine.port, followUp);
+    const errors = followResp.filter(r => r.startsWith("ERROR") || r.includes("invalid command"));
+
+    return {
+      content: [{
+        type: "text",
+        text: JSON.stringify({
+          handle,
+          channel,
+          name: name || null,
+          geomPath: geo.geomPath,
+          paramsSet: params,
+          warnings: unknownParams.length
+            ? [`Unknown param keys (sent anyway): ${unknownParams.join(", ")}. Use viz_geometry_info to verify.`]
+            : [],
+          errors: errors.length ? errors : null,
+          success: errors.length === 0,
+          responses: { create: createResp, followUp: followResp },
         }, null, 2),
       }],
     };

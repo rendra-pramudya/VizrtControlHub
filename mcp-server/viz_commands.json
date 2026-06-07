@@ -7267,7 +7267,26 @@
       "derivedClasses": [
         "GEOM_BASE"
       ],
-      "commands": [],
+      "commands": [
+        {
+          "name": "TEXT SET",
+          "arguments": [
+            {
+              "name": "text",
+              "type": "String",
+              "default": null
+            }
+          ],
+          "description": "Set the text content of a text geometry container. Full command: RENDERER*TREE*$CONTAINERNAME*GEOM*TEXT SET hello world",
+          "example": "RENDERER*TREE*$DEBUG*GEOM*TEXT SET hello world"
+        },
+        {
+          "name": "TEXT GET",
+          "arguments": [],
+          "description": "Get the current text content of a text geometry container. Full command: RENDERER*TREE*$CONTAINERNAME*GEOM*TEXT GET",
+          "example": "RENDERER*TREE*$DEBUG*GEOM*TEXT GET"
+        }
+      ],
       "filePath": "viz-cmd-doc-webhelp\\class_GEOM_TEXT.html"
     },
     "GEOMETRY": {
@@ -12251,6 +12270,742 @@
       ],
       "commands": [],
       "filePath": "viz-cmd-doc-webhelp\\class_VTSSystem.html"
+    }
+  },
+  "recipes": {
+    "_notes": "Dynamic parameter keys are case-sensitive and must match exactly. Use '<handle>*GEOM*DYNAMIC_PARAMETER GET' to discover parameter names for any geometry. The channel prefix (e.g. '1') from step 1 must be prepended to all subsequent commands for that handle.",
+    "create_rectangle": {
+      "id": "create_rectangle",
+      "description": "Create a new top-level container with a Rectangle geometry",
+      "steps": [
+        {
+          "step": 1,
+          "command": "<channel> RENDERER*TREE CREATE TOP",
+          "description": "Create a new container at the top of the scene tree. Returns a channel-prefixed handle, e.g. '1 #3688'.",
+          "returns": "handle",
+          "example": "1 RENDERER*TREE CREATE TOP"
+        },
+        {
+          "step": 2,
+          "command": "<channel> <handle>*NAME SET Rectangle",
+          "description": "Set a human-readable name on the container.",
+          "dependsOn": "handle",
+          "example": "1 #3688*NAME SET Rectangle"
+        },
+        {
+          "step": 3,
+          "command": "<channel> <handle>*GEOM SET BUILT_IN*GEOM*Rectangle",
+          "description": "Assign the built-in Rectangle geometry to the container.",
+          "dependsOn": "handle",
+          "example": "1 #3688*GEOM SET BUILT_IN*GEOM*Rectangle"
+        },
+        {
+          "step": 4,
+          "command": "<channel> <handle>*ACTIVE SET 1",
+          "description": "Activate the container so it is visible on-air.",
+          "dependsOn": "handle",
+          "example": "1 #3688*ACTIVE SET 1"
+        },
+        {
+          "step": 5,
+          "command": "<channel> <handle>*GEOM*DYNAMIC_PARAMETER*<param> SET <value>",
+          "description": "Set a geometry parameter. Parameter keys are case-sensitive.",
+          "dependsOn": "handle",
+          "example": "1 #3688*GEOM*DYNAMIC_PARAMETER*Width SET 400"
+        }
+      ],
+      "dynamic_parameters": {
+        "Width": { "type": "FLOAT", "default": 100.0 },
+        "Height": { "type": "FLOAT", "default": 100.0 }
+      },
+      "notes": "Discover all parameters for any geometry with: '<channel> <handle>*GEOM*DYNAMIC_PARAMETER GET'"
+    },
+    "create_circle": {
+      "id": "create_circle",
+      "description": "Create a new top-level container with a Circle geometry",
+      "steps": [
+        {
+          "step": 1,
+          "command": "<channel> RENDERER*TREE CREATE TOP",
+          "description": "Create a new container at the top of the scene tree. Returns a channel-prefixed handle, e.g. '1 #3716'.",
+          "returns": "handle",
+          "example": "1 RENDERER*TREE CREATE TOP"
+        },
+        {
+          "step": 2,
+          "command": "<channel> <handle>*NAME SET Circle",
+          "description": "Set a human-readable name on the container.",
+          "dependsOn": "handle",
+          "example": "1 #3716*NAME SET Circle"
+        },
+        {
+          "step": 3,
+          "command": "<channel> <handle>*GEOM SET BUILT_IN*GEOM*Circle",
+          "description": "Assign the built-in Circle geometry to the container.",
+          "dependsOn": "handle",
+          "example": "1 #3716*GEOM SET BUILT_IN*GEOM*Circle"
+        },
+        {
+          "step": 4,
+          "command": "<channel> <handle>*ACTIVE SET 1",
+          "description": "Activate the container so it is visible on-air.",
+          "dependsOn": "handle",
+          "example": "1 #3716*ACTIVE SET 1"
+        },
+        {
+          "step": 5,
+          "command": "<channel> <handle>*GEOM*DYNAMIC_PARAMETER*<param> SET <value>",
+          "description": "Set a geometry parameter. Parameter keys are case-sensitive.",
+          "dependsOn": "handle",
+          "example": "1 #3716*GEOM*DYNAMIC_PARAMETER*radius SET 25"
+        }
+      ],
+      "dynamic_parameters": {
+        "radius": { "type": "FLOAT", "default": 50.0, "min": 0.0, "max": 100000.0 },
+        "corners": { "type": "INT", "default": 80, "min": 3, "max": 300 },
+        "Mode": { "type": "RADIO", "options": ["XY", "XZ", "YZ"], "default": "XY" }
+      },
+      "notes": "Parameter keys are lowercase ('radius', 'corners') except 'Mode'. Discovered live from Viz Engine 5.3.2.60000 Circle geometry."
+    }
+  },
+  "builtInGeometries": {
+    "rectangle": {
+      "geomPath": "BUILT_IN*GEOM*Rectangle",
+      "description": "A flat 2D rectangle with optional bevel, corner rounding, and per-vertex colors",
+      "params": [
+        { "name": "Tesselation",       "label": "Tesselation",        "type": "INT",   "default": 1,           "min": 1,    "max": 100 },
+        { "name": "bevel",             "label": "Bevel",              "type": "FLOAT", "default": 0,           "min": 0,    "max": 50000 },
+        { "name": "width",             "label": "Width",              "type": "FLOAT", "default": 100,         "min": 0,    "max": 100000 },
+        { "name": "height",            "label": "Height",             "type": "FLOAT", "default": 100,         "min": 0,    "max": 100000 },
+        { "name": "corners",           "label": "Corners",            "type": "INT",   "default": 20,          "min": 0,    "max": 100 },
+        { "name": "use_vertexcolors",  "label": "Use Vertex Colors",  "type": "BOOL",  "default": 0 },
+        { "name": "upperleft",         "label": "Upper Left",         "type": "COLOR", "default": "#FFFFFFFF" },
+        { "name": "lowerleft",         "label": "Lower Left",         "type": "COLOR", "default": "#FFFFFFFF" },
+        { "name": "upperright",        "label": "Upper Right",        "type": "COLOR", "default": "#FFFFFFFF" },
+        { "name": "lowerright",        "label": "Lower Right",        "type": "COLOR", "default": "#FFFFFFFF" },
+        { "name": "Mode",              "label": "Mode",               "type": "RADIO", "default": 0, "options": ["XY", "XZ", "YZ"] }
+      ],
+      "createCommands": [
+        "RENDERER*TREE CREATE TOP",
+        "{id}*GEOM SET BUILT_IN*GEOM*Rectangle",
+        "{id}*ACTIVE SET 1"
+      ]
+    },
+    "circle": {
+      "geomPath": "BUILT_IN*GEOM*Circle",
+      "description": "A flat 2D circle (disc) with configurable radius and corner segments",
+      "params": [
+        { "name": "radius",  "label": "Radius",  "type": "FLOAT", "default": 50,  "min": 0, "max": 100000 },
+        { "name": "corners", "label": "Corners", "type": "INT",   "default": 80,  "min": 3, "max": 300 },
+        { "name": "Mode",    "label": "Mode",    "type": "RADIO", "default": 0, "options": ["XY", "XZ", "YZ"] }
+      ],
+      "createCommands": [
+        "RENDERER*TREE CREATE TOP",
+        "{id}*GEOM SET BUILT_IN*GEOM*Circle",
+        "{id}*ACTIVE SET 1"
+      ]
+    },
+    "cube": {
+      "geomPath": "BUILT_IN*GEOM*Cube",
+      "description": "A 3D box with per-face visibility, optional bevel, and adaptive tessellation",
+      "params": [
+        { "name": "size_X",               "label": "Size X",                "type": "FLOAT", "default": 100,  "min": 0,        "max": 100000 },
+        { "name": "size_Y",               "label": "Size Y",                "type": "FLOAT", "default": 100,  "min": -100000,  "max": 100000 },
+        { "name": "size_Z",               "label": "Size Z",                "type": "FLOAT", "default": 100,  "min": 0,        "max": 100000 },
+        { "name": "center_Y",             "label": "Center Y",              "type": "RADIO", "default": 0, "options": ["Center", "Bottom", "Top"] },
+        { "name": "tesselation",          "label": "Tesselation",           "type": "INT",   "default": 1,    "min": 1,        "max": 100 },
+        { "name": "adaptiveTesselation",  "label": "Adaptive Tesselation",  "type": "BOOL",  "default": 0 },
+        { "name": "bevel",                "label": "Bevel",                 "type": "FLOAT", "default": 0,    "min": 0,        "max": 50000 },
+        { "name": "roundedBevel",         "label": "Rounded Bevel",         "type": "BOOL",  "default": 0 },
+        { "name": "Top",                  "label": "Top",                   "type": "BOOL",  "default": 1 },
+        { "name": "Bottom",               "label": "Bottom",                "type": "BOOL",  "default": 1 },
+        { "name": "Front",                "label": "Front",                 "type": "BOOL",  "default": 1 },
+        { "name": "Back",                 "label": "Back",                  "type": "BOOL",  "default": 1 },
+        { "name": "Left",                 "label": "Left",                  "type": "BOOL",  "default": 1 },
+        { "name": "Right",                "label": "Right",                 "type": "BOOL",  "default": 1 },
+        { "name": "show_with_size_0",     "label": "Show With Size 0",      "type": "BOOL",  "default": 1 }
+      ],
+      "createCommands": [
+        "RENDERER*TREE CREATE TOP",
+        "{id}*GEOM SET BUILT_IN*GEOM*Cube",
+        "{id}*ACTIVE SET 1"
+      ]
+    },
+    "sphere": {
+      "geomPath": "BUILT_IN*GEOM*Sphere",
+      "description": "A 3D sphere with configurable tessellation and texture mapping mode",
+      "params": [
+        { "name": "tesselation",   "label": "Tesselation",   "type": "INT",   "default": 40, "min": 3,   "max": 360 },
+        { "name": "rotation_lon",  "label": "Rotation Lon",  "type": "FLOAT", "default": 0,  "min": 0,   "max": 360 },
+        { "name": "angle_lon",     "label": "Angle Lon",     "type": "FLOAT", "default": 0,  "min": 0,   "max": 360 },
+        { "name": "texture",       "label": "Texture",       "type": "RADIO", "default": 0, "options": ["Absolute", "Relative", "Centred"] }
+      ],
+      "createCommands": [
+        "RENDERER*TREE CREATE TOP",
+        "{id}*GEOM SET BUILT_IN*GEOM*Sphere",
+        "{id}*ACTIVE SET 1"
+      ]
+    },
+    "cylinder": {
+      "geomPath": "BUILT_IN*GEOM*Cylinder",
+      "description": "A 3D cylinder with configurable height, diameter, bevel, and cap visibility",
+      "params": [
+        { "name": "height",          "label": "Height",          "type": "FLOAT", "default": 100, "min": -100000, "max": 100000 },
+        { "name": "diameter",        "label": "Diameter",        "type": "FLOAT", "default": 100, "min": 0,       "max": 100000 },
+        { "name": "rotation",        "label": "Rotation",        "type": "FLOAT", "default": 0,   "min": 0,       "max": 360 },
+        { "name": "angle",           "label": "Angle",           "type": "FLOAT", "default": 360, "min": 0,       "max": 360 },
+        { "name": "corners",         "label": "Corners",         "type": "INT",   "default": 80,  "min": 3,       "max": 200 },
+        { "name": "hole",            "label": "Hole",            "type": "FLOAT", "default": 0,   "min": 0,       "max": 100000 },
+        { "name": "center",          "label": "Center",          "type": "RADIO", "default": 0, "options": ["Center", "Bottom", "Top"] },
+        { "name": "bevel",           "label": "Bevel",           "type": "FLOAT", "default": 0,   "min": 0,       "max": 50000 },
+        { "name": "inner_bevel",     "label": "Inner Bevel",     "type": "BOOL",  "default": 1 },
+        { "name": "show_top",        "label": "Show Top",        "type": "BOOL",  "default": 1 },
+        { "name": "show_bottom",     "label": "Show Bottom",     "type": "BOOL",  "default": 1 },
+        { "name": "show_with_size_0","label": "Show With Size 0","type": "BOOL",  "default": 1 }
+      ],
+      "createCommands": [
+        "RENDERER*TREE CREATE TOP",
+        "{id}*GEOM SET BUILT_IN*GEOM*Cylinder",
+        "{id}*ACTIVE SET 1"
+      ]
+    },
+    "cone": {
+      "geomPath": "BUILT_IN*GEOM*Cone",
+      "description": "A 3D cone with optional rounded tip and configurable center pivot",
+      "params": [
+        { "name": "Tesselation",       "label": "Tesselation",        "type": "INT",   "default": 5,      "min": 1,  "max": 100 },
+        { "name": "height",            "label": "Height",             "type": "FLOAT", "default": 100,    "min": 0,  "max": 100000 },
+        { "name": "diameter",          "label": "Diameter",           "type": "FLOAT", "default": 100,    "min": 0,  "max": 100000 },
+        { "name": "corners",           "label": "Corners",            "type": "INT",   "default": 30,     "min": 3,  "max": 100 },
+        { "name": "show_bottom",       "label": "Show Bottom",        "type": "BOOL",  "default": 1 },
+        { "name": "center",            "label": "Center",             "type": "RADIO", "default": 0, "options": ["Center", "Bottom", "Top"] },
+        { "name": "smooth",            "label": "Smooth",             "type": "BOOL",  "default": 1 },
+        { "name": "roundedTip",        "label": "Rounded Tip",        "type": "BOOL",  "default": 0 },
+        { "name": "roundedTipHeight",  "label": "Rounded Tip Height", "type": "FLOAT", "default": 16.666, "min": 0,  "max": 100000 }
+      ],
+      "createCommands": [
+        "RENDERER*TREE CREATE TOP",
+        "{id}*GEOM SET BUILT_IN*GEOM*Cone",
+        "{id}*ACTIVE SET 1"
+      ]
+    },
+    "torus": {
+      "geomPath": "BUILT_IN*GEOM*Torus",
+      "description": "A 3D torus (donut shape) with configurable ring and cross-section radii",
+      "params": [
+        { "name": "Tesselation",  "label": "Tesselation",  "type": "INT",   "default": 20,  "min": 3, "max": 200 },
+        { "name": "Corners",      "label": "Corners",      "type": "INT",   "default": 80,  "min": 3, "max": 200 },
+        { "name": "RadiusTorus",  "label": "Radius Torus", "type": "FLOAT", "default": 100, "min": 0, "max": 100000 },
+        { "name": "RadiusCross",  "label": "Radius Cross", "type": "FLOAT", "default": 30,  "min": 0, "max": 100000 }
+      ],
+      "createCommands": [
+        "RENDERER*TREE CREATE TOP",
+        "{id}*GEOM SET BUILT_IN*GEOM*Torus",
+        "{id}*ACTIVE SET 1"
+      ]
+    },
+    "arrow": {
+      "geomPath": "BUILT_IN*GEOM*Arrow",
+      "description": "A 2D arrow defined by two endpoints with configurable width, arrowhead style, and length",
+      "params": [
+        { "name": "Point1X",      "label": "Point 1 X",     "type": "FLOAT", "default": 0 },
+        { "name": "Point1Y",      "label": "Point 1 Y",     "type": "FLOAT", "default": 0 },
+        { "name": "Point1Z",      "label": "Point 1 Z",     "type": "FLOAT", "default": 0 },
+        { "name": "Point2X",      "label": "Point 2 X",     "type": "FLOAT", "default": 100 },
+        { "name": "Point2Y",      "label": "Point 2 Y",     "type": "FLOAT", "default": 0 },
+        { "name": "Point2Z",      "label": "Point 2 Z",     "type": "FLOAT", "default": 0 },
+        { "name": "Width",        "label": "Width",         "type": "FLOAT", "default": 5,   "min": 0,      "max": 1000 },
+        { "name": "Style1",       "label": "Style 1",       "type": "RADIO", "default": 1, "options": ["Flat", "Arrow"] },
+        { "name": "Style2",       "label": "Style 2",       "type": "RADIO", "default": 1, "options": ["Flat", "Arrow"] },
+        { "name": "ArrowWidth",   "label": "Arrow Width",   "type": "FLOAT", "default": 15,  "min": -10000, "max": 10000 },
+        { "name": "ArrowLength",  "label": "Arrow Length",  "type": "FLOAT", "default": 25,  "min": -10000, "max": 10000 },
+        { "name": "Percent",      "label": "Percent",       "type": "FLOAT", "default": 100, "min": 0,      "max": 100 },
+        { "name": "Mode",         "label": "Mode",          "type": "RADIO", "default": 0, "options": ["XY", "XZ", "YZ"] }
+      ],
+      "createCommands": [
+        "RENDERER*TREE CREATE TOP",
+        "{id}*GEOM SET BUILT_IN*GEOM*Arrow",
+        "{id}*ACTIVE SET 1"
+      ]
+    },
+    "star": {
+      "geomPath": "BUILT_IN*GEOM*Star",
+      "description": "A 2D star shape with configurable points, radii, and optional center hole",
+      "params": [
+        { "name": "corners",          "label": "Corners",           "type": "INT",   "default": 5,   "min": 3,    "max": 300 },
+        { "name": "StarRadius",       "label": "Star Radius",       "type": "INT",   "default": 50,  "min": 1,    "max": 10000 },
+        { "name": "StarInnerFactor",  "label": "Star Inner Factor", "type": "FLOAT", "default": 2.0, "min": 0.01, "max": 100 },
+        { "name": "Hole",             "label": "Hole",              "type": "BOOL",  "default": 0 },
+        { "name": "HoleRadius",       "label": "Hole Radius",       "type": "INT",   "default": 25,  "min": 1,    "max": 10000 },
+        { "name": "HoleInnerFactor",  "label": "Hole Inner Factor", "type": "FLOAT", "default": 2.0, "min": 0.01, "max": 100 }
+      ],
+      "createCommands": [
+        "RENDERER*TREE CREATE TOP",
+        "{id}*GEOM SET BUILT_IN*GEOM*Star",
+        "{id}*ACTIVE SET 1"
+      ]
+    }
+  },
+  "builtInFunctions": {
+    "_notes": {
+      "addCommand":  "{id}*FUNCTION SET BUILT_IN*FUNCTION*<pluginName>",
+      "getParams":   "{id}*FUNCTION*<pluginName>*DYNAMIC_PARAMETER GET",
+      "setParam":    "{id}*FUNCTION*<pluginName>*DYNAMIC_PARAMETER*<paramName> SET <value>",
+      "invokeParam": "{id}*FUNCTION*<pluginName>*DYNAMIC_PARAMETER*<paramName> INVOKE",
+      "caseSensitive": true,
+      "pushbutton": "PUSHBUTTON params are triggered with INVOKE, not SET"
+    },
+    "Mute": {
+      "category": "default",
+      "description": "Toggles geometry rendering on a container on or off",
+      "addCommand": "{id}*FUNCTION SET BUILT_IN*FUNCTION*Mute",
+      "params": [
+        { "name": "m_iMute", "label": "Draw Geometry", "type": "RADIO", "default": 0, "options": ["Off", "On"] }
+      ]
+    },
+    "TextBG": {
+      "category": "default",
+      "description": "Scales a rectangle/background geometry to match the bounding box of a linked text container",
+      "addCommand": "{id}*FUNCTION SET BUILT_IN*FUNCTION*TextBG",
+      "params": [
+        { "name": "m_iSizeParam",          "label": "Size Parameter",      "type": "RADIO",     "default": 0,       "options": ["W/H", "SCALE"] },
+        { "name": "m_iWhichTextContainer", "label": "Text Container",       "type": "RADIO",     "default": 0,       "options": ["PREV", "PARENT", "NEXT", "OTHER"] },
+        { "name": "m_pszContainer",        "label": "Other container",      "type": "CONTAINER", "default": "" },
+        { "name": "m_iDirection",          "label": "Direction",            "type": "RADIO",     "default": 2,       "options": ["X", "Y", "XY"] },
+        { "name": "m_bHideOnEmpty",        "label": "Hide On Empty",        "type": "BOOL",      "default": 1 },
+        { "name": "m_bKeepMargins",        "label": "Always Keep Margins",  "type": "BOOL",      "default": 1 },
+        { "name": "m_bHighPrecision",      "label": "High Precision",       "type": "BOOL",      "default": 0 },
+        { "name": "m_iRightMargin",        "label": "Right Margin (INT)",   "type": "INT",       "default": 10,      "min": -1000, "max": 1000 },
+        { "name": "m_iLeftMargin",         "label": "Left Margin (INT)",    "type": "INT",       "default": 10,      "min": -1000, "max": 1000 },
+        { "name": "m_iBottomMargin",       "label": "Bottom Margin (INT)",  "type": "INT",       "default": 10,      "min": -1000, "max": 1000 },
+        { "name": "m_iTopMargin",          "label": "Top Margin (INT)",     "type": "INT",       "default": 10,      "min": -1000, "max": 1000 },
+        { "name": "m_fRightMargin",        "label": "Right Margin (FLOAT)", "type": "FLOAT",     "default": 10.0,    "min": -1000, "max": 1000 },
+        { "name": "m_fLeftMargin",         "label": "Left Margin (FLOAT)",  "type": "FLOAT",     "default": 10.0,    "min": -1000, "max": 1000 },
+        { "name": "m_fBottomMargin",       "label": "Bottom Margin (FLOAT)","type": "FLOAT",     "default": 10.0,    "min": -1000, "max": 1000 },
+        { "name": "m_fTopMargin",          "label": "Top Margin (FLOAT)",   "type": "FLOAT",     "default": 10.0,    "min": -1000, "max": 1000 },
+        { "name": "m_bLockMargins",        "label": "Lock Margins",         "type": "BOOL",      "default": 1 },
+        { "name": "m_bEnableSubstring",    "label": "Enable Substring",     "type": "BOOL",      "default": 0 },
+        { "name": "m_iFirstChar",          "label": "First Character",      "type": "INT",       "default": 0,       "min": 0, "max": 9999 },
+        { "name": "m_iLastChar",           "label": "Last Character",       "type": "INT",       "default": 9999,    "min": 0, "max": 9999 }
+      ]
+    },
+    "DataLabel": {
+      "category": "visual_data_tools",
+      "description": "Positions and labels child containers using data values. Used in LineChart, BarChart, and other chart geometries.",
+      "addCommand": "{id}*FUNCTION SET BUILT_IN*FUNCTION*DataLabel",
+      "params": [
+        { "name": "SharedMem",          "label": "Shared Memory",       "type": "RADIO",  "default": 3,     "options": ["Scene", "Global", "Distributed", "Inactive"] },
+        { "name": "KeyData",            "label": "Key Data",            "type": "STRING", "default": "Data" },
+        { "name": "TransferMode",       "label": "Transfer Mode",       "type": "RADIO",  "default": 0,     "options": ["String", "Array"] },
+        { "name": "Data",               "label": "Data",                "type": "STRING", "default": "" },
+        { "name": "DataDelim",          "label": "Data Delimiter",      "type": "STRING", "default": "," },
+        { "name": "LabelType",          "label": "Label Type",          "type": "RADIO",  "default": 0,     "options": ["Numeric", "Alphabetic"] },
+        { "name": "DataFit",            "label": "Data Fit",            "type": "BOOL",   "default": 0 },
+        { "name": "DataScale",          "label": "Data Scale",          "type": "FLOAT",  "default": 1.0,   "min": -100000, "max": 100000 },
+        { "name": "DataOffset",         "label": "Data Offset",         "type": "FLOAT",  "default": 0.0,   "min": -100000, "max": 100000 },
+        { "name": "DataAutoScale",      "label": "Data Auto Scale",     "type": "BOOL",   "default": 0 },
+        { "name": "DataFitSize",        "label": "Data Fit Size",       "type": "RADIO",  "default": 0,     "options": ["Total", "Current"] },
+        { "name": "DataDetectLimits",   "label": "Data Detect Limits",  "type": "BOOL",   "default": 0 },
+        { "name": "DataLimitThreshold", "label": "Limit Threshold",     "type": "FLOAT",  "default": 0.0,   "min": 0, "max": 100000 },
+        { "name": "DataStart",          "label": "Data Start",          "type": "FLOAT",  "default": 0.0,   "min": -100000, "max": 100000 },
+        { "name": "DataStop",           "label": "Data Stop",           "type": "FLOAT",  "default": 100.0, "min": -100000, "max": 100000 },
+        { "name": "NiceNubers",         "label": "Nice Numbers",        "type": "BOOL",   "default": 0,     "_note": "intentional typo in plugin — use exactly 'NiceNubers'" },
+        { "name": "RemoveMultiples",    "label": "Remove Multiples",    "type": "BOOL",   "default": 0 },
+        { "name": "Sort",               "label": "Sort",                "type": "RADIO",  "default": 0,     "options": ["Off", "Ascending", "Descending"] },
+        { "name": "DrawZero",           "label": "Draw Zero",           "type": "BOOL",   "default": 1 },
+        { "name": "Decimals",           "label": "Decimals",            "type": "INT",    "default": 2,     "min": 0, "max": 100 },
+        { "name": "CustomDecimalSymbol","label": "Custom Decimal Symbol","type": "BOOL",  "default": 0 },
+        { "name": "DecimalSymbol",      "label": "Decimal Symbol",      "type": "STRING", "default": "." },
+        { "name": "Prefix",             "label": "Prefix",              "type": "STRING", "default": "" },
+        { "name": "Unit",               "label": "Suffix",              "type": "STRING", "default": "" },
+        { "name": "HAlignment",         "label": "H Alignment",         "type": "RADIO",  "default": 0,     "options": ["Left", "Center", "Right"] },
+        { "name": "PosXType",           "label": "Pos X Type",          "type": "RADIO",  "default": 0,     "options": ["Off", "Range", "Data"] },
+        { "name": "OffsetX",            "label": "Offset X",            "type": "FLOAT",  "default": 0.0,   "min": -100000, "max": 100000 },
+        { "name": "DistanceX",          "label": "Distance X",          "type": "FLOAT",  "default": 100.0, "min": -100000, "max": 100000 },
+        { "name": "PosYType",           "label": "Pos Y Type",          "type": "RADIO",  "default": 0,     "options": ["Off", "Range", "Data"] },
+        { "name": "OffsetY",            "label": "Offset Y",            "type": "FLOAT",  "default": 0.0,   "min": -100000, "max": 100000 },
+        { "name": "DistanceY",          "label": "Distance Y",          "type": "FLOAT",  "default": 100.0, "min": -100000, "max": 100000 },
+        { "name": "PosZType",           "label": "Pos Z Type",          "type": "RADIO",  "default": 0,     "options": ["Off", "Range", "Data"] },
+        { "name": "OffsetZ",            "label": "Offset Z",            "type": "FLOAT",  "default": 0.0,   "min": -100000, "max": 100000 },
+        { "name": "DistanceZ",          "label": "Distance Z",          "type": "FLOAT",  "default": 100.0, "min": -100000, "max": 100000 },
+        { "name": "CopyContainer",      "label": "Copy Container",      "type": "BOOL",   "default": 0 },
+        { "name": "UseAlpha",           "label": "Use Alpha",           "type": "BOOL",   "default": 0 },
+        { "name": "UseScaling",         "label": "Use Scaling",         "type": "BOOL",   "default": 0 },
+        { "name": "AnimateValues",      "label": "Animate Values",      "type": "BOOL",   "default": 0 },
+        { "name": "RelativeLength",     "label": "Relative Length",     "type": "BOOL",   "default": 0 },
+        { "name": "ConstSpeed",         "label": "Const Speed",         "type": "BOOL",   "default": 0 },
+        { "name": "TotalLength",        "label": "Total Length",        "type": "FLOAT",  "default": 100.0, "min": 0, "max": 100000 },
+        { "name": "Alphamax",           "label": "Alpha Max",           "type": "FLOAT",  "default": 100.0, "min": 0, "max": 100 },
+        { "name": "Scalingmax",         "label": "Scaling Max",         "type": "FLOAT",  "default": 1.0,   "min": 0, "max": 100 }
+      ]
+    },
+    "Counter": {
+      "category": "tool",
+      "description": "Animatable integer counter",
+      "addCommand": "{id}*FUNCTION SET BUILT_IN*FUNCTION*Counter",
+      "params": [
+        { "name": "number",     "label": "Number",     "type": "INT",        "default": 0, "min": -2147483648, "max": 2147483647 },
+        { "name": "initialize", "label": "Initialize", "type": "PUSHBUTTON" }
+      ]
+    },
+    "Toggle": {
+      "category": "default",
+      "description": "Manages two placeholder containers and transitions between them. Supports object loading and caching.",
+      "addCommand": "{id}*FUNCTION SET BUILT_IN*FUNCTION*Toggle",
+      "params": [
+        { "name": "object",               "label": "Object",               "type": "STRING",     "default": "" },
+        { "name": "advanced",             "label": "Advanced",             "type": "BOOL",       "default": 0 },
+        { "name": "auto_continue",        "label": "Auto Continue",        "type": "BOOL",       "default": 1 },
+        { "name": "state_control_only",   "label": "State Control Only",   "type": "BOOL",       "default": 0 },
+        { "name": "controls_video",       "label": "Controls Video",       "type": "BOOL",       "default": 0 },
+        { "name": "preload",              "label": "Preload",              "type": "TEXT",       "default": "" },
+        { "name": "director_command",     "label": "Director Command",     "type": "STRING",     "default": "" },
+        { "name": "position",             "label": "Position",             "type": "STRING",     "default": "" },
+        { "name": "director_other",       "label": "Director Other",       "type": "PUSHBUTTON" },
+        { "name": "director_current",     "label": "Director Current",     "type": "PUSHBUTTON" },
+        { "name": "sitch_no_anim",        "label": "Switch No Anim",       "type": "PUSHBUTTON", "_note": "intentional typo in plugin — use exactly 'sitch_no_anim'" },
+        { "name": "dummy",                "label": "Dummy",                "type": "FLOAT",      "default": 100.0, "min": -100000000, "max": 100000000 },
+        { "name": "switch",               "label": "Switch",               "type": "PUSHBUTTON" },
+        { "name": "out",                  "label": "Out",                  "type": "PUSHBUTTON" },
+        { "name": "in",                   "label": "In",                   "type": "PUSHBUTTON" },
+        { "name": "switch_in",            "label": "Switch In",            "type": "PUSHBUTTON" },
+        { "name": "switch_preview",       "label": "Switch Preview",       "type": "PUSHBUTTON" },
+        { "name": "default_keyframes",    "label": "Default Keyframes",    "type": "PUSHBUTTON" },
+        { "name": "continue",             "label": "Continue",             "type": "PUSHBUTTON" },
+        { "name": "delete_default_keyframes", "label": "Delete Default Keyframes", "type": "PUSHBUTTON" },
+        { "name": "initialize",           "label": "Initialize",           "type": "PUSHBUTTON" },
+        { "name": "continue_noanim",      "label": "Continue No Anim",     "type": "PUSHBUTTON" },
+        { "name": "show_position",        "label": "Show Position",        "type": "PUSHBUTTON" },
+        { "name": "show_next",            "label": "Show Next",            "type": "PUSHBUTTON" },
+        { "name": "delete_cached",        "label": "Delete Cached",        "type": "PUSHBUTTON" },
+        { "name": "delete_inactive",      "label": "Delete Inactive",      "type": "PUSHBUTTON" }
+      ]
+    },
+    "Grid": {
+      "category": "default",
+      "description": "Arranges child containers in a configurable grid layout",
+      "addCommand": "{id}*FUNCTION SET BUILT_IN*FUNCTION*Grid",
+      "params": [
+        { "name": "num_row",    "label": "Number of Rows",    "type": "INT",   "default": 1,   "min": 1, "max": 1000 },
+        { "name": "num_col",    "label": "Number of Columns", "type": "INT",   "default": 1,   "min": 1, "max": 1000 },
+        { "name": "row_offset", "label": "Row Offset",        "type": "FLOAT", "default": 0.0, "min": -10000, "max": 10000 },
+        { "name": "col_offset", "label": "Column Offset",     "type": "FLOAT", "default": 0.0, "min": -10000, "max": 10000 },
+        { "name": "startCorner","label": "Start Corner",      "type": "RADIO", "default": 0,   "options": ["Top Left", "Top Right", "Bottom Left", "Bottom Right"] }
+      ]
+    },
+    "_registryConfirmed": {
+      "_note": "Names verified in viz-plugin-registry.json. Params not yet retrieved from engine. Use {id}*FUNCTION SET BUILT_IN*FUNCTION*<name> and then {id}*FUNCTION*<name>*DYNAMIC_PARAMETER GET to fetch params.",
+      "control": [
+        "ControlAction","ControlActionTable","ControlAudio","ControlBars","ControlChart",
+        "ControlClip","ControlClock","ControlCondition","ControlContainer","ControlDataAction",
+        "ControlDataPool","ControlDPObject","ControlFeedview","ControlGeom","ControlHideinrange",
+        "ControlHideOnEmpty","ControlImage","ControlKeyframe","ControlList","ControlMap",
+        "ControlMaterial","ControlMultiHop","ControlNDI","ControlNum","ControlObject","ControlOmo",
+        "ControlParameter","ControlPayload","ControlPie","ControlScaling","ControlSigncontainer",
+        "ControlSoftclip","ControlStoppoint","ControlText","ControlTgalpha","ControlTgclip",
+        "ControlVBI","ControlVideo","ControlWoC"
+      ],
+      "tool": [
+        "DataAction","DataActionTable","DataAlpha","DataAnim","DataArray","DataArrow",
+        "DataCamera","DataCenter","DataClick","DataClock","DataCondition","DataCountdown",
+        "DataCounter","DataDirector","DataDispatcher","DataDrawMask","DataFeedback","DataGeom",
+        "DataGPI","DataGraph","DataGraphPoint","DataHyperlink","DataImage","DataInRange",
+        "DataInteractive","DataInterpolate","DataKey","DataKeyFrame","DataKeyFrame2","DataKeyText",
+        "DataKeyTime","DataLookup","DataLUImage","DataManipulate","DataMaterial",
+        "DataMaterialGradient","DataMaterialIndex","DataMaterialTable","DataMath","DataMathObject",
+        "DataMinMax","DataMouseAction","DataMousePosition","DataMouseSensor","DataMultiParam",
+        "DataNumber","DataObject","DataObjectTracker","DataParameter","DataParamTracker",
+        "DataPool","DataPosition","DataReader","DataRotation","DataScale","DataScreen",
+        "DataSelector","DataSerialClock","DataSerialGPS","DataSHM","DataSHMTracker",
+        "DataStructure","DataSwitch","DataSystem","DataTable","DataTemo","DataText",
+        "DataTextKerning","DataTexture","DataTime","DataTimer","DataViz3Script",
+        "DataWPosition","Data3DObject"
+      ],
+      "visual_data_tools": [
+        "DataFit","DataImport","DataStorage","AreaStackMgr","BarStackMgr","LineStackMgr"
+      ],
+      "default": [
+        "TextAutoScale","TextLink","TextParam","TextToSpeech","TextureFit","Texturemovie",
+        "FadeTexture","AlignTextByCharacter","GeoText","markText","MultiTextureBlend",
+        "STV_TextHighlight","GeoDataReader"
+      ]
+    }
+  },
+  "pxShaders": {
+    "_notes": {
+      "addCommand":    "{id}*SHADER SET BUILT_IN*SHADER*<name>",
+      "getCommand":    "{id}*SHADER GET",
+      "deleteCommand": "{id}*SHADER DELETE",
+      "paramsCommand": "{id}*SHADER*DYNAMIC_PARAMETER GET",
+      "setParam":      "{id}*SHADER*DYNAMIC_PARAMETER*<paramName> SET <value>",
+      "rules": [
+        "Only one shader per container at a time",
+        "Must DELETE existing shader before setting a new one",
+        "DELETE and SET must complete before GET — send as separate TCP call arrays",
+        "LensShader variants have no writable params — sub-components of a lens rig"
+      ],
+      "notInstalled": [
+        "pxAddSubtract","pxBlackAndWhite","pxBrightContrast","pxColorMatch",
+        "pxGamma","pxHueRotate","pxInvertColor","pxLensEnergyBolt","pxLensGlowBall",
+        "pxLensGlowSpikes","pxLensMulti","pxLensPolyElement","pxLensPolyElementShader",
+        "pxLensRandomPoly","pxLensRandomPolyShader","pxLensRays","pxLensSpark",
+        "pxLensStripes","pxMask","pxSaturation","pxStack","pxTint"
+      ]
+    },
+    "pxBicubic": {
+      "description": "High quality image resampling using bicubic filter types",
+      "addCommand": "{id}*SHADER SET BUILT_IN*SHADER*pxBicubic",
+      "params": [
+        { "name": "FilterType", "label": "Filter Type", "type": "RADIO", "default": 0, "options": ["Bspline","VICAR","Gaussian"] },
+        { "name": "VicarB",     "label": "Smooth",      "type": "FLOAT", "default": 70,  "min": -100, "max": 300 },
+        { "name": "VicarC",     "label": "Sharpen",     "type": "FLOAT", "default": 20,  "min": -100, "max": 300 },
+        { "name": "Radius",     "label": "Radius",      "type": "FLOAT", "default": 100, "min": 50,   "max": 500 }
+      ]
+    },
+    "pxCC": {
+      "description": "Color correction shader (no exposed parameters)",
+      "addCommand": "{id}*SHADER SET BUILT_IN*SHADER*pxCC",
+      "params": []
+    },
+    "pxEqualize": {
+      "description": "Levels and tone equalization — maps black, mid, and white points",
+      "addCommand": "{id}*SHADER SET BUILT_IN*SHADER*pxEqualize",
+      "params": [
+        { "name": "BlackLevel", "label": "Black Level", "type": "FLOAT",      "default": 5,  "min": 0, "max": 2000 },
+        { "name": "MidLevel",   "label": "Mid Level",   "type": "FLOAT",      "default": 50, "min": 0, "max": 2000 },
+        { "name": "WhiteLevel", "label": "White Level", "type": "FLOAT",      "default": 95, "min": 0, "max": 2000 },
+        { "name": "autoset",    "label": "Auto Set",    "type": "PUSHBUTTON" }
+      ]
+    },
+    "pxGaussianBlur": {
+      "description": "Gaussian blur with independent X/Y radius control",
+      "addCommand": "{id}*SHADER SET BUILT_IN*SHADER*pxGaussianBlur",
+      "params": [
+        { "name": "XRadius",  "label": "X Radius", "type": "FLOAT", "default": 3,   "min": 0, "max": 100 },
+        { "name": "YRadius",  "label": "Y Radius", "type": "FLOAT", "default": 0,   "min": 0, "max": 100 },
+        { "name": "Quality",  "label": "Quality",  "type": "FLOAT", "default": 2.5, "min": 1, "max": 3 },
+        { "name": "FlipXY",   "label": "Flip X/Y", "type": "BOOL",  "default": 0 },
+        { "name": "Debug",    "label": "Debug",    "type": "BOOL",  "default": 0 }
+      ]
+    },
+    "pxGradient": {
+      "description": "Gradient overlay with color and alpha ramps, turbulence, and blend modes",
+      "addCommand": "{id}*SHADER SET BUILT_IN*SHADER*pxGradient",
+      "params": [
+        { "name": "FromX",         "label": "From X",       "type": "FLOAT",      "default": 0,     "min": -10000, "max": 10000 },
+        { "name": "FromY",         "label": "From Y",       "type": "FLOAT",      "default": 0,     "min": -10000, "max": 10000 },
+        { "name": "Radius",        "label": "Radius",       "type": "FLOAT",      "default": 141.4, "min": 0,      "max": 10000 },
+        { "name": "Angle",         "label": "Angle",        "type": "FLOAT",      "default": 45,    "min": -10000, "max": 10000 },
+        { "name": "GradientType",  "label": "Gradient Type","type": "RADIO",      "default": 0,     "options": ["Linear","Radial","Angular"] },
+        { "name": "RepeatType",    "label": "Repeat Type",  "type": "RADIO",      "default": 0,     "options": ["None","Simple","Seamless"] },
+        { "name": "AlphaRamp",     "label": "Alpha Ramp",   "type": "STRING",     "default": "0.0 1.0 1.0 0.5" },
+        { "name": "ColorRamp",     "label": "Color Ramp",   "type": "STRING",     "default": "0.0 1.0 0.0 0.0 0.5 1.0 1.0 0.0 1.0 0.0 1.0 0.5" },
+        { "name": "ShowGUI",       "label": "Show GUI",     "type": "BOOL",       "default": 1 },
+        { "name": "AlphaValues",   "label": "Alpha Values", "type": "STRING",     "default": "" },
+        { "name": "AlphaActive",   "label": "Alpha Active", "type": "BOOL",       "default": 1 },
+        { "name": "RGBActive",     "label": "RGB Active",   "type": "BOOL",       "default": 1 },
+        { "name": "RenderMode",    "label": "Render Mode",  "type": "RADIO",      "default": 1,     "options": ["Add","Blend","Subtract","Rev-Subtract","Multiply","Rev-Multiply"] },
+        { "name": "TurbAmount",    "label": "Turbulence",   "type": "FLOAT",      "default": 50,    "min": -10000, "max": 10000 },
+        { "name": "Wavelength",    "label": "Wavelength",   "type": "FLOAT",      "default": 50,    "min": 1,      "max": 10000 },
+        { "name": "Progress",      "label": "Progress",     "type": "FLOAT",      "default": 0,     "min": -10000, "max": 10000 },
+        { "name": "TurbActive",    "label": "Turb Active",  "type": "BOOL",       "default": 0 },
+        { "name": "BuildAlpha",    "label": "Build Alpha",  "type": "PUSHBUTTON" }
+      ]
+    },
+    "pxInvert": {
+      "description": "Invert RGB and/or Alpha channels with optional channel extraction modes",
+      "addCommand": "{id}*SHADER SET BUILT_IN*SHADER*pxInvert",
+      "params": [
+        { "name": "ConvertMode", "label": "Convert Mode", "type": "RADIO", "default": 0, "options": ["Normal","RGB-to-Alpha","Alpha-to-RGB"] },
+        { "name": "InvertRGB",   "label": "Invert RGB",   "type": "BOOL",  "default": 1 },
+        { "name": "InvertA",     "label": "Invert Alpha", "type": "BOOL",  "default": 1 }
+      ]
+    },
+    "pxLensDistort": {
+      "description": "Barrel or pincushion lens distortion",
+      "addCommand": "{id}*SHADER SET BUILT_IN*SHADER*pxLensDistort",
+      "params": [
+        { "name": "Xcenter", "label": "X Center",   "type": "FLOAT", "default": 50,  "min": -10000, "max": 10000 },
+        { "name": "Ycenter", "label": "Y Center",   "type": "FLOAT", "default": 50,  "min": -10000, "max": 10000 },
+        { "name": "Amount",  "label": "Amount",     "type": "FLOAT", "default": 0,   "min": -10000, "max": 10000 },
+        { "name": "Amount2", "label": "2nd Order",  "type": "FLOAT", "default": 0,   "min": -2500,  "max": 2500 },
+        { "name": "Scale",   "label": "Scale",      "type": "FLOAT", "default": 100, "min": 0,      "max": 2500 }
+      ]
+    },
+    "pxLensEnergyBoltShader": {
+      "description": "Energy bolt lens effect (no exposed parameters — sub-component of a lens rig)",
+      "addCommand": "{id}*SHADER SET BUILT_IN*SHADER*pxLensEnergyBoltShader",
+      "params": []
+    },
+    "pxLensGlowBallShader": {
+      "description": "Glow ball lens effect (no exposed parameters — sub-component of a lens rig)",
+      "addCommand": "{id}*SHADER SET BUILT_IN*SHADER*pxLensGlowBallShader",
+      "params": []
+    },
+    "pxLensGlowSpikesShader": {
+      "description": "Glow spikes lens effect (no exposed parameters — sub-component of a lens rig)",
+      "addCommand": "{id}*SHADER SET BUILT_IN*SHADER*pxLensGlowSpikesShader",
+      "params": []
+    },
+    "pxLensRaysShader": {
+      "description": "Rays lens effect (no exposed parameters — sub-component of a lens rig)",
+      "addCommand": "{id}*SHADER SET BUILT_IN*SHADER*pxLensRaysShader",
+      "params": []
+    },
+    "pxLensSparkShader": {
+      "description": "Spark lens effect (no exposed parameters — sub-component of a lens rig)",
+      "addCommand": "{id}*SHADER SET BUILT_IN*SHADER*pxLensSparkShader",
+      "params": []
+    },
+    "pxLensStripesShader": {
+      "description": "Stripes lens effect (no exposed parameters — sub-component of a lens rig)",
+      "addCommand": "{id}*SHADER SET BUILT_IN*SHADER*pxLensStripesShader",
+      "params": []
+    },
+    "pxMotionBlur": {
+      "description": "Zoom, rotate, and shift motion blur effect",
+      "addCommand": "{id}*SHADER SET BUILT_IN*SHADER*pxMotionBlur",
+      "params": [
+        { "name": "Xcenter",  "label": "X Center",  "type": "FLOAT", "default": 50,  "min": -2000, "max": 2000 },
+        { "name": "Ycenter",  "label": "Y Center",  "type": "FLOAT", "default": 50,  "min": -2000, "max": 2000 },
+        { "name": "Rotate",   "label": "Rotate",    "type": "FLOAT", "default": 0,   "min": -10,   "max": 10 },
+        { "name": "Zoom",     "label": "Zoom",      "type": "FLOAT", "default": 100, "min": 80,    "max": 120 },
+        { "name": "Xshift",   "label": "X Shift",   "type": "FLOAT", "default": 0,   "min": -10,   "max": 10 },
+        { "name": "Yshift",   "label": "Y Shift",   "type": "FLOAT", "default": 0,   "min": -10,   "max": 10 },
+        { "name": "FixEdges", "label": "Fix Edges", "type": "BOOL",  "default": 1 },
+        { "name": "Samples",  "label": "Samples",   "type": "INT",   "default": 9,   "min": 3,     "max": 50 }
+      ]
+    },
+    "pxNoise": {
+      "description": "Animated noise overlay with color, speed, and stretch controls",
+      "addCommand": "{id}*SHADER SET BUILT_IN*SHADER*pxNoise",
+      "params": [
+        { "name": "Size",         "label": "Size",               "type": "FLOAT", "default": 5,  "min": 1,      "max": 100 },
+        { "name": "Amplitude",    "label": "Amplitude",          "type": "FLOAT", "default": 20, "min": -2000,  "max": 2000 },
+        { "name": "Color",        "label": "Color",              "type": "COLOR", "default": "#FFFFFFFF" },
+        { "name": "Speed",        "label": "Speed",              "type": "FLOAT", "default": 35, "min": -100,   "max": 100 },
+        { "name": "Stretch",      "label": "Stretch",            "type": "FLOAT", "default": 1,  "min": 1,      "max": 100 },
+        { "name": "Angle",        "label": "Stretch Angle",      "type": "FLOAT", "default": 0,  "min": -10000, "max": 10000 },
+        { "name": "Speed2",       "label": "Movement",           "type": "FLOAT", "default": 0,  "min": -10000, "max": 10000 },
+        { "name": "ObjectCoords", "label": "Transform as Texture","type": "BOOL", "default": 1 },
+        { "name": "ApplyTo",      "label": "Apply To",           "type": "RADIO", "default": 0,  "options": ["RGB","RGBA","Alpha"] }
+      ]
+    },
+    "pxPixelate": {
+      "description": "Pixelation effect with optional smoothing",
+      "addCommand": "{id}*SHADER SET BUILT_IN*SHADER*pxPixelate",
+      "params": [
+        { "name": "Lock",       "label": "Lock X/Y",   "type": "BOOL",  "default": 1 },
+        { "name": "XSize",      "label": "X Size",     "type": "INT",   "default": 5, "min": 1, "max": 100 },
+        { "name": "YSize",      "label": "Y Size",     "type": "INT",   "default": 5, "min": 1, "max": 100 },
+        { "name": "Smoothness", "label": "Smoothness", "type": "FLOAT", "default": 0, "min": 0, "max": 100 }
+      ]
+    },
+    "pxPosterize": {
+      "description": "Reduce number of color levels for a posterized look",
+      "addCommand": "{id}*SHADER SET BUILT_IN*SHADER*pxPosterize",
+      "params": [
+        { "name": "FLevels",    "label": "Levels",     "type": "FLOAT", "default": 8, "min": 2, "max": 255 },
+        { "name": "Transition", "label": "Transition", "type": "RADIO", "default": 0, "options": ["Off","Fade","Grow"] }
+      ]
+    },
+    "pxRecolor": {
+      "description": "Remap pixel colors using a color ramp driven by luma or a single channel",
+      "addCommand": "{id}*SHADER SET BUILT_IN*SHADER*pxRecolor",
+      "params": [
+        { "name": "ExtractType", "label": "Mode",        "type": "RADIO",      "default": 0,     "options": ["Luma","Red","Green","Blue"] },
+        { "name": "Amount",      "label": "Amount",      "type": "FLOAT",      "default": 100,   "min": 0, "max": 100 },
+        { "name": "ColorRamp",   "label": "Color Ramp",  "type": "STRING",     "default": "0.0 1.0 0.0 0.0 0.5 1.0 1.0 0.0 1.0 0.0 1.0 0.5" },
+        { "name": "AlphaRamp",   "label": "Alpha Ramp",  "type": "STRING",     "default": "0.0 1.0 1.0 0.5" },
+        { "name": "AlphaValues", "label": "Alpha Values","type": "STRING",     "default": "" },
+        { "name": "BuildAlpha",  "label": "Build Alpha", "type": "PUSHBUTTON" }
+      ]
+    },
+    "pxRipple": {
+      "description": "Ripple or wave distortion emanating from a center point",
+      "addCommand": "{id}*SHADER SET BUILT_IN*SHADER*pxRipple",
+      "params": [
+        { "name": "Xcenter",    "label": "X Center",   "type": "FLOAT", "default": 50,  "min": -10000, "max": 10000 },
+        { "name": "Ycenter",    "label": "Y Center",   "type": "FLOAT", "default": 50,  "min": -10000, "max": 10000 },
+        { "name": "Radius",     "label": "Radius",     "type": "FLOAT", "default": 100, "min": 0,      "max": 2500 },
+        { "name": "Amount",     "label": "Amount",     "type": "FLOAT", "default": 20,  "min": -10000, "max": 10000 },
+        { "name": "Wavelength", "label": "Wavelength", "type": "FLOAT", "default": 20,  "min": -10000, "max": 10000 },
+        { "name": "Progress",   "label": "Progress",   "type": "FLOAT", "default": 0,   "min": -10000, "max": 10000 }
+      ]
+    },
+    "pxSparkle": {
+      "description": "Starburst sparkle effect with configurable rays, radius, seed, and animation speed",
+      "addCommand": "{id}*SHADER SET BUILT_IN*SHADER*pxSparkle",
+      "params": [
+        { "name": "Xcenter",      "label": "X Center",           "type": "FLOAT", "default": 50,  "min": -2000,  "max": 2000 },
+        { "name": "Ycenter",      "label": "Y Center",           "type": "FLOAT", "default": 50,  "min": -2000,  "max": 2000 },
+        { "name": "Amount",       "label": "Amount",             "type": "FLOAT", "default": 100, "min": 0,      "max": 1000 },
+        { "name": "Randomness",   "label": "Randomness",         "type": "FLOAT", "default": 100, "min": 0,      "max": 100 },
+        { "name": "Angle",        "label": "Angle",              "type": "FLOAT", "default": 0,   "min": -10000, "max": 10000 },
+        { "name": "Radius",       "label": "Radius",             "type": "FLOAT", "default": 200, "min": 0,      "max": 10000 },
+        { "name": "InnerRadius",  "label": "Inner Radius",       "type": "FLOAT", "default": 2,   "min": 0,      "max": 1000 },
+        { "name": "InnerAmount",  "label": "Inner Amount",       "type": "FLOAT", "default": 100, "min": 0,      "max": 1000 },
+        { "name": "Rays",         "label": "Rays",               "type": "INT",   "default": 100, "min": 4,      "max": 300 },
+        { "name": "Seed",         "label": "Seed",               "type": "FLOAT", "default": 0,   "min": 0,      "max": 10000 },
+        { "name": "Speed",        "label": "Speed",              "type": "FLOAT", "default": 0,   "min": 0,      "max": 1000 },
+        { "name": "Aspect",       "label": "Aspect",             "type": "FLOAT", "default": 100, "min": 0.01,   "max": 100000 },
+        { "name": "ObjectCoords", "label": "Transform as Texture","type": "BOOL", "default": 1 },
+        { "name": "CutImage",     "label": "Cut Image",          "type": "BOOL",  "default": 0 }
+      ]
+    },
+    "pxTurbDissolve": {
+      "description": "Turbulent dissolve transition driven by a Progress value",
+      "addCommand": "{id}*SHADER SET BUILT_IN*SHADER*pxTurbDissolve",
+      "params": [
+        { "name": "WaveLength",  "label": "Wave Length", "type": "FLOAT", "default": 10, "min": 1,    "max": 100 },
+        { "name": "Amplitude",   "label": "Amplitude",   "type": "FLOAT", "default": 0,  "min": -100, "max": 100 },
+        { "name": "Speed",       "label": "Speed",       "type": "FLOAT", "default": 50, "min": -100, "max": 100 },
+        { "name": "Transition",  "label": "Transition",  "type": "FLOAT", "default": 0,  "min": 0,    "max": 100 }
+      ]
+    },
+    "pxTurbulence": {
+      "description": "Turbulent distortion with wavelength, amplitude, and speed controls",
+      "addCommand": "{id}*SHADER SET BUILT_IN*SHADER*pxTurbulence",
+      "params": [
+        { "name": "WaveLength", "label": "Wave Length", "type": "FLOAT", "default": 10, "min": 1,    "max": 100 },
+        { "name": "Amplitude",  "label": "Amplitude",   "type": "FLOAT", "default": 0,  "min": -100, "max": 100 },
+        { "name": "Speed",      "label": "Speed",       "type": "FLOAT", "default": 50, "min": -100, "max": 100 }
+      ]
+    },
+    "pxTurbWipe": {
+      "description": "Turbulent wipe transition with configurable angle, softness, and progress",
+      "addCommand": "{id}*SHADER SET BUILT_IN*SHADER*pxTurbWipe",
+      "params": [
+        { "name": "WaveLength", "label": "Wave Length", "type": "FLOAT", "default": 10,  "min": 1,    "max": 100 },
+        { "name": "Amplitude",  "label": "Amplitude",   "type": "FLOAT", "default": 100, "min": -100, "max": 200 },
+        { "name": "Speed",      "label": "Speed",       "type": "FLOAT", "default": 15,  "min": -100, "max": 100 },
+        { "name": "Angle",      "label": "Wipe Angle",  "type": "FLOAT", "default": 45,  "min": -720, "max": 720 },
+        { "name": "Width",      "label": "Softness",    "type": "FLOAT", "default": 25,  "min": 0,    "max": 100 },
+        { "name": "Transition", "label": "Transition",  "type": "FLOAT", "default": 0,   "min": 0,    "max": 100 }
+      ]
+    },
+    "pxTwirl": {
+      "description": "Twirl or spin distortion around a center point with soft edge falloff",
+      "addCommand": "{id}*SHADER SET BUILT_IN*SHADER*pxTwirl",
+      "params": [
+        { "name": "Xcenter",  "label": "X Center",     "type": "FLOAT", "default": 50, "min": -10000, "max": 10000 },
+        { "name": "Ycenter",  "label": "Y Center",     "type": "FLOAT", "default": 50, "min": -10000, "max": 10000 },
+        { "name": "Radius",   "label": "Radius",       "type": "FLOAT", "default": 50, "min": 0,      "max": 2500 },
+        { "name": "Amount",   "label": "Amount",       "type": "FLOAT", "default": 0,  "min": -10000, "max": 10000 },
+        { "name": "SoftEdge", "label": "Edge Softness","type": "FLOAT", "default": 20, "min": 0,      "max": 1000 }
+      ]
+    },
+    "pxWaves": {
+      "description": "Wave distortion with multiple wave types, angle, and animated progress",
+      "addCommand": "{id}*SHADER SET BUILT_IN*SHADER*pxWaves",
+      "params": [
+        { "name": "WaveType",   "label": "Wave Type",  "type": "RADIO", "default": 0,  "options": ["Sine","Noise","Triangle","Square"] },
+        { "name": "Angle",      "label": "Angle",      "type": "FLOAT", "default": 0,  "min": -10000, "max": 10000 },
+        { "name": "Amount",     "label": "Amount",     "type": "FLOAT", "default": 10, "min": -10000, "max": 10000 },
+        { "name": "Wavelength", "label": "Wavelength", "type": "FLOAT", "default": 10, "min": 0.01,   "max": 10000 },
+        { "name": "Progress",   "label": "Progress",   "type": "FLOAT", "default": 0,  "min": -10000, "max": 10000 },
+        { "name": "Seed",       "label": "Seed",       "type": "INT",   "default": 0,  "min": -10000, "max": 10000 }
+      ]
     }
   }
 }
