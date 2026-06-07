@@ -13007,5 +13007,208 @@
         { "name": "Seed",       "label": "Seed",       "type": "INT",   "default": 0,  "min": -10000, "max": 10000 }
       ]
     }
+  },
+  "texture": {
+    "_notes": {
+      "testedOn": "Viz Engine 5.3.2.60000",
+      "pathPrefix": "{id}*TEXTURE",
+      "rules": [
+        "All properties tested live — only accessible properties are listed here",
+        "Only one texture slot per container tested (UNIT=1)",
+        "POSITION, SCALING, CENTER, ROTATION all operate in UV space (0.0–1.0 range)",
+        "COMBINE and IMAGE2 work together — assign IMAGE2 first, then set COMBINE mode",
+        "ENVIRONMENT SET BLEND uses CONSTANT_COLOR as the blend target color",
+        "Always send SET and GET as separate TCP call arrays to get confirmed values"
+      ],
+      "notAccessible": [
+        "ALPHA","BLEND","COLOR","SCALE","OFFSET","FLIP","FORMAT",
+        "WIDTH","HEIGHT","SIZE","LAYER","COMPRESS","MIPMAP","GAMMA",
+        "FRAME","FPS","LOOP"
+      ],
+      "shorthand": {
+        "assignImage": "{id}*IMAGE SET IMAGE*ARTIST/folder/filename",
+        "assignImageNote": "Shorthand that sets both IMAGE and TEXTURE in one command. Use *TEXTURE* properties for fine-tuning after assignment.",
+        "removeImage": "{id}*IMAGE DELETE"
+      }
+    },
+    "properties": [
+      {
+        "property": "*TEXTURE",
+        "readable": true,
+        "writable": false,
+        "description": "Returns the internal texture object ID attached to the container",
+        "example_get": "{id}*TEXTURE GET",
+        "example_response": "#6194",
+        "notes": "Use this ID to reference the texture object directly"
+      },
+      {
+        "property": "*TEXTURE*IMAGE",
+        "readable": true,
+        "writable": true,
+        "description": "Full Hub path of the primary image assigned to this texture slot",
+        "example_get": "{id}*TEXTURE*IMAGE GET",
+        "example_response": "IMAGE*ARTIST/folder/filename",
+        "example_set": "{id}*TEXTURE*IMAGE SET IMAGE*ARTIST/folder/filename",
+        "notes": "Path format is IMAGE*<hub_path> without leading slash"
+      },
+      {
+        "property": "*TEXTURE*IMAGE2",
+        "readable": true,
+        "writable": true,
+        "description": "Full Hub path of the secondary image for multi-texture combine operations. Used together with COMBINE to blend or mask two images.",
+        "example_get": "{id}*TEXTURE*IMAGE2 GET",
+        "example_response": "IMAGE*ARTIST/folder/filename",
+        "example_set": "{id}*TEXTURE*IMAGE2 SET IMAGE*ARTIST/folder/filename",
+        "notes": "Same path format as IMAGE — IMAGE*<hub_path> without leading slash. Works in conjunction with COMBINE to define the blend method between IMAGE (primary) and IMAGE2 (secondary)."
+      },
+      {
+        "property": "*TEXTURE*NAME",
+        "readable": true,
+        "writable": false,
+        "description": "Filename only of the assigned image (no path)",
+        "example_get": "{id}*TEXTURE*NAME GET",
+        "example_response": "SPORT_2_RESULT__jpg"
+      },
+      {
+        "property": "*TEXTURE*ACTIVE",
+        "readable": true,
+        "writable": true,
+        "description": "Enables or disables the texture slot",
+        "values": ["1", "0"],
+        "example_get": "{id}*TEXTURE*ACTIVE GET",
+        "example_set": "{id}*TEXTURE*ACTIVE SET 1"
+      },
+      {
+        "property": "*TEXTURE*UNIT",
+        "readable": true,
+        "writable": true,
+        "description": "Texture slot/unit number (multi-texture support)",
+        "example_get": "{id}*TEXTURE*UNIT GET",
+        "example_response": "1",
+        "example_set": "{id}*TEXTURE*UNIT SET 0"
+      },
+      {
+        "property": "*TEXTURE*WRAP",
+        "readable": true,
+        "writable": true,
+        "description": "Controls how the texture tiles when UV coordinates exceed [0,1]",
+        "values": ["REPEAT", "CLAMP"],
+        "example_get": "{id}*TEXTURE*WRAP GET",
+        "example_set": "{id}*TEXTURE*WRAP SET REPEAT",
+        "notes": "REPEAT tiles the texture; CLAMP stretches the edge pixels"
+      },
+      {
+        "property": "*TEXTURE*MAPPING",
+        "readable": true,
+        "writable": true,
+        "description": "Defines the UV coordinate generation method",
+        "values": ["LINEAR", "VERTEX", "SPHERE", "CUBE"],
+        "example_get": "{id}*TEXTURE*MAPPING GET",
+        "example_set": "{id}*TEXTURE*MAPPING SET LINEAR",
+        "notes": "LINEAR=standard UV from geometry, VERTEX=UV from vertex data, SPHERE=spherical environment mapping, CUBE=cube map environment mapping"
+      },
+      {
+        "property": "*TEXTURE*ENVIRONMENT",
+        "readable": true,
+        "writable": true,
+        "description": "Controls how the texture color is combined with the material/geometry color",
+        "values": ["MODULATE", "REPLACE", "DECAL", "BLEND", "ADD"],
+        "example_get": "{id}*TEXTURE*ENVIRONMENT GET",
+        "example_set": "{id}*TEXTURE*ENVIRONMENT SET MODULATE",
+        "notes": "MODULATE=multiply with material color (default), REPLACE=fully replaces material color, DECAL=alpha-blended decal overlay, BLEND=blend with CONSTANT_COLOR, ADD=add texture on top of material color"
+      },
+      {
+        "property": "*TEXTURE*QUALITY",
+        "readable": true,
+        "writable": true,
+        "description": "Texture filtering quality / mipmap mode",
+        "values": ["MIPMAP", "LINEAR"],
+        "example_get": "{id}*TEXTURE*QUALITY GET",
+        "example_set": "{id}*TEXTURE*QUALITY SET MIPMAP",
+        "notes": "MIPMAP=mipmapped filtering, best quality (default); LINEAR=simple linear filtering, faster, no mipmaps"
+      },
+      {
+        "property": "*TEXTURE*ROTATION",
+        "readable": true,
+        "writable": true,
+        "description": "Rotates the texture around the pivot defined by CENTER (X Y Z Euler degrees)",
+        "format": "X Y Z — three space-separated floats in degrees",
+        "example_get": "{id}*TEXTURE*ROTATION GET",
+        "example_response": "0 0 0",
+        "example_set": "{id}*TEXTURE*ROTATION SET 45 0 0",
+        "notes": "Three space-separated float values for X, Y, Z rotation in degrees"
+      },
+      {
+        "property": "*TEXTURE*POSITION",
+        "readable": true,
+        "writable": true,
+        "description": "UV offset — shifts the texture in U (X) and V (Y) space",
+        "format": "X Y — two space-separated floats, approx range -1.0 to 1.0",
+        "example_get": "{id}*TEXTURE*POSITION GET",
+        "example_response": "0 0",
+        "example_set": "{id}*TEXTURE*POSITION SET 0.5 0.5"
+      },
+      {
+        "property": "*TEXTURE*SCALING",
+        "readable": true,
+        "writable": true,
+        "description": "UV scale — zooms the texture in U (X) and V (Y) space",
+        "format": "X Y — two space-separated floats. Default 1 1. Value of 2 2 zooms in 2x",
+        "example_get": "{id}*TEXTURE*SCALING GET",
+        "example_response": "1 1",
+        "example_set": "{id}*TEXTURE*SCALING SET 2 2"
+      },
+      {
+        "property": "*TEXTURE*CENTER",
+        "readable": true,
+        "writable": true,
+        "description": "Rotation pivot point in UV space (X Y)",
+        "format": "X Y — two space-separated floats. Default 0 0. Set to 0.5 0.5 for center pivot",
+        "example_get": "{id}*TEXTURE*CENTER GET",
+        "example_response": "0 0",
+        "example_set": "{id}*TEXTURE*CENTER SET 0.5 0.5"
+      },
+      {
+        "property": "*TEXTURE*ANISOTROPY",
+        "readable": true,
+        "writable": false,
+        "description": "Anisotropic filtering level",
+        "example_get": "{id}*TEXTURE*ANISOTROPY GET",
+        "example_response": "0",
+        "notes": "Read-only on this engine; returns 0"
+      },
+      {
+        "property": "*TEXTURE*CONSTANT_COLOR",
+        "readable": true,
+        "writable": true,
+        "description": "RGBA constant color used in conjunction with ENVIRONMENT SET BLEND. Defines the constant color that the texture blends with.",
+        "format": "R G B A — four space-separated floats, each 0.0 to 1.0",
+        "example_get": "{id}*TEXTURE*CONSTANT_COLOR GET",
+        "example_response": "0.90193 0.108583 0.108583 1",
+        "example_set": "{id}*TEXTURE*CONSTANT_COLOR SET 1 0 0 1"
+      },
+      {
+        "property": "*TEXTURE*DISPLAY_COMPONENT",
+        "readable": true,
+        "writable": true,
+        "description": "Controls which channels of the texture are active/displayed",
+        "values": ["COLOR", "ALPHA", "COLOR_ALPHA"],
+        "example_get": "{id}*TEXTURE*DISPLAY_COMPONENT GET",
+        "example_response": "COLOR_ALPHA",
+        "example_set": "{id}*TEXTURE*DISPLAY_COMPONENT SET COLOR_ALPHA",
+        "notes": "COLOR=RGB channels only, ALPHA=alpha channel only, COLOR_ALPHA=both RGB and alpha (default). RED/GREEN/BLUE/INTENSITY are NOT valid on this engine (return -1)"
+      },
+      {
+        "property": "*TEXTURE*COMBINE",
+        "readable": true,
+        "writable": true,
+        "description": "Defines how IMAGE (primary) and IMAGE2 (secondary) are combined in a multi-texture setup. Only meaningful when IMAGE2 is also assigned.",
+        "values": ["ALPHA", "BLEND"],
+        "example_get": "{id}*TEXTURE*COMBINE GET",
+        "example_response": "ALPHA",
+        "example_set": "{id}*TEXTURE*COMBINE SET ALPHA",
+        "notes": "ALPHA=use IMAGE2 alpha to blend between IMAGE and IMAGE2, BLEND=blend IMAGE and IMAGE2 together. NOT valid on this engine: MODULATE, ADD, REPLACE, DECAL, SUBTRACT, MULTIPLY, DOT3, INTERPOLATE, NONE"
+      }
+    ]
   }
 }
