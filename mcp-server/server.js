@@ -1048,6 +1048,219 @@ server.tool(
   }
 );
 
+// ════════════════════════════════════════════════════════════════════════════
+// VIZ ENGINE — PLUGIN REGISTRY + TOOLS
+// ════════════════════════════════════════════════════════════════════════════
+
+const pluginRegistry = JSON.parse(
+  fs.readFileSync(path.join(__dirname, "viz-plugin-registry.json"), "utf8")
+);
+
+function flattenGeometry() {
+  return Object.entries(pluginRegistry.geometry).flatMap(([sub, names]) =>
+    names.map(n => ({ name: n, category: "geometry", subcategory: sub }))
+  );
+}
+
+function flattenAll() {
+  const results = [];
+  for (const [cat, val] of Object.entries(pluginRegistry)) {
+    if (Array.isArray(val)) {
+      val.forEach(n => results.push({ name: n, category: cat, subcategory: null }));
+    } else if (typeof val === "object") {
+      for (const [sub, names] of Object.entries(val)) {
+        names.forEach(n => results.push({ name: n, category: cat, subcategory: sub }));
+      }
+    }
+  }
+  return results;
+}
+
+server.tool(
+  "viz_plugin_list",
+  "List Viz Engine plugins from the static registry by category and optional subcategory. Use category='all' to return the full registry. Subcategories for geometry: default, visual_data_tools, dynamics, realfx, topology, ticker, map_geo, visualization. Subcategories for container: control, textfx, containerfx, feed, tool, visual_data_tools, default, and more.",
+  {
+    category:    z.enum(["geometry","container","shader","extension","media_asset","viz_engine_shader","all"]).optional().default("all").describe("Top-level plugin category, or 'all' to return everything"),
+    subcategory: z.string().optional().describe("Optional subcategory filter, e.g. 'control', 'textfx', 'visual_data_tools'"),
+  },
+  async ({ category = "all", subcategory }) => {
+    let result;
+    if (category === "all") {
+      result = { registry: pluginRegistry };
+    } else if (subcategory) {
+      const section = pluginRegistry[category];
+      if (!section) throw new Error(`Unknown category: ${category}`);
+      const plugins = Array.isArray(section) ? section : (section[subcategory] ?? null);
+      if (plugins === null) throw new Error(`Unknown subcategory '${subcategory}' in '${category}'`);
+      result = { category, subcategory, plugins, count: plugins.length };
+    } else {
+      const section = pluginRegistry[category];
+      if (!section) throw new Error(`Unknown category: ${category}`);
+      if (Array.isArray(section)) {
+        result = { category, plugins: section, count: section.length };
+      } else {
+        const summary = Object.fromEntries(
+          Object.entries(section).map(([k, v]) => [k, v.length])
+        );
+        result = { category, subcategories: summary };
+      }
+    }
+    return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
+  }
+);
+
+server.tool(
+  "viz_plugin_search",
+  "Search for a Viz Engine plugin by partial name (case-insensitive) across all categories. Returns each match with its category and subcategory path.",
+  {
+    query: z.string().describe("Partial plugin name, e.g. 'line', 'data', 'chart', 'Control'"),
+  },
+  async ({ query }) => {
+    const q = query.toLowerCase();
+    const results = flattenAll().filter(e => e.name.toLowerCase().includes(q));
+    return {
+      content: [{
+        type: "text",
+        text: JSON.stringify({ query, results, count: results.length }, null, 2),
+      }],
+    };
+  }
+);
+
+server.tool(
+  "viz_plugin_get_params",
+  "Get all dynamic parameters of a plugin on a Viz Engine container. Sends DYNAMIC_PARAMETER GET over TCP. Use plugin_type='geom' for geometry plugins, 'function' for container/function plugins (requires plugin_name).",
+  {
+    container_id: z.string().describe("Container ID with # prefix, e.g. '#7565'"),
+    plugin_type:  z.enum(["geom","function"]).describe("'geom' for geometry plugin, 'function' for a named container plugin"),
+    plugin_name:  z.string().optional().describe("Required when plugin_type is 'function', e.g. 'DataLabel', 'Mute'"),
+    engineId:     z.string().optional().describe("Engine ID from config; defaults to first enabled engine"),
+  },
+  async ({ container_id, plugin_type, plugin_name, engineId }) => {
+    const engines = config.engine.filter(e => e.enabled);
+    if (!engines.length) throw new Error("No enabled Viz Engines in config.");
+    const engine = engineId ? (engines.find(e => e.id === engineId) || engines[0]) : engines[0];
+
+    let command;
+    if (plugin_type === "geom") {
+      command = `${container_id}*GEOM*DYNAMIC_PARAMETER GET`;
+    } else {
+      if (!plugin_name) throw new Error("plugin_name is required when plugin_type is 'function'");
+      command = `${container_id}*FUNCTION*${plugin_name}*DYNAMIC_PARAMETER GET`;
+    }
+
+    const responses = await sendToEngine(engine.host, engine.port, command);
+    const raw = responses[0] || "";
+    return {
+      content: [{
+        type: "text",
+        text: JSON.stringify({
+          container_id, plugin_type, plugin_name: plugin_name || null,
+          raw_params: raw,
+          error: raw.startsWith("ERROR") || raw === "(timeout — no response)" ? raw : null,
+        }, null, 2),
+      }],
+    };
+  }
+);
+
+server.tool(
+  "viz_plugin_set_param",
+  "Set a single dynamic parameter on a Viz Engine container plugin. Sends DYNAMIC_PARAMETER*name SET value over TCP.",
+  {
+    container_id: z.string().describe("Container ID with # prefix, e.g. '#7565'"),
+    plugin_type:  z.enum(["geom","function"]).describe("'geom' for geometry plugin, 'function' for a named container plugin"),
+    plugin_name:  z.string().optional().describe("Required when plugin_type is 'function'"),
+    param_name:   z.string().describe("Parameter name, e.g. 'DataY', 'SharedMem', 'Width'"),
+    value:        z.string().describe("Value to set (always a string; engine handles type conversion)"),
+    engineId:     z.string().optional().describe("Engine ID from config; defaults to first enabled engine"),
+  },
+  async ({ container_id, plugin_type, plugin_name, param_name, value, engineId }) => {
+    const engines = config.engine.filter(e => e.enabled);
+    if (!engines.length) throw new Error("No enabled Viz Engines in config.");
+    const engine = engineId ? (engines.find(e => e.id === engineId) || engines[0]) : engines[0];
+
+    let command;
+    if (plugin_type === "geom") {
+      command = `${container_id}*GEOM*DYNAMIC_PARAMETER*${param_name} SET ${value}`;
+    } else {
+      if (!plugin_name) throw new Error("plugin_name is required when plugin_type is 'function'");
+      command = `${container_id}*FUNCTION*${plugin_name}*DYNAMIC_PARAMETER*${param_name} SET ${value}`;
+    }
+
+    const responses = await sendToEngine(engine.host, engine.port, command);
+    const raw = responses[0] || "";
+    const success = !raw.startsWith("ERROR") && raw !== "(timeout — no response)";
+    return {
+      content: [{
+        type: "text",
+        text: JSON.stringify({
+          container_id, plugin_type, plugin_name: plugin_name || null,
+          param_name, value, success, response: raw,
+        }, null, 2),
+      }],
+    };
+  }
+);
+
+server.tool(
+  "viz_plugin_apply_geom",
+  "Apply a geometry plugin to a Viz Engine container. Sends: #id*GEOM SET BUILT_IN*GEOM*PluginName. Use viz_plugin_list or viz_plugin_search to find valid geometry plugin names.",
+  {
+    container_id: z.string().describe("Container ID with # prefix, e.g. '#4127'"),
+    plugin_name:  z.string().describe("Geometry plugin name WITHOUT .vip, e.g. 'Rectangle', 'LineChart', 'Noggi'"),
+    engineId:     z.string().optional().describe("Engine ID from config; defaults to first enabled engine"),
+  },
+  async ({ container_id, plugin_name, engineId }) => {
+    const engines = config.engine.filter(e => e.enabled);
+    if (!engines.length) throw new Error("No enabled Viz Engines in config.");
+    const engine = engineId ? (engines.find(e => e.id === engineId) || engines[0]) : engines[0];
+
+    const known = flattenGeometry().some(e => e.name === plugin_name);
+    const command = `${container_id}*GEOM SET BUILT_IN*GEOM*${plugin_name}`;
+    const responses = await sendToEngine(engine.host, engine.port, command);
+    const raw = responses[0] || "";
+    const success = !raw.startsWith("ERROR") && raw !== "(timeout — no response)";
+    return {
+      content: [{
+        type: "text",
+        text: JSON.stringify({
+          container_id, plugin_name, success, response: raw,
+          warning: known ? null : `'${plugin_name}' was not found in the local registry — command sent anyway`,
+        }, null, 2),
+      }],
+    };
+  }
+);
+
+server.tool(
+  "viz_plugin_add_function",
+  "Add a function (container plugin) to a Viz Engine container. Sends: #id*FUNCTION SET BUILT_IN*FUNCTION*PluginName. Use viz_plugin_search to find valid container plugin names.",
+  {
+    container_id: z.string().describe("Container ID with # prefix, e.g. '#4127'"),
+    plugin_name:  z.string().describe("Container plugin name WITHOUT .vip, e.g. 'DataLabel', 'Toggle', 'Mute'"),
+    engineId:     z.string().optional().describe("Engine ID from config; defaults to first enabled engine"),
+  },
+  async ({ container_id, plugin_name, engineId }) => {
+    const engines = config.engine.filter(e => e.enabled);
+    if (!engines.length) throw new Error("No enabled Viz Engines in config.");
+    const engine = engineId ? (engines.find(e => e.id === engineId) || engines[0]) : engines[0];
+
+    const command = `${container_id}*FUNCTION SET BUILT_IN*FUNCTION*${plugin_name}`;
+    const responses = await sendToEngine(engine.host, engine.port, command);
+    const raw = responses[0] || "";
+    const success = !raw.startsWith("ERROR") && raw !== "(timeout — no response)";
+    return {
+      content: [{
+        type: "text",
+        text: JSON.stringify({
+          container_id, plugin_name, success, response: raw,
+        }, null, 2),
+      }],
+    };
+  }
+);
+
 // ── start ────────────────────────────────────────────────────────────────────
 async function main() {
   const transport = new StdioServerTransport();

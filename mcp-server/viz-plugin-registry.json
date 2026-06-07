@@ -1,0 +1,145 @@
+{
+  "geometry": {
+    "default": [
+      "2DLine","2DPatch","2DRibbon","AlphaMap","Arrow","Circle","Cogwheel","Cone","Connector","Cube",
+      "Cycloid","Cyc","Cylinder","Cylinder3","DisplacementMap","Eclipse","Fade_Rectangle","Filecard",
+      "Graph","Graph2d","Icosahedron","ImageFx","MultiPanel","Noggi","Pointer","Nquad","PQuad",
+      "Rectangle","Ring","Roll","Sphere","SplinePath","SplineStrip","Spring","Star","Torus","Triangle",
+      "Wall","Wave","2DLabel"
+    ],
+    "visual_data_tools": [
+      "AreaChart","BarChart","LineChart","PieChart","ScatterChart","StockChart"
+    ],
+    "dynamics": [
+      "Cloth","ClothFlag","Flag","Fluid","ParticleSystem","WindFlows"
+    ],
+    "primitives": [],
+    "realfx": [
+      "RFx2DSphere","RFxClouds","RFxColliderSrc","RFxColliderTgt","RFxCollisionManager",
+      "RFxFlame","RFxLatLong","RFxMagnet","RFxSmoke","RFxTurb","RFxVortex"
+    ],
+    "ticker": [
+      "TrioScroll","TrioScrollElement","Scroller"
+    ],
+    "topology": [
+      "Topo_Arrow","Topo_DefTrack","Topo_Pos","Topo_Rect3D","Topo_Ring3D"
+    ],
+    "map_geo": [
+      "Atlas","C3DTerrain","GeoChart","GeoImage","Globe","KMLReader","LabelAndGo",
+      "LatLongGrid","LEDPanel","ShapeToSpline","ShadowAgent","Topography"
+    ],
+    "visualization": [
+      "2DRibbon","3DBorder","3DClouds","3DLine","3DLineControl","3DModels","3DRegion",
+      "3DRegionControl","3DRoads","Dexter","Eclipse","Graffiti","Graffitex","GeoGraffiti","SplineStrip"
+    ]
+  },
+  "container": {
+    "basic": [],
+    "arrangement": [],
+    "control": [
+      "ControlAction","ControlActionTable","ControlAudio","ControlBars","ControlChart",
+      "ControlClip","ControlClock","ControlCondition","ControlContainer","ControlDataAction",
+      "ControlDataPool","ControlDPObject","ControlFeedview","ControlGeom","ControlHideinrange",
+      "ControlHideOnEmpty","ControlImage","ControlKeyframe","ControlList","ControlMap",
+      "ControlMaterial","ControlMultiHop","ControlNDI","ControlNum","ControlObject","ControlOmo",
+      "ControlParameter","ControlPayload","ControlPie","ControlScaling","ControlSigncontainer",
+      "ControlSoftclip","ControlStoppoint","ControlText","ControlTgalpha","ControlTgclip",
+      "ControlVBI","ControlVideo","ControlWoC"
+    ],
+    "default": [
+      "Toggle","TraceIt","Mute","Browser","Placeholder","SlideShow","Grabbit","Heartbeat",
+      "HideOnEmpty","AutoFollow","AutoRotate","Cloner","Colorize","ColorPerVertex","ConvertCase",
+      "Counter","Advanced_Counter","AlignTextByCharacter","AnalogWatch","Cartoon","CircleArrange",
+      "ClockRotation","Cobra","Coco","Colin","Corena","DVEFollow","Eclipse","Emboss","EVSControl",
+      "FormatNumber","FrameMask","GeoDataReader","GeoText","GetDirections",
+      "GlobalMagnifierController","Gooch","Grid","HopIt","HopsManager","HopSync",
+      "ImageClip","ImageLink","ImageMask","ImageProportions","Italic","Jack","Justifier",
+      "LabelAddOn","LabelAndGoAssistant","LabelIt","LabelManager","LabelNavigation",
+      "LightBlur","LightingShader","LOD","LODManager","Magnify","MapBuilder","MapLayersControl",
+      "markText","Match_It","Maxsize","MaxSizeLines","MoViz","Mt2dControl","Mt3dControl",
+      "MtButton","MtNavigator","MtSensor","MtTelestrator","MultiTextureBlend","NavCom",
+      "NavFade","NavFinder","Navigator","NavScale","NavSlave","Noise","NViso","Object_zoom",
+      "Omo","Parlament","PathFinder","PieSlice","PieValues","PlaceFinder","PointsManager",
+      "Presets","PublishToDesign","Rebound","RefactorMM","Region2Tex","SafeArea",
+      "SceneSyncProperties","ScreenPositionToWorldPosition","ScrollerAction","ShapeToLabels",
+      "SimpleBumpMap","Softclip","Softmask","STV_HTTPRecognizer","STV_PlaylistReader",
+      "STV_TextHighlight","STV_WordCloud","System_time","TalentTrackingReceiver","Temo",
+      "TexComponent","TextAutoScale","TextBG","TextLink","TextParam","TextToSpeech",
+      "TextureFit","Texturemovie","TimeDisplace","TrafficManager","TransitionLayers",
+      "TreeStatus","UrlImage","UrlImageManager","URLMapReport","VCF","VCF_Param",
+      "VertexBone","VertexSkin","VLC","VWBReader","WaterShader","WImageRefrsh","WPosition",
+      "XRDraw","CWMClient","DistanceOnLine","DropShadow","FadeTexture","Fade_Rectangle",
+      "FieldRenamer","Filecard","FilterBlendImage","FilterBlur","FilterColorBalance",
+      "FilterRadialBlur","FilterSepia","FilterSharpen","ApplySharedMemory","AtphaMap","Blur",
+      "BoundingActions","BoundingBox","ChromaKeyer","Dexter","DisplacementMap"
+    ],
+    "feed": [
+      "FeedActivate","FeedHideInRange","FeedView"
+    ],
+    "containerfx": [
+      "CFx2DFollow","CFxAlpha","CFxArrange","CFxColor","CFxExplode","CFxJitterAlpha",
+      "CFxJitterColor","CFxJitterPos","CFxJitterScale","CFxPlusPlus","CFxRotate","CFxScale"
+    ],
+    "global": [],
+    "multitouch": [],
+    "presenter": [],
+    "realfx": [],
+    "script": [],
+    "sound": [],
+    "splinefx": [],
+    "textfx": [
+      "TFxAlpha","TFxArrange","TFxColor","TFxColorPerVertex","TFxEmoticons","TFxExplode",
+      "TFxJitterAlpha","TFxJitterPos","TFxJitterScale","TFXPlusPlus","TFxRotate","TFxScale",
+      "TFxSize","TFxSlide","TFxVertexExplode","TFxWrite"
+    ],
+    "texture": [],
+    "ticker": [],
+    "time": [],
+    "tool": [
+      "DataAction","DataActionTable","DataAlpha","DataAnim","DataArray","DataArrow","DataCamera",
+      "DataCenter","DataClick","DataClock","DataCondition","DataCountdown","DataCounter",
+      "DataDirector","DataDispatcher","DataDrawMask","DataFeedback","DataGeom","DataGPI",
+      "DataGraph","DataGraphPoint","DataHyperlink","DataImage","DataInRange","DataInteractive",
+      "DataInterpolate","DataKey","DataKeyFrame","DataKeyFrame2","DataKeyText","DataKeyTime",
+      "DataLookup","DataLUImage","DataManipulate","DataMaterial","DataMaterialGradient",
+      "DataMaterialIndex","DataMaterialTable","DataMath","DataMathObject","DataMinMax",
+      "DataMouseAction","DataMousePosition","DataMouseSensor","DataMultiParam","DataNumber",
+      "DataObject","DataObjectTracker","DataParameter","DataParamTracker","DataPool",
+      "DataPosition","DataReader","DataRotation","DataScale","DataScreen","DataSelector",
+      "DataSerialClock","DataSerialGPS","DataSHM","DataSHMTracker","DataStructure","DataSwitch",
+      "DataSystem","DataTable","DataTemo","DataText","DataTextKerning","DataTexture","DataTime",
+      "DataTimer","DataViz3Script","DataWPosition","Data3DObject"
+    ],
+    "topology": [],
+    "transformation": [],
+    "visual_data_tools": [
+      "AreaStackMgr","BarStackMgr","LineStackMgr","DataLabel","DataFit","DataImport","DataStorage"
+    ]
+  },
+  "shader": [
+    "pxAddSubtract","pxBicubic","pxBlackAndWhite","pxBrightContrast","pxCC","pxColorMatch",
+    "pxEqualize","pxGamma","pxGaussianBlur","pxGradient","pxHueRotate","pxInvert","pxInvertColor",
+    "pxLensDistort","pxLensEnergyBolt","pxLensEnergyBoltShader","pxLensGlowBall",
+    "pxLensGlowBallShader","pxLensGlowSpikes","pxLensGlowSpikesShader","pxLensMulti",
+    "pxLensPolyElement","pxLensPolyElementShader","pxLensRandomPoly","pxLensRandomPolyShader",
+    "pxLensRays","pxLensRaysShader","pxLensSpark","pxLensSparkShader","pxLensStripes",
+    "pxLensStripesShader","pxMask","pxMotionBlur","pxNoise","pxPixelate","pxPosterize",
+    "pxRecolor","pxRipple","pxSaturation","pxSparkle","pxStack","pxTint","pxTurbDissolve",
+    "pxTurbulence","pxTurbWipe","pxTwirl","pxWaves",
+    "RttAnisotropicShader","RttBrushedMetalShader","RttBumpGlossyShader","RttBumpOptimizedShader",
+    "RttFabricShader","RttGlassShader","RttGoochShader","RttMetalShader","RttMicrostructureShader",
+    "RttScreenShader","RttVelvetShader","RttWoodGlossyShader",
+    "AnisotropicLight","BumpMap","SimpleBumpMap","Gooch","WaterShader",
+    "C3DTerrain_Shader","GeoChartShader","LightOnGlobe","ShapeToSplineShader",
+    "SubstanceShader","3DCloudsShader","3DLineShader"
+  ],
+  "viz_engine_shader": [],
+  "media_asset": [
+    "JpegRenderer","PNGRenderer","TgaRenderer","TiffRenderer","VbnRenderer",
+    "MatroxFileWriter","VFWRenderer","VideoRenderer"
+  ],
+  "extension": [
+    "viz_cmd_over_websocket_extension","viz_probel_extension","viz_sealevel_extension",
+    "viz_tally_tsl_extension","viz_unreal_shm_extension","viz_webrtc_extension"
+  ]
+}
