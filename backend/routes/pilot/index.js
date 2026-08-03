@@ -80,13 +80,16 @@ router.get("/data-elements/:id/payload-proxy", async (req, res) => {
 
     const clean = stripBom(upstream.data)
       .replace(/<\?xml[^?]*\?>\s*/i, "")            // strip XML declaration
+      .replace(/<fo:wrapper[^>]*>/g, "")            // strip fo:wrapper opening tags
+      .replace(/<\/fo:wrapper>/g, "")               // strip fo:wrapper closing tags
+      .replace(/<field name="templatedescription">[\s\S]*?<\/field>/g, "")  // strip templatedescription field
       .replace(
         /model="http:\/\/[^"]+\/templates\/(\d+)\/model"/,
         (_, tid) => `model="${proxyBase}/templates/${tid}/model-proxy"`
       );
 
-    res.set("Content-Type", "application/vnd.vizrt.payload+xml");
-    res.send(clean);
+    res.set("Content-Type", "application/vnd.vizrt.payload+xml; charset=utf-8");
+    res.send(`<?xml version="1.0" encoding="UTF-8"?>\n${clean}`);
   } catch (err) {
     res.status(500).send(err.message);
   }

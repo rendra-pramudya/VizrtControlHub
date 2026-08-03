@@ -1,0 +1,6 @@
+W:\build\workspace\MSE-rest-examples-5.3\CreatePageUsingMOSItem\bin\Release\CreatePageUsingMOSItem.exe.config
+W:\build\workspace\MSE-rest-examples-5.3\CreatePageUsingMOSItem\bin\Release\CreatePageUsingMOSItem.exe
+W:\build\workspace\MSE-rest-examples-5.3\CreatePageUsingMOSItem\bin\Release\CreatePageUsingMOSItem.pdb
+W:\build\workspace\MSE-rest-examples-5.3\CreatePageUsingMOSItem\obj\Release\CreatePageUsingMOSItem.csproj.CoreCompileInputs.cache
+W:\build\workspace\MSE-rest-examples-5.3\CreatePageUsingMOSItem\obj\Release\CreatePageUsingMOSItem.exe
+W:\build\workspace\MSE-rest-examples-5.3\CreatePageUsingMOSItem\obj\Release\CreatePageUsingMOSItem.pdb

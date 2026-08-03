@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "vizrt-control": {
+      "command": "C:\\Program Files\\nodejs\\node.exe",
+      "args": [
+        "D:\\rendra\\Documents\\GitHub\\VizrtControlHub\\mcp-server\\server.js"
+      ]
+    }
+  }
+}

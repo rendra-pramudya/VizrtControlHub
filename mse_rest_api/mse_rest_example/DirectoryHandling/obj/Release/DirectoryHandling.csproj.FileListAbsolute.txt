@@ -1,0 +1,6 @@
+W:\build\workspace\MSE-rest-examples-5.3\DirectoryHandling\bin\Release\DirectoryHandling.exe.config
+W:\build\workspace\MSE-rest-examples-5.3\DirectoryHandling\bin\Release\DirectoryHandling.exe
+W:\build\workspace\MSE-rest-examples-5.3\DirectoryHandling\bin\Release\DirectoryHandling.pdb
+W:\build\workspace\MSE-rest-examples-5.3\DirectoryHandling\obj\Release\DirectoryHandling.csproj.CoreCompileInputs.cache
+W:\build\workspace\MSE-rest-examples-5.3\DirectoryHandling\obj\Release\DirectoryHandling.exe
+W:\build\workspace\MSE-rest-examples-5.3\DirectoryHandling\obj\Release\DirectoryHandling.pdb

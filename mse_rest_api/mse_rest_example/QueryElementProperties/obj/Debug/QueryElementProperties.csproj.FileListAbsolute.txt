@@ -1,0 +1,6 @@
+W:\build\workspace\MSE-rest-examples-5.3\QueryElementProperties\bin\Debug\QueryElementProperties.exe.config
+W:\build\workspace\MSE-rest-examples-5.3\QueryElementProperties\bin\Debug\QueryElementProperties.exe
+W:\build\workspace\MSE-rest-examples-5.3\QueryElementProperties\bin\Debug\QueryElementProperties.pdb
+W:\build\workspace\MSE-rest-examples-5.3\QueryElementProperties\obj\Debug\QueryElementProperties.csproj.CoreCompileInputs.cache
+W:\build\workspace\MSE-rest-examples-5.3\QueryElementProperties\obj\Debug\QueryElementProperties.exe
+W:\build\workspace\MSE-rest-examples-5.3\QueryElementProperties\obj\Debug\QueryElementProperties.pdb

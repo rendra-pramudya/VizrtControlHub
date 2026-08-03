@@ -1,0 +1,7 @@
+W:\build\workspace\MSE-rest-examples-5.3\ElementExecution\bin\Debug\ElementExecution.exe.config
+W:\build\workspace\MSE-rest-examples-5.3\ElementExecution\bin\Debug\ElementExecution.exe
+W:\build\workspace\MSE-rest-examples-5.3\ElementExecution\bin\Debug\ElementExecution.pdb
+W:\build\workspace\MSE-rest-examples-5.3\ElementExecution\obj\Debug\ElementExecution.csprojAssemblyReference.cache
+W:\build\workspace\MSE-rest-examples-5.3\ElementExecution\obj\Debug\ElementExecution.csproj.CoreCompileInputs.cache
+W:\build\workspace\MSE-rest-examples-5.3\ElementExecution\obj\Debug\ElementExecution.exe
+W:\build\workspace\MSE-rest-examples-5.3\ElementExecution\obj\Debug\ElementExecution.pdb

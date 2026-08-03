@@ -162,7 +162,7 @@ server.tool(
 
 server.tool(
   "mse_add_pilot_element",
-  "Add a Pilot data element as a new entry in an MSE playlist. References the Pilot dataelement by its ID; the resulting playlist entry is takeable via mse_trigger using the returned editUrl. Use this when you have an existing Pilot dataelement and want to schedule it on-air via MSE.",
+  "Add a Pilot data element as a new entry in an MSE playlist. References the Pilot dataelement by its ID via a MOS item (Content-Type application/vnd.vizrt.mositem+xml) — the pattern Vizrt's own newsroom/Pilot integration uses (see mse_rest_api CreatePageUsingMOSItem). MSE resolves the objID to the Pilot element itself and wires up src= to Pilot automatically, so no payload proxy is needed. The resulting entry is takeable via mse_trigger using the returned editUrl. Use this when you have an existing Pilot dataelement and want to schedule it on-air via MSE.",
   {
     storageId:      z.string().describe("Playlist storageId (UUID without curly braces) from mse_list_playlists"),
     pilotElementId: z.string().describe("Pilot data element ID, e.g. '42', from pilot_list_elements"),
@@ -171,7 +171,7 @@ server.tool(
   async ({ storageId, pilotElementId, name }) => {
     const collectionUrl = `${MSE}/element_collection/storage/playlists/%7B${storageId}%7D/`;
 
-    // 1. Resolve display name from Pilot if not provided
+    // 1. Resolve display name from Pilot if not provided (used only as the MOS description).
     let elementName = name;
     if (!elementName) {
       const er = await axios.get(`${PILOT}/dataelements/${pilotElementId}`, {
@@ -182,21 +182,18 @@ server.tool(
       elementName = ep.entry?.title?.[0]?._ || ep.entry?.title?.[0] || `element-${pilotElementId}`;
     }
 
-    // 2. Build Atom entry pointing src= at the backend proxy, which strips Pilot's
-    //    UTF-8 BOM and rewrites the model= URL to also go through the proxy.
-    //    Direct src= to Pilot fails because Pilot returns BOM-prefixed XML that MSE rejects.
-    const proxyBase = "http://127.0.0.1:3000/api/pilot";
-    const proxyPayloadUrl = `${proxyBase}/data-elements/${pilotElementId}/payload-proxy`;
-    const safeTitle = elementName.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-    const body = `<?xml version="1.0" encoding="UTF-8"?>
-<entry xmlns="http://www.w3.org/2005/Atom">
-  <title>${safeTitle}</title>
-  <content type="application/vnd.vizrt.payload+xml" src="${proxyPayloadUrl}"/>
-</entry>`;
+    // 2. Build a MOS item referencing the Pilot element by objID. MSE dereferences
+    //    the objID to the Pilot dataelement and stores the entry as elements/ref with
+    //    src= pointing straight at Pilot — the same shape Viz Pilot's newsroom push creates.
+    //    (An Atom entry with <content src=.../> is rejected: MSE won't dereference src at
+    //    POST time and reports "Unable to parse payload"; an inline payload is rejected too
+    //    because MSE refuses the external Pilot model URI. The MOS item avoids both.)
+    const safeDesc = elementName.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    const body = `<mosObj><objID>${pilotElementId}</objID><description>${safeDesc}</description></mosObj>`;
 
-    // 3. POST to collection
+    // 3. POST to collection as a MOS item.
     const res = await axios.post(collectionUrl, body, {
-      headers: { "Content-Type": "application/atom+xml;type=entry" },
+      headers: { "Content-Type": "application/vnd.vizrt.mositem+xml" },
       validateStatus: () => true,
     });
     if (res.status >= 400) {
@@ -204,7 +201,7 @@ server.tool(
       throw new Error(`MSE ${res.status}\nURL: ${collectionUrl}\nBody:\n${body}\nResponse:\n${detail}`);
     }
 
-    // 4. Parse 201 Created — MSE returns the new entry's Atom XML
+    // 4. Parse 201 Created — MSE returns the new entry's Atom XML.
     const created = await parseAtom(res.data);
     const ne = created.entry;
     return {
@@ -214,7 +211,7 @@ server.tool(
           id:              ne?.id?.[0]?.replace("urn:uuid:", "") || null,
           name:            ne?.title?.[0]?._ || ne?.title?.[0] || elementName,
           pilotElementId,
-          editUrl:         linkHref(ne, "self"),
+          editUrl:         linkHref(ne, "self") || res.headers["location"] || null,
           valid:           ne?.["viz:valid_element"]?.[0] === "yes",
           availableStatus: ne?.["viz:available_status"] ? parseFloat(ne["viz:available_status"][0]) : null,
           loadedStatus:    ne?.["viz:loaded_status"]    ? parseFloat(ne["viz:loaded_status"][0])    : null,
@@ -830,12 +827,16 @@ server.tool(
   async ({ folderUuid }) => {
     const ROOT = "00000000-0000-0000-0000-000000000000";
     const uuid = folderUuid || ROOT;
-    const [foldersRes, filesRes] = await Promise.all([
-      axios.get(`${HUB}/folders/${uuid}`, { headers: ATOM, auth: HUB_AUTH }),
-      axios.get(`${HUB}/files/${uuid}`,   { headers: ATOM, auth: HUB_AUTH }),
-    ]);
+
+    const requests = [
+      axios.get(`${HUB}/folders/${uuid}/`, { headers: ATOM, auth: HUB_AUTH }),
+    ];
+    if (uuid !== ROOT) {
+      requests.push(axios.get(`${HUB}/files/${uuid}/`, { headers: ATOM, auth: HUB_AUTH }));
+    }
+
+    const [foldersRes, filesRes] = await Promise.all(requests);
     const pf = await parseAtom(foldersRes.data);
-    const pp = await parseAtom(filesRes.data);
 
     const folders = toArray(pf.feed?.entry || []).map(e => ({
       type: "folder",
@@ -843,11 +844,13 @@ server.tool(
       name: e.title[0]._ || e.title[0],
     })).sort((a, b) => a.name.localeCompare(b.name));
 
-    const files = toArray(pp.feed?.entry || []).map(e => ({
-      type: "file",
-      uuid: e.id[0].replace("urn:uuid:", ""),
-      name: e.title[0]._ || e.title[0],
-    })).sort((a, b) => a.name.localeCompare(b.name));
+    const files = filesRes
+      ? toArray((await parseAtom(filesRes.data)).feed?.entry || []).map(e => ({
+          type: "file",
+          uuid: e.id[0].replace("urn:uuid:", ""),
+          name: e.title[0]._ || e.title[0],
+        })).sort((a, b) => a.name.localeCompare(b.name))
+      : [];
 
     return { content: [{ type: "text", text: JSON.stringify([...folders, ...files], null, 2) }] };
   }
@@ -889,7 +892,7 @@ server.tool(
     while (queue.length > 0) {
       const { folderUuid, path, depth } = queue.shift();
 
-      const filesRes = await axios.get(`${HUB}/files/${folderUuid}`, {
+      const filesRes = await axios.get(`${HUB}/files/${folderUuid}/`, {
         headers: ATOM, auth: HUB_AUTH, validateStatus: s => s < 500,
       });
       if (filesRes.status < 400) {
@@ -913,7 +916,7 @@ server.tool(
       }
 
       if (depth < maxDepth) {
-        const foldersRes = await axios.get(`${HUB}/folders/${folderUuid}`, {
+        const foldersRes = await axios.get(`${HUB}/folders/${folderUuid}/`, {
           headers: ATOM, auth: HUB_AUTH, validateStatus: s => s < 500,
         });
         if (foldersRes.status < 400) {
@@ -932,6 +935,92 @@ server.tool(
       content: [{
         type: "text",
         text: JSON.stringify({ uuid, found: false, message: `File not found within depth ${maxDepth} from folder ${startUuid}` }, null, 2),
+      }],
+    };
+  }
+);
+
+server.tool(
+  "hub_upload_image",
+  "Upload a local image file to a Viz Graphic Hub folder. Supported formats: JPEG, PNG, BMP, TIFF, GIF, TGA. The file is stored in the target folder under the given slug name.",
+  {
+    filePath:   z.string().describe("Absolute local path to the image file, e.g. 'C:/images/logo.png'"),
+    folderUuid: z.string().describe("Target Hub folder UUID to upload into"),
+    slug:       z.string().optional().describe("File name to use in Hub (without extension); defaults to the source filename"),
+  },
+  async ({ filePath, folderUuid, slug }) => {
+    const mimeMap = {
+      ".jpg": "image/jpeg", ".jpeg": "image/jpeg",
+      ".png": "image/png",  ".bmp": "image/bmp",
+      ".tif": "image/tiff", ".tiff": "image/tiff",
+      ".gif": "image/gif",  ".tga": "image/tga",
+    };
+    const ext = path.extname(filePath).toLowerCase();
+    const contentType = mimeMap[ext];
+    if (!contentType) throw new Error(`Unsupported image format '${ext}'. Supported: jpg, png, bmp, tif, gif, tga`);
+
+    const fileData = fs.readFileSync(filePath);
+    const slugName = slug || path.basename(filePath, ext);
+
+    const res = await axios.post(`${HUB}/folder/${folderUuid}/`, fileData, {
+      headers: {
+        ...ATOM,
+        "Content-Type": contentType,
+        "Slug": slugName,
+      },
+      auth: HUB_AUTH,
+      validateStatus: s => true,
+    });
+
+    const success = res.status === 201;
+    return {
+      content: [{
+        type: "text",
+        text: JSON.stringify({
+          success,
+          status: res.status,
+          slug: slugName,
+          folderUuid,
+          response: success ? "Image uploaded successfully" : String(res.data).slice(0, 300),
+        }, null, 2),
+      }],
+    };
+  }
+);
+
+server.tool(
+  "hub_upload_archive",
+  "Upload a Viz Archive (.via) file to Graphic Hub. Restores scenes and assets with their original folder structure into the /data project. Existing content is overwritten. Large archives may time out but still complete.",
+  {
+    filePath: z.string().describe("Absolute local path to the .via archive file, e.g. 'C:/exports/show.via'"),
+  },
+  async ({ filePath }) => {
+    const ext = path.extname(filePath).toLowerCase();
+    if (ext !== ".via") throw new Error(`Expected a .via file, got '${ext}'`);
+
+    const fileData = fs.readFileSync(filePath);
+
+    const res = await axios.post(`${HUB}/archive/`, fileData, {
+      headers: {
+        "Content-Type": "application/octet-stream",
+        "Authorization": "Basic " + Buffer.from(`${config.hub.username}:${config.hub.password}`).toString("base64"),
+      },
+      timeout: 120000,
+      validateStatus: s => true,
+      maxContentLength: Infinity,
+      maxBodyLength: Infinity,
+    });
+
+    const success = res.status === 201;
+    return {
+      content: [{
+        type: "text",
+        text: JSON.stringify({
+          success,
+          status: res.status,
+          filePath,
+          response: String(res.data).slice(0, 500),
+        }, null, 2),
       }],
     };
   }
@@ -1295,7 +1384,7 @@ server.tool(
   {
     type:     z.string().describe("Geometry key, e.g. 'rectangle', 'circle', 'cube', 'sphere', 'cylinder', 'cone', 'torus', 'arrow', 'star'"),
     name:     z.string().optional().describe("Optional container name shown in Viz Artist tree, e.g. 'MyBox'"),
-    params:   z.record(z.string()).optional().describe("Geometry parameters as key/value pairs. Keys are case-sensitive — use viz_geometry_info to get exact names. E.g. { \"width\": \"400\", \"height\": \"20\" }"),
+    params:   z.record(z.string(), z.string()).optional().describe("Geometry parameters as key/value pairs. Keys are case-sensitive — use viz_geometry_info to get exact names. E.g. { \"width\": \"400\", \"height\": \"20\" }"),
     channel:  z.number().int().optional().default(1).describe("Viz Engine renderer channel (default 1)"),
     engineId: z.string().optional().describe("Engine ID from config; defaults to first enabled engine"),
   },

@@ -1,0 +1,6 @@
+W:\build\workspace\MSE-rest-examples-5.3\TemplateCollection\bin\Release\TemplateCollection.exe.config
+W:\build\workspace\MSE-rest-examples-5.3\TemplateCollection\bin\Release\TemplateCollection.exe
+W:\build\workspace\MSE-rest-examples-5.3\TemplateCollection\bin\Release\TemplateCollection.pdb
+W:\build\workspace\MSE-rest-examples-5.3\TemplateCollection\obj\Release\TemplateCollection.csproj.CoreCompileInputs.cache
+W:\build\workspace\MSE-rest-examples-5.3\TemplateCollection\obj\Release\TemplateCollection.exe
+W:\build\workspace\MSE-rest-examples-5.3\TemplateCollection\obj\Release\TemplateCollection.pdb
