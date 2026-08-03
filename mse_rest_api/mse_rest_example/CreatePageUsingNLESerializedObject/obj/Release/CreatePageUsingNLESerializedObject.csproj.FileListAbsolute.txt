@@ -1,6 +1,0 @@
-W:\build\workspace\MSE-rest-examples-5.3\CreatePageUsingNLESerializedObject\bin\Release\CreatePageUsingNLESerializedObject.exe.config
-W:\build\workspace\MSE-rest-examples-5.3\CreatePageUsingNLESerializedObject\bin\Release\CreatePageUsingNLESerializedObject.exe
-W:\build\workspace\MSE-rest-examples-5.3\CreatePageUsingNLESerializedObject\bin\Release\CreatePageUsingNLESerializedObject.pdb
-W:\build\workspace\MSE-rest-examples-5.3\CreatePageUsingNLESerializedObject\obj\Release\CreatePageUsingNLESerializedObject.csproj.CoreCompileInputs.cache
-W:\build\workspace\MSE-rest-examples-5.3\CreatePageUsingNLESerializedObject\obj\Release\CreatePageUsingNLESerializedObject.exe
-W:\build\workspace\MSE-rest-examples-5.3\CreatePageUsingNLESerializedObject\obj\Release\CreatePageUsingNLESerializedObject.pdb

@@ -1,6 +1,0 @@
-W:\build\workspace\MSE-rest-examples-5.3\ElementUpdating\bin\Debug\ElementUpdating.exe.config
-W:\build\workspace\MSE-rest-examples-5.3\ElementUpdating\bin\Debug\ElementUpdating.exe
-W:\build\workspace\MSE-rest-examples-5.3\ElementUpdating\bin\Debug\ElementUpdating.pdb
-W:\build\workspace\MSE-rest-examples-5.3\ElementUpdating\obj\Debug\ElementUpdating.csproj.CoreCompileInputs.cache
-W:\build\workspace\MSE-rest-examples-5.3\ElementUpdating\obj\Debug\ElementUpdating.exe
-W:\build\workspace\MSE-rest-examples-5.3\ElementUpdating\obj\Debug\ElementUpdating.pdb

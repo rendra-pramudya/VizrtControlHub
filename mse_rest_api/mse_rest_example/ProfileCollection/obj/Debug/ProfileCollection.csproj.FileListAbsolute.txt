@@ -1,6 +1,0 @@
-W:\build\workspace\MSE-rest-examples-5.3\ProfileCollection\bin\Debug\ProfileCollection.exe.config
-W:\build\workspace\MSE-rest-examples-5.3\ProfileCollection\bin\Debug\ProfileCollection.exe
-W:\build\workspace\MSE-rest-examples-5.3\ProfileCollection\bin\Debug\ProfileCollection.pdb
-W:\build\workspace\MSE-rest-examples-5.3\ProfileCollection\obj\Debug\ProfileCollection.csproj.CoreCompileInputs.cache
-W:\build\workspace\MSE-rest-examples-5.3\ProfileCollection\obj\Debug\ProfileCollection.exe
-W:\build\workspace\MSE-rest-examples-5.3\ProfileCollection\obj\Debug\ProfileCollection.pdb

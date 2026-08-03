@@ -1,6 +1,0 @@
-W:\build\workspace\MSE-rest-examples-5.3\MCPLookupElementBasedOnExternalID\bin\Release\MCPLookupElementBasedOnExternalID.exe.config
-W:\build\workspace\MSE-rest-examples-5.3\MCPLookupElementBasedOnExternalID\bin\Release\MCPLookupElementBasedOnExternalID.exe
-W:\build\workspace\MSE-rest-examples-5.3\MCPLookupElementBasedOnExternalID\bin\Release\MCPLookupElementBasedOnExternalID.pdb
-W:\build\workspace\MSE-rest-examples-5.3\MCPLookupElementBasedOnExternalID\obj\Release\MCPLookupElementBasedOnExternalID.csproj.CoreCompileInputs.cache
-W:\build\workspace\MSE-rest-examples-5.3\MCPLookupElementBasedOnExternalID\obj\Release\MCPLookupElementBasedOnExternalID.exe
-W:\build\workspace\MSE-rest-examples-5.3\MCPLookupElementBasedOnExternalID\obj\Release\MCPLookupElementBasedOnExternalID.pdb

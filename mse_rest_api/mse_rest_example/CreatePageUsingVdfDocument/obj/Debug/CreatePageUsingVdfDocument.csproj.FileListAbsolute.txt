@@ -1,6 +1,0 @@
-W:\build\workspace\MSE-rest-examples-5.3\CreatePageUsingVdfDocument\bin\Debug\CreatePageUsingVdfDocument.exe.config
-W:\build\workspace\MSE-rest-examples-5.3\CreatePageUsingVdfDocument\bin\Debug\CreatePageUsingVdfDocument.exe
-W:\build\workspace\MSE-rest-examples-5.3\CreatePageUsingVdfDocument\bin\Debug\CreatePageUsingVdfDocument.pdb
-W:\build\workspace\MSE-rest-examples-5.3\CreatePageUsingVdfDocument\obj\Debug\CreatePageUsingVdfDocument.csproj.CoreCompileInputs.cache
-W:\build\workspace\MSE-rest-examples-5.3\CreatePageUsingVdfDocument\obj\Debug\CreatePageUsingVdfDocument.exe
-W:\build\workspace\MSE-rest-examples-5.3\CreatePageUsingVdfDocument\obj\Debug\CreatePageUsingVdfDocument.pdb

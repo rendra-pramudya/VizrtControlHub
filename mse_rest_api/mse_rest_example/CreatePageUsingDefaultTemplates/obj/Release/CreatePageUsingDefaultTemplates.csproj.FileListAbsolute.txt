@@ -1,6 +1,0 @@
-W:\build\workspace\MSE-rest-examples-5.3\CreatePageUsingDefaultTemplates\bin\Release\CreatePageUsingDefaultTemplates.exe.config
-W:\build\workspace\MSE-rest-examples-5.3\CreatePageUsingDefaultTemplates\bin\Release\CreatePageUsingDefaultTemplates.exe
-W:\build\workspace\MSE-rest-examples-5.3\CreatePageUsingDefaultTemplates\bin\Release\CreatePageUsingDefaultTemplates.pdb
-W:\build\workspace\MSE-rest-examples-5.3\CreatePageUsingDefaultTemplates\obj\Release\CreatePageUsingDefaultTemplates.csproj.CoreCompileInputs.cache
-W:\build\workspace\MSE-rest-examples-5.3\CreatePageUsingDefaultTemplates\obj\Release\CreatePageUsingDefaultTemplates.exe
-W:\build\workspace\MSE-rest-examples-5.3\CreatePageUsingDefaultTemplates\obj\Release\CreatePageUsingDefaultTemplates.pdb

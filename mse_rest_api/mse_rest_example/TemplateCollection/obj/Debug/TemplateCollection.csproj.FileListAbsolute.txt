@@ -1,6 +1,0 @@
-W:\build\workspace\MSE-rest-examples-5.3\TemplateCollection\bin\Debug\TemplateCollection.exe.config
-W:\build\workspace\MSE-rest-examples-5.3\TemplateCollection\bin\Debug\TemplateCollection.exe
-W:\build\workspace\MSE-rest-examples-5.3\TemplateCollection\bin\Debug\TemplateCollection.pdb
-W:\build\workspace\MSE-rest-examples-5.3\TemplateCollection\obj\Debug\TemplateCollection.csproj.CoreCompileInputs.cache
-W:\build\workspace\MSE-rest-examples-5.3\TemplateCollection\obj\Debug\TemplateCollection.exe
-W:\build\workspace\MSE-rest-examples-5.3\TemplateCollection\obj\Debug\TemplateCollection.pdb
