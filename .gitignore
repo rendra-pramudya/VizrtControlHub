@@ -15,6 +15,13 @@ VizrtControlHub/
 # Env / secrets
 .env
 .env.local
+config.json.tmp
+.env.tmp
+
+# Python / local Claude settings
+__pycache__/
+*.pyc
+.claude/settings.local.json
 
 # OS / editor
 .DS_Store

@@ -27,24 +27,19 @@ class VizEngineClient:
             # Try relative to mcp-server directory (one level up)
             config_file = Path(__file__).parent.parent / config_path
 
-        if not config_file.exists():
-            # Try looking for config.js at root
-            config_file = Path(__file__).parent.parent / "config.js"
+        # Settings now live in config.json at the repo root (config.js is a
+        # JS loader that adds secrets from .env and can't be parsed as JSON).
+        if config_file.name == "config.js" or not config_file.exists():
+            config_file = Path(__file__).parent.parent / "config.json"
 
         if not config_file.exists():
             raise FileNotFoundError(f"Config file not found: {config_path} (tried: {config_file})")
 
-        # Simple JavaScript config parser
-        with open(config_file, 'r', encoding='utf-8') as f:
-            content = f.read()
-
-        # Extract JSON from module.exports = {...}
-        json_str = content.replace('module.exports = ', '').strip().rstrip(';')
-
         try:
-            return json.loads(json_str)
+            with open(config_file, 'r', encoding='utf-8') as f:
+                return json.load(f)
         except json.JSONDecodeError as e:
-            raise ValueError(f"Failed to parse config.js: {e}")
+            raise ValueError(f"Failed to parse {config_file.name}: {e}")
 
     def get_engine_config(self, engine_id: str) -> Optional[Dict]:
         """Get engine configuration."""

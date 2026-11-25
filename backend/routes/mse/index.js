@@ -78,6 +78,9 @@ router.get("/preview", async (req, res) => {
 router.get("/element/content", async (req, res) => {
   const { editUrl } = req.query;
   if (!editUrl) return res.status(400).json({ error: "editUrl is required" });
+  if (!mseService.isMseUrl(editUrl)) {
+    return res.status(400).json({ error: "editUrl must point to the configured MSE host" });
+  }
   try {
     res.json(await mseService.getElementContent(editUrl));
   } catch (err) {

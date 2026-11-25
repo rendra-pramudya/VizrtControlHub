@@ -43,12 +43,17 @@
           <label class="field-label">Username</label>
           <input v-model="config.hub.username" placeholder="Username" />
           <label class="field-label">Password</label>
-          <input v-model="config.hub.password" placeholder="Password" type="password" />
+          <input
+            v-model="config.hub.password"
+            :placeholder="config.hub.passwordSet ? 'Tersimpan — kosongkan agar tidak berubah' : 'Password'"
+            type="password"
+          />
         </div>
       </section>
 
       <button @click="save">Save Configuration</button>
       <span v-if="saved" class="saved-msg">Configuration saved!</span>
+      <div v-if="error" class="error-msg">{{ error }}</div>
     </div>
   </div>
 </template>
@@ -69,10 +74,20 @@ onMounted(async () => {
   loading.value = false;
 });
 
+const error = ref("");
+
 async function save() {
-  await store.saveConfig(config.value);
-  saved.value = true;
-  setTimeout(() => (saved.value = false), 2500);
+  error.value = "";
+  try {
+    const { passwordSet, ...hub } = config.value.hub;
+    await store.saveConfig({ ...config.value, hub });
+    if (hub.password) config.value.hub.passwordSet = true;
+    config.value.hub.password = "";
+    saved.value = true;
+    setTimeout(() => (saved.value = false), 2500);
+  } catch (e) {
+    error.value = e.message;
+  }
 }
 </script>
 
@@ -88,4 +103,5 @@ label { display: flex; align-items: center; gap: 0.3rem; font-size: 0.85rem; col
 button { background: #2a5caa; color: #fff; border: none; padding: 0.4rem 1.2rem; border-radius: 4px; cursor: pointer; }
 .saved-msg { margin-left: 0.75rem; color: #4caf50; font-size: 0.85rem; }
 .empty { color: #555; font-style: italic; }
+.error-msg { margin-top: 0.75rem; color: #ef5350; font-size: 0.85rem; max-width: 650px; }
 </style>

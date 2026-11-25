@@ -10,6 +10,24 @@ function getBaseUrl() {
 
 const ATOM_HEADERS = { Accept: "application/atom+xml" };
 
+const LOOPBACK = new Set(["127.0.0.1", "localhost", "[::1]"]);
+
+// True only for http(s) URLs on the configured MSE host and port, so the
+// backend can't be used to fetch arbitrary URLs. 127.0.0.1/localhost are
+// treated as the same host.
+function isMseUrl(raw) {
+  let u;
+  try { u = new URL(raw); } catch { return false; }
+  if (u.protocol !== "http:" && u.protocol !== "https:") return false;
+  if (u.username || u.password) return false;
+  const config = require("../../config");
+  const host = u.hostname.toLowerCase();
+  const mseHost = String(config.mse.host).toLowerCase();
+  const sameHost = host === mseHost || (LOOPBACK.has(host) && LOOPBACK.has(mseHost));
+  const port = u.port ? Number(u.port) : (u.protocol === "https:" ? 443 : 80);
+  return sameHost && port === Number(config.mse.port);
+}
+
 function toArray(v) {
   if (!v) return [];
   return Array.isArray(v) ? v : [v];
@@ -357,4 +375,4 @@ async function getPreviewImage(payloadUrl, scenePath, width = 320, height = 180)
   return Buffer.from(res.data);
 }
 
-module.exports = { getPlaylists, getPlaylistElements, getProfiles, getProfileState, triggerProfileAction, addElementToPlaylist, inspectPlaylistElements, moveElement, getElementContent, getPreviewImage };
+module.exports = { isMseUrl, getPlaylists, getPlaylistElements, getProfiles, getProfileState, triggerProfileAction, addElementToPlaylist, inspectPlaylistElements, moveElement, getElementContent, getPreviewImage };
